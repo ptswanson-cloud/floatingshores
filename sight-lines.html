@@ -1,0 +1,1033 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Sight Lines</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Karla:wght@400;500;700&display=swap">
+<style>
+:root{
+  --paper:#F3F2F5;
+  --surface:#FFFFFF;
+  --surface-2:#E8E7EC;
+  --line:#D4D2DB;
+  --line-strong:#B3B0BE;
+  --ink:#1A1A21;
+  --ink-2:#4E4C5A;
+  --ink-3:#7B7889;
+  --tre:#3B4EA0;
+  --tre-bg:#DFE3F4;
+  --bas:#A0521E;
+  --bas-bg:#F5E3D5;
+  --good:#2F7350;
+  --good-bg:#DCEBE2;
+  --bad:#A8382F;
+  --bad-bg:#F5DEDB;
+  --gold:#8A6A18;
+  --shadow-sm:0 1px 2px rgba(24,20,40,.07);
+  --shadow-lg:0 2px 4px rgba(24,20,40,.06), 0 18px 36px -20px rgba(24,20,40,.4);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#141318;
+    --surface:#1D1C23;
+    --surface-2:#282730;
+    --line:#343341;
+    --line-strong:#4C4A5B;
+    --ink:#EBE9F0;
+    --ink-2:#A9A6B6;
+    --ink-3:#7E7B8C;
+    --tre:#8B9AE8;
+    --tre-bg:#1E2447;
+    --bas:#DE9765;
+    --bas-bg:#3A2313;
+    --good:#6ABE8D;
+    --good-bg:#183227;
+    --bad:#E58274;
+    --bad-bg:#3A1D19;
+    --gold:#D6B44E;
+    --shadow-sm:0 1px 2px rgba(0,0,0,.45);
+    --shadow-lg:0 2px 4px rgba(0,0,0,.35), 0 18px 36px -20px rgba(0,0,0,.85);
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#141318;
+  --surface:#1D1C23;
+  --surface-2:#282730;
+  --line:#343341;
+  --line-strong:#4C4A5B;
+  --ink:#EBE9F0;
+  --ink-2:#A9A6B6;
+  --ink-3:#7E7B8C;
+  --tre:#8B9AE8;
+  --tre-bg:#1E2447;
+  --bas:#DE9765;
+  --bas-bg:#3A2313;
+  --good:#6ABE8D;
+  --good-bg:#183227;
+  --bad:#E58274;
+  --bad-bg:#3A1D19;
+  --gold:#D6B44E;
+  --shadow-sm:0 1px 2px rgba(0,0,0,.45);
+  --shadow-lg:0 2px 4px rgba(0,0,0,.35), 0 18px 36px -20px rgba(0,0,0,.85);
+}
+
+*{box-sizing:border-box}
+body{
+  background:var(--paper);color:var(--ink);
+  font-family:Karla,"Segoe UI",Helvetica,Arial,sans-serif;
+  font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1020px;margin:0 auto;padding:24px 20px 72px}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:2px solid var(--tre);outline-offset:2px;border-radius:4px}
+svg .stave{stroke:var(--ink);stroke-width:1.4;shape-rendering:crispEdges}
+svg .ledger{stroke:var(--ink);stroke-width:1.6}
+svg .head{fill:none;stroke:var(--hue);stroke-width:3.4}
+svg .head.solid{fill:var(--hue)}
+svg .clef path{fill:none;stroke:var(--ink);stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+svg .clef circle{fill:none;stroke:var(--ink);stroke-width:2.6}
+svg .clef .filled, svg .clef .filled circle{fill:var(--ink);stroke:none}
+
+/* header */
+.top{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap;
+  padding-bottom:16px;border-bottom:1px solid var(--line)}
+.brand h1{font-family:Fraunces,Georgia,serif;font-weight:600;font-size:clamp(26px,4.4vw,38px);
+  margin:0;letter-spacing:-.01em;text-wrap:balance}
+.brand p{margin:4px 0 0;color:var(--ink-2);font-size:14.5px;max-width:54ch}
+.tally{display:flex;align-items:center;gap:12px}
+.tally .count{font-family:Karla,sans-serif;font-variant-numeric:tabular-nums;font-size:19px;font-weight:700;white-space:nowrap}
+.tally .count small{color:var(--ink-3);font-size:13px;font-weight:400}
+.meter{width:130px;height:6px;background:var(--surface-2);border-radius:99px;overflow:hidden}
+.meter i{display:block;height:100%;background:var(--tre);transition:width .35s ease}
+
+/* banners */
+.banners{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(310px,1fr));margin-top:24px}
+.banners .banner{margin-top:0}
+.banner.mix{border-left-color:var(--tre)}
+.cta.alt{background:var(--tre)}
+.missed{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(112px,1fr));margin-top:16px}
+.missed figure{margin:0;background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:6px}
+.missed svg{width:100%;height:auto}
+.missed figcaption{font-size:12.5px;color:var(--ink-2);text-align:center;margin-top:2px}
+.missed figcaption b{font-family:Fraunces,Georgia,serif;font-size:17px;color:var(--ink)}
+.mixhead{font-size:12px;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-3);font-weight:700;margin:20px 0 0}
+/* speed banner */
+.banner{
+  display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin-top:24px;
+  background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--gold);
+  border-radius:10px;padding:15px 18px;box-shadow:var(--shadow-sm);
+}
+.banner h2{font-family:Fraunces,Georgia,serif;font-size:19px;font-weight:600;margin:0}
+.banner p{margin:2px 0 0;color:var(--ink-2);font-size:14px}
+.banner .spacer{flex:1;min-width:8px}
+.champ{display:flex;align-items:baseline;gap:7px;font-size:14px;color:var(--ink-2);white-space:nowrap}
+.champ b{font-size:18px;color:var(--gold);font-variant-numeric:tabular-nums}
+.cta{
+  background:var(--gold);color:var(--surface);border:0;border-radius:8px;
+  padding:10px 18px;font-weight:700;font-size:15px;box-shadow:var(--shadow-sm);
+}
+.cta:hover{filter:brightness(1.08)}
+
+/* lanes */
+.lane{margin-top:28px}
+.lane-head{display:flex;align-items:baseline;gap:10px;margin-bottom:12px}
+.lane-head h2{font-family:Fraunces,Georgia,serif;font-weight:600;font-size:17px;margin:0;letter-spacing:.01em}
+.lane-head span{font-size:13.5px;color:var(--ink-3)}
+.lane.treble .lane-head h2{color:var(--tre)}
+.lane.bass .lane-head h2{color:var(--bas)}
+.grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(212px,1fr))}
+.tile{
+  display:flex;flex-direction:column;gap:9px;text-align:left;
+  background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--hue);
+  border-radius:9px;padding:13px 15px 12px;box-shadow:var(--shadow-sm);
+  transition:transform .16s ease, box-shadow .16s ease, border-color .16s ease;
+}
+.tile.treble{--hue:var(--tre)}
+.tile.bass{--hue:var(--bas)}
+.tile:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg)}
+.tile.done{border-left-color:var(--good)}
+.tile-top{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.tile-name{font-weight:700;font-size:15px}
+.tile-score{font-size:12.5px;font-variant-numeric:tabular-nums;color:var(--ink-3)}
+.tile.done .tile-score{color:var(--good);font-weight:700}
+.dots{display:flex;gap:3px}
+.dots i{flex:1;height:4px;border-radius:99px;background:var(--surface-2)}
+.dots i.on{background:var(--hue)}
+.tile.done .dots i.on{background:var(--good)}
+.tile-notes{font-size:12.5px;color:var(--ink-3);letter-spacing:.04em}
+.tile-mnem{font-size:12.5px;color:var(--hue);font-style:italic}
+
+/* study chrome */
+.bar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:22px 0 18px;
+  padding-bottom:14px;border-bottom:1px solid var(--line)}
+.back{background:none;border:1px solid var(--line);border-radius:7px;padding:6px 12px;font-size:14px;color:var(--ink-2)}
+.back:hover{border-color:var(--line-strong);color:var(--ink)}
+.bar-title{font-weight:700;font-size:16px;margin-right:auto}
+.bar-title em{font-style:normal;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--hue);margin-right:8px;font-weight:700}
+.tabs{display:flex;background:var(--surface-2);border-radius:8px;padding:3px;gap:2px}
+.tabs button{background:none;border:0;border-radius:6px;padding:5px 13px;font-size:13.5px;font-weight:500;color:var(--ink-2)}
+.tabs button[aria-selected="true"]{background:var(--surface);color:var(--ink);box-shadow:var(--shadow-sm)}
+
+.stage{display:flex;flex-direction:column;align-items:center;gap:18px}
+.deckline{display:flex;align-items:center;gap:14px;width:100%;max-width:600px;font-size:13px;
+  color:var(--ink-3);font-variant-numeric:tabular-nums}
+.deckline .meter{flex:1;width:auto}
+.deckline .meter i{background:var(--hue)}
+.switch{display:flex;align-items:center;gap:6px;color:var(--ink-2);cursor:pointer;user-select:none}
+.switch input{accent-color:var(--tre);width:14px;height:14px;cursor:pointer}
+.reshuf{background:none;border:1px solid var(--line);border-radius:6px;color:var(--ink-2);
+  padding:1px 7px;font-size:14px;line-height:1.5}
+.reshuf:hover{border-color:var(--line-strong);color:var(--ink)}
+
+.card-shell{width:100%;max-width:600px;perspective:1600px}
+.card{position:relative;width:100%;min-height:360px;transform-style:preserve-3d;
+  transition:transform .5s cubic-bezier(.4,.1,.2,1);cursor:pointer}
+.card.flipped{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;background:var(--surface);
+  border:1px solid var(--line);border-top:3px solid var(--hue);border-radius:12px;
+  box-shadow:var(--shadow-lg);padding:22px 24px;display:flex;flex-direction:column}
+.face.back{transform:rotateY(180deg)}
+.face-tag{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--hue);font-weight:700}
+.front-mid{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px}
+.staffbox{width:100%;max-width:300px}
+.staffbox svg{width:100%;height:auto;display:block}
+.hint{font-size:13px;color:var(--ink-3);text-align:center;margin:0}
+.answer{font-family:Fraunces,Georgia,serif;font-size:clamp(56px,14vw,86px);font-weight:600;line-height:1;margin:0;text-align:center}
+.answer-sub{font-size:15px;color:var(--ink-2);text-align:center;margin:6px 0 0}
+.facts{list-style:none;margin:16px 0 0;padding:0;display:flex;flex-direction:column;gap:8px;font-size:14.5px}
+.facts li{display:flex;gap:10px;padding-bottom:8px;border-bottom:1px dashed var(--line)}
+.facts li:last-child{border-bottom:0}
+.facts b{color:var(--ink-3);font-weight:500;min-width:78px;font-size:13px;text-transform:uppercase;letter-spacing:.06em}
+.mnem{margin-top:auto;background:var(--surface-2);border-radius:8px;padding:10px 12px;font-size:13.5px;color:var(--ink-2)}
+.mnem b{color:var(--hue)}
+
+.controls{display:flex;align-items:center;gap:10px;width:100%;max-width:600px}
+.nav{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:9px 15px;
+  font-size:14px;font-weight:500;box-shadow:var(--shadow-sm)}
+.nav:hover:not(:disabled){border-color:var(--line-strong)}
+.nav:disabled{opacity:.4;cursor:default}
+.learn{flex:1;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:10px 16px;
+  font-size:15px;font-weight:700;box-shadow:var(--shadow-sm);display:flex;align-items:center;justify-content:center;gap:8px}
+.learn:hover{border-color:var(--line-strong)}
+.learn[aria-pressed="true"]{background:var(--good-bg);border-color:var(--good);color:var(--good)}
+.learn .box{width:16px;height:16px;border:1.5px solid currentColor;border-radius:4px;display:grid;place-items:center;font-size:11px;line-height:1;opacity:.6}
+.learn[aria-pressed="true"] .box{opacity:1;background:var(--good);color:var(--surface);border-color:var(--good)}
+
+/* list */
+.list{width:100%;max-width:720px;background:var(--surface);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.row{display:grid;grid-template-columns:26px 54px 1fr;gap:14px;align-items:center;width:100%;
+  padding:11px 14px;border:0;border-bottom:1px solid var(--line);background:none;text-align:left}
+.row:last-child{border-bottom:0}
+.row:hover{background:var(--surface-2)}
+.row .box{width:17px;height:17px;border:1.5px solid var(--line-strong);border-radius:5px;display:grid;place-items:center;font-size:11px;color:transparent}
+.row.on .box{background:var(--good);border-color:var(--good);color:#fff}
+.row .nm{font-family:Fraunces,Georgia,serif;font-size:22px;font-weight:600;color:var(--hue)}
+.row .ps{font-size:14px}
+.row .ps small{display:block;color:var(--ink-3);font-size:12.5px}
+.row.on .nm,.row.on .ps{opacity:.55}
+
+/* quiz */
+.quiz{width:100%;max-width:600px;display:flex;flex-direction:column;gap:14px}
+.qcard{background:var(--surface);border:1px solid var(--line);border-top:3px solid var(--hue);
+  border-radius:12px;padding:22px 22px;box-shadow:var(--shadow-lg)}
+.qprompt{font-size:14px;color:var(--ink-2);text-align:center}
+.qstaff{max-width:280px;margin:12px auto 20px}
+.qstaff svg{width:100%;height:auto;display:block}
+.qletter{font-family:Fraunces,Georgia,serif;font-size:clamp(52px,13vw,78px);font-weight:600;text-align:center;margin:10px 0 20px;line-height:1}
+.opts{display:grid;gap:9px;grid-template-columns:repeat(2,1fr)}
+.opts.letters{grid-template-columns:repeat(4,1fr)}
+.opt{display:flex;align-items:center;justify-content:center;gap:8px;background:var(--paper);
+  border:1px solid var(--line);border-radius:9px;padding:12px 10px;font-size:20px;font-weight:700;
+  font-family:Fraunces,Georgia,serif;transition:border-color .14s ease, background .14s ease}
+.opt.staffopt{padding:8px 6px}
+.opt.staffopt svg{width:100%;height:auto;max-width:130px}
+.opt:hover:not(:disabled){border-color:var(--hue)}
+.opt:disabled{cursor:default}
+.opt.right{background:var(--good-bg);border-color:var(--good);color:var(--good)}
+.opt.wrong{background:var(--bad-bg);border-color:var(--bad);color:var(--bad)}
+.qfoot{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:16px}
+.qmsg{font-size:14px;color:var(--ink-2)}
+.qmsg b{color:var(--ink)}
+.qscore{font-size:13px;color:var(--ink-3);font-variant-numeric:tabular-nums;text-align:center}
+
+/* speed round */
+.speed{width:100%;max-width:600px;display:flex;flex-direction:column;gap:16px;align-items:center}
+.setup{width:100%;background:var(--surface);border:1px solid var(--line);border-top:3px solid var(--gold);
+  border-radius:12px;padding:24px;box-shadow:var(--shadow-lg)}
+.setup h3{font-family:Fraunces,Georgia,serif;font-size:24px;margin:0 0 6px}
+.setup p{margin:0 0 18px;color:var(--ink-2);font-size:14.5px}
+.field{margin-bottom:16px}
+.field label{display:block;font-size:12px;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-3);font-weight:700;margin-bottom:7px}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{background:var(--paper);border:1px solid var(--line);border-radius:99px;padding:8px 16px;font-size:14px;font-weight:500}
+.chip[aria-pressed="true"]{background:var(--gold);border-color:var(--gold);color:var(--surface);font-weight:700}
+.chips.players{gap:8px}
+.chips.players .chip{min-width:92px;justify-content:center}
+.pb{margin:12px 0 0;font-size:13.5px;color:var(--ink-3)}
+.pb b{color:var(--gold);font-size:16px;font-variant-numeric:tabular-nums}
+.play:disabled{background:var(--surface-2);color:var(--ink-3);cursor:default}
+.field input[type="text"]{width:100%;max-width:260px;background:var(--paper);border:1px solid var(--line);
+  border-radius:8px;padding:10px 12px;font:inherit;color:var(--ink)}
+.play{width:100%;background:var(--gold);color:var(--surface);border:0;border-radius:9px;padding:13px;
+  font-size:16px;font-weight:700;box-shadow:var(--shadow-sm)}
+.play:hover{filter:brightness(1.08)}
+
+.hud{display:flex;align-items:center;justify-content:space-between;width:100%;gap:14px}
+.clock{font-family:Fraunces,Georgia,serif;font-size:38px;font-weight:600;font-variant-numeric:tabular-nums;line-height:1}
+.clock.low{color:var(--bad)}
+.hudscore{text-align:right;font-size:13px;color:var(--ink-3);text-transform:uppercase;letter-spacing:.08em;font-weight:700}
+.tally3{display:flex;gap:14px;align-items:baseline;justify-content:flex-end}
+.tally3 span{font-family:Fraunces,Georgia,serif;font-size:32px;line-height:1;font-variant-numeric:tabular-nums}
+.tally3 .t-right{color:var(--good)}
+.tally3 .t-wrong{color:var(--bad)}
+.tally3 .t-net{color:var(--ink)}
+.tally3lab{display:flex;gap:14px;justify-content:flex-end;margin-top:3px}
+.tally3lab span{font-size:10px;letter-spacing:.08em;color:var(--ink-3);text-transform:uppercase;
+  font-weight:700;min-width:1.6em;text-align:center}
+.tally3 span,.tally3lab span{min-width:1.6em;text-align:center}
+.streak .no{color:var(--bad);font-weight:700}
+.scorecard{display:flex;justify-content:center;gap:10px;flex-wrap:wrap}
+.scard{flex:1;min-width:88px;background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:14px 8px}
+.scard b{display:block;font-family:Fraunces,Georgia,serif;font-size:42px;line-height:1;font-variant-numeric:tabular-nums}
+.scard span{font-size:11px;text-transform:uppercase;letter-spacing:.09em;color:var(--ink-3);font-weight:700}
+.scard.good{border-color:var(--good)}.scard.good b{color:var(--good)}
+.scard.bad{border-color:var(--bad)}.scard.bad b{color:var(--bad)}
+.scard.net{border-color:var(--gold);background:var(--surface)}.scard.net b{color:var(--gold)}
+.brow .sc small{display:block;font-family:Karla,sans-serif;font-size:11px;font-weight:400;color:var(--ink-3)}
+.hudscore b{display:block;font-family:Fraunces,Georgia,serif;font-size:38px;color:var(--ink);letter-spacing:0;line-height:1;text-transform:none}
+.timebar{width:100%;height:5px;background:var(--surface-2);border-radius:99px;overflow:hidden}
+.timebar i{display:block;height:100%;background:var(--gold)}
+.playfield{width:100%;background:var(--surface);border:1px solid var(--line);border-radius:12px;
+  padding:20px;box-shadow:var(--shadow-lg);display:flex;flex-direction:column;align-items:center;gap:6px}
+.playfield.flash-good{border-color:var(--good);background:var(--good-bg)}
+.playfield.flash-bad{border-color:var(--bad);background:var(--bad-bg)}
+.playfield .staffbox{max-width:270px}
+.keys{display:grid;grid-template-columns:repeat(7,1fr);gap:7px;width:100%}
+.key{background:var(--surface);border:1px solid var(--line);border-radius:9px;padding:16px 0;
+  font-family:Fraunces,Georgia,serif;font-size:24px;font-weight:600;box-shadow:var(--shadow-sm)}
+.key:hover{border-color:var(--gold)}
+.streak{font-size:13px;color:var(--ink-3);height:20px}
+.streak b{color:var(--gold)}
+
+/* results + board */
+.result{width:100%;background:var(--surface);border:1px solid var(--line);border-top:3px solid var(--gold);
+  border-radius:12px;padding:30px 24px;box-shadow:var(--shadow-lg);text-align:center}
+.result .big{font-family:Fraunces,Georgia,serif;font-size:64px;font-weight:600;line-height:1;margin:0}
+.result .cap{color:var(--ink-2);margin:6px 0 0;font-size:15px}
+.board{width:100%;margin-top:22px;border-top:1px solid var(--line)}
+.brow{display:grid;grid-template-columns:28px 1fr auto auto;gap:12px;align-items:center;
+  padding:9px 4px;border-bottom:1px solid var(--line);font-size:14.5px;text-align:left}
+.brow:last-child{border-bottom:0}
+.brow .rk{color:var(--ink-3);font-variant-numeric:tabular-nums;font-size:13px}
+.brow .who{font-weight:700}
+.brow .md{color:var(--ink-3);font-size:12.5px;text-transform:uppercase;letter-spacing:.06em}
+.brow .sc{font-family:Fraunces,Georgia,serif;font-size:20px;font-weight:600;font-variant-numeric:tabular-nums}
+.brow.you{background:var(--good-bg);border-radius:7px}
+.brow.you .sc{color:var(--good)}
+.row-btns{display:flex;gap:10px;justify-content:center;margin-top:20px;flex-wrap:wrap}
+.empty{color:var(--ink-3);font-size:14px;padding:14px 0}
+
+.done-card{width:100%;max-width:600px;text-align:center;background:var(--surface);border:1px solid var(--line);
+  border-top:3px solid var(--good);border-radius:12px;padding:40px 26px;box-shadow:var(--shadow-lg)}
+.done-card h3{font-family:Fraunces,Georgia,serif;font-size:26px;margin:0 0 8px}
+.done-card p{color:var(--ink-2);margin:0 auto;max-width:44ch}
+
+.foot{margin-top:44px;padding-top:16px;border-top:1px solid var(--line);display:flex;
+  justify-content:space-between;gap:14px;flex-wrap:wrap;font-size:13px;color:var(--ink-3)}
+.foot button{background:none;border:0;padding:0;color:var(--ink-3);text-decoration:underline;font-size:13px}
+.foot button:hover{color:var(--bad)}
+
+@media (max-width:560px){
+  .opts.letters{grid-template-columns:repeat(4,1fr)}
+  .keys{gap:5px}
+  .key{padding:14px 0;font-size:20px}
+  .controls{flex-wrap:wrap}
+  .learn{order:-1;flex-basis:100%}
+  .face{padding:18px 16px}
+}
+@media (prefers-reduced-motion:reduce){
+  *{transition-duration:.01ms !important;animation-duration:.01ms !important}
+  .card{transition:none}
+}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div class="brand">
+      <h1>Sight Lines</h1>
+      <p>Read the notes on the treble and bass staves. Learn a set, check it off, then race the clock.</p>
+    </div>
+    <div class="tally">
+      <div class="count" id="tallyCount">0<small>/34 learned</small></div>
+      <div class="meter"><i id="tallyBar" style="width:0%"></i></div>
+    </div>
+  </header>
+
+  <main id="app"></main>
+
+  <footer class="foot">
+    <span>Progress and high scores are saved in this browser.</span>
+    <button id="resetBtn" type="button">Reset everything</button>
+  </footer>
+</div>
+
+<script>
+/* ---------- pitch model ---------- */
+const LETTERS = ["C","D","E","F","G","A","B"];
+const step = p => p.oct*7 + LETTERS.indexOf(p.l);      /* diatonic step number */
+const REF = { treble: step({l:"E",oct:4}), bass: step({l:"G",oct:2}) };  /* bottom staff line */
+
+const SETS = [
+  { id:"T1", clef:"treble", name:"Treble lines", mnem:"Every Good Boy Does Fine",
+    notes:[["E",4,"1st line — bottom"],["G",4,"2nd line"],["B",4,"3rd line — middle"],["D",5,"4th line"],["F",5,"5th line — top"]] },
+  { id:"T2", clef:"treble", name:"Treble spaces", mnem:"F-A-C-E, bottom to top",
+    notes:[["F",4,"1st space"],["A",4,"2nd space"],["C",5,"3rd space"],["E",5,"4th space"]] },
+  { id:"T3", clef:"treble", name:"Below the treble staff", mnem:"Middle C sits on its own short line",
+    notes:[["D",4,"in the space just below the staff"],["C",4,"1st ledger line below — Middle C"],["B",3,"hanging below that ledger line"],["A",3,"2nd ledger line below"]] },
+  { id:"T4", clef:"treble", name:"Above the treble staff", mnem:"Keep counting up: space, line, space, line",
+    notes:[["G",5,"in the space just above the staff"],["A",5,"1st ledger line above"],["B",5,"riding above that ledger line"],["C",6,"2nd ledger line above"]] },
+  { id:"B1", clef:"bass", name:"Bass lines", mnem:"Good Boys Do Fine Always",
+    notes:[["G",2,"1st line — bottom"],["B",2,"2nd line"],["D",3,"3rd line — middle"],["F",3,"4th line"],["A",3,"5th line — top"]] },
+  { id:"B2", clef:"bass", name:"Bass spaces", mnem:"All Cows Eat Grass",
+    notes:[["A",2,"1st space"],["C",3,"2nd space"],["E",3,"3rd space"],["G",3,"4th space"]] },
+  { id:"B3", clef:"bass", name:"Below the bass staff", mnem:"Down here the notes get low and heavy",
+    notes:[["F",2,"in the space just below the staff"],["E",2,"1st ledger line below"],["D",2,"hanging below that ledger line"],["C",2,"2nd ledger line below"]] },
+  { id:"B4", clef:"bass", name:"Above the bass staff", mnem:"Middle C again — one ledger line above bass",
+    notes:[["B",3,"in the space just above the staff"],["C",4,"1st ledger line above — Middle C"],["D",4,"riding above that ledger line"],["E",4,"2nd ledger line above"]] }
+];
+
+const TWIN = {
+  "treble-C4":"This is the very same key as Middle C on the bass staff, where it sits one ledger line above.",
+  "bass-C4":"This is the very same key as Middle C on the treble staff, where it sits one ledger line below.",
+  "treble-A3":"The same pitch is the top line of the bass staff.",
+  "bass-A3":"The same pitch hangs on the 2nd ledger line below the treble staff.",
+  "treble-B3":"The same pitch sits just above the bass staff.",
+  "bass-B3":"The same pitch hangs below the treble staff's ledger line.",
+  "treble-D4":"The same pitch sits two ledger lines above the bass staff.",
+  "bass-D4":"The same pitch sits just below the treble staff.",
+  "treble-E4":"The bottom line of the treble staff — the bass staff reaches it two ledger lines up.",
+  "bass-E4":"The same pitch is the bottom line of the treble staff."
+};
+
+SETS.forEach((s,si)=>{
+  s.roots = s.notes.map(([l,oct,pos],i)=>({
+    l, oct, pos, clef:s.clef, set:si,
+    key: s.clef+"-"+l+oct,
+    twin: TWIN[s.clef+"-"+l+oct] || null
+  }));
+});
+const ALL = SETS.flatMap(s=>s.roots);
+const TOTAL = ALL.length;
+
+/* ---------- staff drawing ---------- */
+const SP = 12, BOT = 99, NX = 150, X0 = 8, X1 = 206;
+/* Clefs are drawn, not typed: a font glyph lands wherever its own metrics
+   put it, which differs per device and is what threw the alignment off.
+   Units below are staff spaces measured from the clef's reference line —
+   the G line (2nd from bottom) for treble, the F line (4th) for bass — so
+   the drawing is pinned to the staff by construction. */
+const CLEF_REF = { treble: BOT - SP, bass: BOT - 3*SP };
+function clefArt(clef){
+  const x0 = clef==="treble" ? 44 : 34, y0 = CLEF_REF[clef], u = SP;
+  const P = pts => pts.map(([x,y])=> (x0+x*u).toFixed(2)+" "+(y0+y*u).toFixed(2));
+  const curve = (a,i)=> " C "+a[i]+", "+a[i+1]+", "+a[i+2];
+  const join = a => { let d = "M "+a[0]; for(let i=1;i<a.length;i+=3) d += curve(a,i); return d; };
+  if(clef === "treble"){
+    /* tail -> up the stem -> top hook -> down the left -> around the bowl
+       (centred on the G line) -> spiral in to the G line itself */
+    const c = P([[0.50,2.85],
+                 [-0.35,3.15],[-0.95,2.60],[-0.72,2.05],
+                 [-0.52,1.55],[0.24,1.50],[0.42,1.00],
+                 [0.48,0.20],[0.48,-2.00],[0.44,-2.90],
+                 [0.40,-3.60],[-0.15,-4.10],[-0.72,-3.85],
+                 [-1.30,-3.60],[-1.55,-2.80],[-1.15,-2.10],
+                 [-0.75,-1.40],[0.30,-1.15],[0.95,-0.70],
+                 [1.70,-0.15],[1.75,0.80],[1.15,1.40],
+                 [0.55,2.00],[-0.60,1.95],[-1.15,1.25],
+                 [-1.72,0.55],[-1.45,-0.40],[-0.65,-0.66],
+                 [0.05,-0.90],[0.72,-0.55],[0.74,0.00],
+                 [0.76,0.50],[0.30,0.70],[0.02,0.42]]);
+    return '<g class="clef"><path d="'+join(c)+'"/></g>';
+  }
+  /* bass: head sits ON the F line, two dots straddle it, tail sweeps below */
+  const b = P([[-0.55,-0.10],
+               [-0.50,-1.05],[0.40,-1.32],[0.95,-0.88],
+               [1.60,-0.40],[1.65,0.62],[1.22,1.48],
+               [0.80,2.36],[-0.20,3.02],[-1.30,3.35]]);
+  const dot=(x,y,r)=>'<circle cx="'+(x0+x*u).toFixed(2)+'" cy="'+(y0+y*u).toFixed(2)+'" r="'+(r*u).toFixed(2)+'"/>';
+  return '<g class="clef"><path d="'+join(b)+'"/>'
+    + '<g class="filled">'+dot(-0.55,0,0.34)+dot(1.98,-0.5,0.21)+dot(1.98,0.5,0.21)+'</g></g>';
+}
+
+function noteY(n){ return BOT - (step(n) - REF[n.clef]) * (SP/2); }
+
+function staffSVG(n, opts){
+  opts = opts || {};
+  const hue = n.clef === "treble" ? "var(--tre)" : "var(--bas)";
+  const d = step(n) - REF[n.clef];
+  let out = '<svg viewBox="0 0 220 150" role="img" aria-label="'
+    + (opts.blind ? "a note on the " + n.clef + " staff" : n.l + " on the " + n.clef + " staff")
+    + '" style="--hue:'+hue+'">';
+  for(let k=0;k<5;k++){
+    const y = BOT - k*SP;
+    out += '<line class="stave" x1="'+X0+'" y1="'+y+'" x2="'+X1+'" y2="'+y+'"/>';
+  }
+  out += clefArt(n.clef);
+  if(d < 0) for(let t=-2; t>=d; t-=2){ const y = BOT - t*(SP/2); out += '<line class="ledger" x1="'+(NX-17)+'" y1="'+y+'" x2="'+(NX+17)+'" y2="'+y+'"/>'; }
+  if(d > 8) for(let t=10; t<=d; t+=2){ const y = BOT - t*(SP/2); out += '<line class="ledger" x1="'+(NX-17)+'" y1="'+y+'" x2="'+(NX+17)+'" y2="'+y+'"/>'; }
+  const y = noteY(n);
+  out += '<ellipse class="head'+(opts.solid?" solid":"")+'" cx="'+NX+'" cy="'+y+'" rx="8.2" ry="5.9" transform="rotate(-18 '+NX+' '+y+')"/>';
+  out += '</svg>';
+  return out;
+}
+
+/* ---------- storage ---------- */
+const KEY="sightlines.v1";
+let store={learned:[],scores:[],player:""};
+try{ const raw=localStorage.getItem(KEY); if(raw) store=Object.assign(store,JSON.parse(raw)); }catch(e){}
+let learned=new Set(store.learned||[]);
+let scores=store.scores||[];
+function save(){ try{ localStorage.setItem(KEY,JSON.stringify({learned:[...learned],scores,player:state.speed.player})); }catch(e){} }
+const isLearned = n => learned.has(n.key);
+function toggle(n){ learned.has(n.key)?learned.delete(n.key):learned.add(n.key); save(); paintTally(); }
+
+const MODE_LABEL={treble:"Treble",bass:"Bass",both:"Both clefs"};
+const PLAYERS=["Julianne","August","Ewan","Loren","Rosie","Jill"];
+
+/* ---------- state ---------- */
+const state={view:"home",set:0,tab:"cards",idx:0,flipped:false,showLearned:false,quiz:null,
+  shuffleCards:true, order:null,
+  mixed:{phase:"setup",clef:"both",len:20,qs:[],at:0,picked:null,score:0,missed:[]},
+  speed:{phase:"setup",clef:"both",keys:null,player:(store.player&&PLAYERS.includes(store.player))?store.player:"",score:0,left:60,cur:null,flash:null,streak:0,best:0,timer:null,justScored:null}};
+const app=document.getElementById("app");
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const setLearned=s=>s.roots.filter(isLearned).length;
+function paintTally(){
+  const n=ALL.filter(isLearned).length;
+  document.getElementById("tallyCount").innerHTML=n+"<small>/"+TOTAL+" learned</small>";
+  document.getElementById("tallyBar").style.width=(n/TOTAL*100)+"%";
+}
+/* Entries saved before wrong answers were counted carry only `score`;
+   treat those as a net of that score with no misses. */
+function netOf(e){ return e && typeof e.net==="number" ? e.net : (e ? e.score : 0); }
+function playerBest(name,mode){
+  const rel=scores.filter(s=>s.name===name&&(!mode||s.mode===mode));
+  return rel.length?Math.max.apply(null,rel.map(netOf)):null;
+}
+function bestScore(mode){
+  const rel=scores.filter(s=>!mode||s.mode===mode);
+  return rel.length?rel.reduce((a,b)=>netOf(b)>netOf(a)?b:a):null;
+}
+
+/* ---------- home ---------- */
+function renderHome(){
+  const champ=bestScore(null);
+  const lane=(clef,title,blurb)=>{
+    const tiles=SETS.map((s,i)=>[s,i]).filter(([s])=>s.clef===clef).map(([s,i])=>{
+      const done=setLearned(s), all=s.roots.length;
+      return '<button class="tile '+clef+(done===all?" done":"")+'" data-set="'+i+'">'
+        +'<span class="tile-top"><span class="tile-name">'+esc(s.name)+'</span>'
+        +'<span class="tile-score">'+done+'/'+all+'</span></span>'
+        +'<span class="dots">'+s.roots.map(r=>'<i class="'+(isLearned(r)?"on":"")+'"></i>').join("")+'</span>'
+        +'<span class="tile-notes">'+s.roots.map(r=>r.l+r.oct).join("  ·  ")+'</span>'
+        +'<span class="tile-mnem">'+esc(s.mnem)+'</span></button>';
+    }).join("");
+    return '<section class="lane '+clef+'"><div class="lane-head"><h2>'+title+'</h2><span>'+blurb+'</span></div>'
+      +'<div class="grid">'+tiles+'</div></section>';
+  };
+  app.innerHTML =
+    '<div class="banners">'
+    + '<div class="banner mix"><div><h2>Mixed Quiz</h2><p>Questions drawn at random from all 34 notes.</p></div>'
+      + '<span class="spacer"></span><button class="cta alt" id="mixBtn" type="button">Start</button></div>'
+    + '<div class="banner"><div><h2>Speed Round</h2><p>Sixty seconds. Name as many as you can.</p></div>'
+      + '<span class="spacer"></span>'
+      + (champ ? '<span class="champ">Best <b>'+champ.score+'</b> &middot; '+esc(champ.name)+'</span>' : '')
+      + '<button class="cta" id="speedBtn" type="button">Play</button></div>'
+    + '</div>'
+    + lane("treble","Treble clef","17 notes — right hand, and most melody instruments")
+    + lane("bass","Bass clef","17 notes — left hand, and the low instruments");
+  app.querySelectorAll(".tile").forEach(t=>t.addEventListener("click",()=>{
+    state.set=+t.dataset.set; state.view="set"; state.tab="cards"; state.idx=0; state.flipped=false; state.quiz=null;
+    state.order=null;
+    render(); window.scrollTo({top:0,behavior:"instant"});
+  }));
+  document.getElementById("speedBtn").onclick=()=>{
+    state.view="speed"; state.speed.phase="setup"; render(); window.scrollTo({top:0,behavior:"instant"});
+  };
+  document.getElementById("mixBtn").onclick=()=>{
+    state.view="mixed"; state.mixed.phase="setup"; render(); window.scrollTo({top:0,behavior:"instant"});
+  };
+}
+
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
+function deck(){
+  const s=SETS[state.set];
+  const base = state.showLearned ? s.roots : s.roots.filter(n=>!isLearned(n));
+  if(!state.shuffleCards) return base;
+  /* One shuffled order per pass, held in state so prev/next stay put and
+     marking a note learned doesn't reshuffle the cards underneath you. */
+  if(!state.order || !s.roots.every(n=>state.order.indexOf(n.key)>-1)) reorder();
+  return base.slice().sort((a,b)=>state.order.indexOf(a.key)-state.order.indexOf(b.key));
+}
+function reorder(){
+  state.order = shuffle(SETS[state.set].roots.map(n=>n.key));
+}
+function chrome(inner){
+  const s=SETS[state.set], done=setLearned(s);
+  const hv=s.clef==="treble"?"var(--tre)":"var(--bas)";
+  const bg=s.clef==="treble"?"var(--tre-bg)":"var(--bas-bg)";
+  return '<div class="bar" style="--hue:'+hv+'">'
+    +'<button class="back" id="backBtn" type="button">&larr; All sets</button>'
+    +'<span class="bar-title"><em>'+(s.clef==="treble"?"Treble":"Bass")+'</em>'+esc(s.name)+' &middot; '+done+' of '+s.roots.length+'</span>'
+    +'<div class="tabs" role="tablist">'
+    +['cards','quiz','list'].map(t=>'<button role="tab" data-tab="'+t+'" aria-selected="'+(state.tab===t)+'">'
+      +({cards:"Cards",quiz:"Quiz",list:"List"})[t]+'</button>').join("")
+    +'</div></div>'
+    +'<div class="stage" style="--hue:'+hv+';--tint:'+bg+'">'+inner+'</div>';
+}
+
+/* ---------- cards ---------- */
+function renderCards(){
+  const s=SETS[state.set], d=deck();
+  let inner;
+  if(!d.length){
+    inner='<div class="done-card"><h3>Set complete</h3><p>Every note in '+esc(s.name)
+      +' is checked off. Take the quiz to be sure, or go race the clock.</p>'
+      +'<div class="row-btns"><button class="nav" id="reviewBtn" type="button">Review them all</button>'
+      +'<button class="nav" id="quizBtn" type="button">Take the quiz</button></div></div>';
+  } else {
+    if(state.idx>=d.length) state.idx=0;
+    const n=d[state.idx];
+    inner='<div class="deckline"><span>'+(state.idx+1)+' / '+d.length+'</span>'
+      +'<span class="meter"><i style="width:'+((state.idx+1)/d.length*100)+'%"></i></span>'
+      +'<label class="switch"><input type="checkbox" id="showLearned"'+(state.showLearned?" checked":"")+'> review learned too</label>'
+      +'<label class="switch"><input type="checkbox" id="shufCards"'+(state.shuffleCards?" checked":"")+'> shuffle</label>'
+      +(state.shuffleCards?'<button class="reshuf" id="reshufBtn" type="button" title="Deal a new order">&#8635;</button>':'')
+      +'</div>'
+      +'<div class="card-shell"><div class="card'+(state.flipped?" flipped":"")+'" id="card" tabindex="0" role="button" aria-label="Flip card">'
+        +'<div class="face front"><span class="face-tag">Name this note</span>'
+          +'<div class="front-mid"><div class="staffbox">'+staffSVG(n,{blind:true})+'</div></div>'
+          +'<p class="hint">Click the card to check yourself</p></div>'
+        +'<div class="face back"><span class="face-tag">'+(n.clef==="treble"?"Treble":"Bass")+' clef</span>'
+          +'<h3 class="answer">'+n.l+'</h3>'
+          +'<p class="answer-sub">'+n.l+'<sub>'+n.oct+'</sub>'+(n.l==="C"&&n.oct===4?" &middot; Middle C":"")+'</p>'
+          +'<ul class="facts"><li><b>Where</b><span>'+esc(n.pos)+'</span></li>'
+          + (n.twin?'<li><b>Also</b><span>'+esc(n.twin)+'</span></li>':'')
+          +'</ul>'
+          +'<div class="mnem"><b>'+esc(s.name)+':</b> '+esc(s.mnem)+'</div>'
+        +'</div></div></div>'
+      +'<div class="controls">'
+      +'<button class="nav" id="prevBtn" type="button"'+(state.idx===0?" disabled":"")+'>&larr;</button>'
+      +'<button class="learn" id="learnBtn" type="button" aria-pressed="'+isLearned(n)+'"><span class="box">&check;</span>'
+        +(isLearned(n)?"Learned":"Mark as learned")+'</button>'
+      +'<button class="nav" id="nextBtn" type="button"'+(state.idx>=d.length-1?" disabled":"")+'>&rarr;</button></div>';
+  }
+  app.innerHTML=chrome(inner); wireChrome();
+  const card=document.getElementById("card");
+  if(card){
+    const flip=()=>{state.flipped=!state.flipped;card.classList.toggle("flipped",state.flipped);};
+    card.addEventListener("click",flip);
+    card.addEventListener("keydown",e=>{if(e.key===" "||e.key==="Enter"){e.preventDefault();flip();}});
+    document.getElementById("prevBtn").onclick=()=>{state.idx--;state.flipped=false;renderCards();};
+    document.getElementById("nextBtn").onclick=()=>{state.idx++;state.flipped=false;renderCards();};
+    document.getElementById("showLearned").onchange=e=>{state.showLearned=e.target.checked;state.idx=0;state.flipped=false;renderCards();};
+    document.getElementById("shufCards").onchange=e=>{
+      state.shuffleCards=e.target.checked; reorder(); state.idx=0; state.flipped=false; renderCards();
+    };
+    const rs=document.getElementById("reshufBtn");
+    if(rs) rs.onclick=()=>{ reorder(); state.idx=0; state.flipped=false; renderCards(); };
+    document.getElementById("learnBtn").onclick=()=>{const dd=deck();toggle(dd[state.idx]);state.flipped=false;renderCards();};
+  } else {
+    document.getElementById("reviewBtn").onclick=()=>{state.showLearned=true;state.idx=0;state.flipped=false;renderCards();};
+    document.getElementById("quizBtn").onclick=()=>{state.tab="quiz";render();};
+  }
+}
+
+/* ---------- list ---------- */
+function renderList(){
+  const s=SETS[state.set];
+  app.innerHTML=chrome('<div class="list">'+s.roots.map((n,i)=>
+    '<button class="row'+(isLearned(n)?" on":"")+'" data-i="'+i+'" type="button" aria-pressed="'+isLearned(n)+'">'
+    +'<span class="box">&check;</span><span class="nm">'+n.l+'</span>'
+    +'<span class="ps">'+esc(n.pos)+'<small>'+n.l+n.oct+(n.l==="C"&&n.oct===4?" · Middle C":"")+'</small></span></button>').join("")+'</div>');
+  wireChrome();
+  app.querySelectorAll(".row").forEach(el=>el.onclick=()=>{toggle(s.roots[+el.dataset.i]);renderList();});
+}
+
+/* ---------- quiz ---------- */
+/* Distractor staves must each show a DIFFERENT letter name, or two options
+   look like the same answer. Picks one note per distinct letter. */
+function distinctStaffDistractors(note, pool, count){
+  const seen=new Set([note.l]), out=[];
+  for(const cand of shuffle(pool)){
+    if(cand.key===note.key || seen.has(cand.l)) continue;
+    seen.add(cand.l); out.push(cand);
+    if(out.length===count) break;
+  }
+  return out;
+}
+function buildQuiz(){
+  const s=SETS[state.set];
+  const pool=SETS.filter(x=>x.clef===s.clef).flatMap(x=>x.roots);
+  const qs=shuffle(s.roots).map((n,i)=>{
+    const dir = i%2===0 ? "name" : "find";
+    if(dir==="name"){
+      const wrong=shuffle(LETTERS.filter(l=>l!==n.l)).slice(0,3);
+      return {dir,n,options:shuffle([n.l,...wrong])};
+    }
+    return {dir,n,options:shuffle([n,...distinctStaffDistractors(n,pool,3)])};
+  });
+  state.quiz={qs,at:0,score:0,picked:null};
+}
+function renderQuiz(){
+  if(!state.quiz) buildQuiz();
+  const q=state.quiz, s=SETS[state.set];
+  let inner;
+  if(q.at>=q.qs.length){
+    const pct=Math.round(q.score/q.qs.length*100);
+    inner='<div class="done-card"><h3>'+q.score+' out of '+q.qs.length+'</h3><p>'
+      +(pct===100?"Clean sweep on "+esc(s.name)+". Try it against the clock.":
+        pct>=80?"Close. Flip back through the one or two that slipped.":
+        "Worth another pass through the cards first.")+'</p>'
+      +'<div class="row-btns"><button class="nav" id="againBtn" type="button">Run it again</button>'
+      +'<button class="nav" id="toCardsBtn" type="button">Back to cards</button></div></div>';
+  } else {
+    const cur=q.qs[q.at];
+    let head, opts;
+    if(cur.dir==="name"){
+      head='<div class="qprompt">What note is this?</div><div class="qstaff">'+staffSVG(cur.n,{blind:true})+'</div>';
+      opts='<div class="opts letters">'+cur.options.map((o,i)=>{
+        let cls="opt"; if(q.picked!==null){ if(o===cur.n.l) cls+=" right"; else if(o===q.picked) cls+=" wrong"; }
+        return '<button class="'+cls+'" data-i="'+i+'" type="button"'+(q.picked!==null?" disabled":"")+'>'+o+'</button>';
+      }).join("")+'</div>';
+    } else {
+      head='<div class="qprompt">Which staff shows this note?</div><div class="qletter">'+cur.n.l+'</div>';
+      opts='<div class="opts">'+cur.options.map((o,i)=>{
+        let cls="opt staffopt"; if(q.picked!==null){ if(o.key===cur.n.key) cls+=" right"; else if(q.picked&&q.picked.key===o.key) cls+=" wrong"; }
+        return '<button class="'+cls+'" data-i="'+i+'" type="button"'+(q.picked!==null?" disabled":"")+'>'+staffSVG(o,{blind:true})+'</button>';
+      }).join("")+'</div>';
+    }
+    const right = q.picked!==null && (cur.dir==="name" ? q.picked===cur.n.l : q.picked&&q.picked.key===cur.n.key);
+    inner='<div class="quiz"><div class="qcard">'+head+opts
+      +'<div class="qfoot"><span class="qmsg">'
+      + (q.picked!==null
+          ? (right?'Yes — <b>'+cur.n.l+'</b>, '+esc(cur.n.pos)+'.':'It is <b>'+cur.n.l+'</b> — '+esc(cur.n.pos)+'.')
+          : s.roots.length+' questions, alternating both directions.')
+      +'</span>'
+      +(q.picked!==null?'<button class="nav" id="nextQ" type="button">'+(q.at===q.qs.length-1?"Finish":"Next")+' &rarr;</button>':'')
+      +'</div></div><div class="qscore">Question '+(q.at+1)+' of '+q.qs.length+' &middot; '+q.score+' correct</div></div>';
+  }
+  app.innerHTML=chrome(inner); wireChrome();
+  if(q.at>=q.qs.length){
+    document.getElementById("againBtn").onclick=()=>{buildQuiz();renderQuiz();};
+    document.getElementById("toCardsBtn").onclick=()=>{state.tab="cards";render();};
+  } else {
+    const cur=q.qs[q.at];
+    app.querySelectorAll(".opt").forEach(el=>el.onclick=()=>{
+      q.picked=cur.options[+el.dataset.i];
+      const ok = cur.dir==="name" ? q.picked===cur.n.l : q.picked.key===cur.n.key;
+      if(ok) q.score++;
+      renderQuiz();
+    });
+    const nq=document.getElementById("nextQ");
+    if(nq) nq.onclick=()=>{q.at++;q.picked=null;renderQuiz();};
+  }
+}
+
+/* ---------- speed round ---------- */
+function speedPool(){
+  const sp=state.speed;
+  return sp.clef==="both" ? ALL : ALL.filter(n=>n.clef===sp.clef);
+}
+function nextSpeedNote(){
+  const pool=speedPool(), sp=state.speed;
+  let n; do { n=pool[Math.floor(Math.random()*pool.length)]; } while(pool.length>1 && sp.cur && n.key===sp.cur.key);
+  sp.cur=n;
+}
+function stopTimer(){ if(state.speed.timer){ clearInterval(state.speed.timer); state.speed.timer=null; } }
+function startSpeed(){
+  const sp=state.speed;
+  sp.phase="play"; sp.score=0; sp.wrong=0; sp.left=60; sp.streak=0; sp.best=0; sp.flash=null; sp.cur=null;
+  /* Scramble the keypad once per round: C-D-E-F-G-A-B in order lets you walk
+     the alphabet instead of knowing the note. Fixed for the whole round so
+     it never moves under their fingers mid-game. */
+  sp.keys = shuffle(LETTERS);
+  nextSpeedNote();
+  stopTimer();
+  sp.timer=setInterval(()=>{
+    sp.left--;
+    if(sp.left<=0){ stopTimer(); finishSpeed(); } else { paintClock(); }
+  },1000);
+  renderSpeed();
+}
+function finishSpeed(){
+  const sp=state.speed;
+  sp.phase="done";
+  const entry={name:sp.player||"Player",score:sp.score,wrong:sp.wrong,
+               net:sp.score-sp.wrong,mode:sp.clef,at:Date.now()};
+  scores.push(entry); scores.sort((a,b)=>netOf(b)-netOf(a)); scores=scores.slice(0,12);
+  store.scores=scores; save();
+  sp.lastEntry=entry;
+  renderSpeed();
+}
+function paintClock(){
+  const sp=state.speed;
+  const c=document.getElementById("clock"), b=document.getElementById("timebar");
+  if(c){ c.textContent="0:"+String(sp.left).padStart(2,"0"); c.classList.toggle("low",sp.left<=10); }
+  if(b) b.style.width=(sp.left/60*100)+"%";
+}
+function answerSpeed(letter){
+  const sp=state.speed;
+  if(sp.phase!=="play"||!sp.cur) return;
+  const ok = letter===sp.cur.l;
+  if(ok){ sp.score++; sp.streak++; sp.best=Math.max(sp.best,sp.streak); }
+  else { sp.wrong++; sp.streak=0; }
+  sp.flash={ok,tried:letter};
+  /* A miss leaves the same note up: you have to actually get it before
+     moving on, and the clock keeps running while you work it out. */
+  if(ok) nextSpeedNote();
+  renderSpeed();
+  setTimeout(()=>{ if(state.speed.flash){ state.speed.flash=null; const pf=document.getElementById("playfield");
+    if(pf){ pf.classList.remove("flash-good","flash-bad"); } const st=document.getElementById("streakline");
+    if(st) st.innerHTML=streakText(); } },420);
+}
+function streakText(){
+  const sp=state.speed;
+  if(sp.flash) return sp.flash.ok
+    ? '<b>Yes</b>'
+    : '<span class="no">Not '+sp.flash.tried+' &mdash; look again</span>';
+  return sp.streak>=3 ? '<b>'+sp.streak+' in a row</b>' : '&nbsp;';
+}
+function renderSpeed(){
+  const sp=state.speed;
+  let inner;
+  if(sp.phase==="setup"){
+    const board=renderBoard(null);
+    inner='<div class="setup"><h3>Speed Round</h3><p>Sixty seconds on the clock. A note appears, you tap its letter. A miss keeps the same note up until you get it, and costs you a point.</p>'
+      +'<div class="field"><label>Who is playing</label><div class="chips players">'
+      + PLAYERS.map(p=>'<button class="chip" type="button" data-player="'+esc(p)+'" aria-pressed="'+(sp.player===p)+'">'+esc(p)+'</button>').join("")
+      +'</div>'
+      + (sp.player ? '<p class="pb">'+esc(sp.player)+"'s best in "+MODE_LABEL[sp.clef].toLowerCase()+': <b>'
+          + (playerBest(sp.player,sp.clef)!==null ? playerBest(sp.player,sp.clef) : "\u2014") + '</b></p>' : '')
+      +'</div>'
+      +'<div class="field"><label>Which clef</label><div class="chips">'
+      + ["treble","bass","both"].map(m=>'<button class="chip" type="button" data-mode="'+m+'" aria-pressed="'+(sp.clef===m)+'">'+MODE_LABEL[m]+'</button>').join("")
+      +'</div></div>'
+      +'<button class="play" id="goBtn" type="button"'+(sp.player?"":" disabled")+'>'+(sp.player?"Start the clock":"Pick a player first")+'</button></div>'
+      + board;
+  } else if(sp.phase==="play"){
+    inner='<div class="hud"><div><div class="clock'+(sp.left<=10?" low":"")+'" id="clock">0:'+String(sp.left).padStart(2,"0")+'</div></div>'
+      +'<div class="hudscore"><span class="tally3">'
+        +'<span class="t-right">'+sp.score+'</span>'
+        +'<span class="t-wrong">'+sp.wrong+'</span>'
+        +'<span class="t-net">'+(sp.score-sp.wrong)+'</span></span>'
+        +'<span class="tally3lab"><span>right</span><span>wrong</span><span>net</span></span></div></div>'
+      +'<div class="timebar"><i id="timebar" style="width:'+(sp.left/60*100)+'%"></i></div>'
+      +'<div class="playfield'+(sp.flash?(sp.flash.ok?" flash-good":" flash-bad"):"")+'" id="playfield">'
+        +'<div class="staffbox">'+staffSVG(sp.cur,{blind:true})+'</div>'
+        +'<div class="streak" id="streakline">'+streakText()+'</div></div>'
+      +'<div class="keys">'+(sp.keys||LETTERS).map(l=>'<button class="key" type="button" data-l="'+l+'">'+l+'</button>').join("")+'</div>';
+  } else {
+    const e=sp.lastEntry;
+    const rank=scores.filter(s=>s.mode===sp.clef).findIndex(s=>s===e)+1;
+    inner='<div class="result">'
+      +'<div class="scorecard">'
+        +'<div class="scard good"><b>'+sp.score+'</b><span>right</span></div>'
+        +'<div class="scard bad"><b>'+sp.wrong+'</b><span>wrong</span></div>'
+        +'<div class="scard net"><b>'+(sp.score-sp.wrong)+'</b><span>net score</span></div>'
+      +'</div>'
+      +'<p class="cap">sixty seconds &middot; '+MODE_LABEL[sp.clef].toLowerCase()
+      +(sp.best>=4?' &middot; best run of '+sp.best:'')+'</p>'
+      + (rank===1?'<p class="cap" style="color:var(--gold);font-weight:700;margin-top:10px">New best in '+MODE_LABEL[sp.clef].toLowerCase()+'</p>':'')
+      + renderBoard(e)
+      +'<div class="row-btns"><button class="cta" id="againBtn" type="button">Play again</button>'
+      +'<button class="nav" id="newPlayer" type="button">Change player</button></div></div>';
+  }
+  app.innerHTML='<div class="bar" style="--hue:var(--gold)">'
+    +'<button class="back" id="backBtn" type="button">&larr; All sets</button>'
+    +'<span class="bar-title"><em>Speed</em>'+MODE_LABEL[sp.clef]+'</span></div>'
+    +'<div class="stage" style="--hue:var(--gold)"><div class="speed">'+inner+'</div></div>';
+
+  document.getElementById("backBtn").onclick=()=>{stopTimer();state.speed.phase="setup";state.view="home";render();};
+  if(sp.phase==="setup"){
+    app.querySelectorAll(".chip").forEach(c=>c.onclick=()=>{
+      if(c.dataset.mode) sp.clef=c.dataset.mode;
+      else { sp.player=c.dataset.player; save(); }
+      renderSpeed();
+    });
+    const go=document.getElementById("goBtn");
+    if(go) go.onclick=()=>{ if(sp.player) startSpeed(); };
+  } else if(sp.phase==="play"){
+    app.querySelectorAll(".key").forEach(k=>k.onclick=()=>answerSpeed(k.dataset.l));
+  } else {
+    document.getElementById("againBtn").onclick=()=>startSpeed();
+    document.getElementById("newPlayer").onclick=()=>{sp.phase="setup";renderSpeed();};
+  }
+}
+function renderBoard(highlight){
+  const rows=scores.slice(0,8);
+  if(!rows.length) return '<div class="board"><p class="empty">No scores yet — first run sets the mark.</p></div>';
+  return '<div class="board">'+rows.map((s,i)=>
+    '<div class="brow'+(s===highlight?" you":"")+'"><span class="rk">'+(i+1)+'</span>'
+    +'<span class="who">'+esc(s.name)+'</span>'
+    +'<span class="md">'+MODE_LABEL[s.mode]+'</span>'
+    +'<span class="sc">'+netOf(s)+(typeof s.wrong==="number"
+        ? '<small>'+s.score+'&#8211;'+s.wrong+'</small>' : '')+'</span></div>').join("")+'</div>';
+}
+
+/* ---------- mixed quiz: draws from every set ---------- */
+function mixedPool(){
+  const m=state.mixed;
+  return m.clef==="both" ? ALL : ALL.filter(n=>n.clef===m.clef);
+}
+function buildMixed(){
+  const m=state.mixed, pool=mixedPool();
+  const n=Math.min(m.len,pool.length);
+  const picked=shuffle(pool).slice(0,n);
+  m.qs=picked.map((note,i)=>{
+    const dir=i%2===0?"name":"find";
+    const sameClef=ALL.filter(x=>x.clef===note.clef);
+    if(dir==="name"){
+      return {dir,n:note,options:shuffle([note.l,...shuffle(LETTERS.filter(l=>l!==note.l)).slice(0,3)])};
+    }
+    return {dir,n:note,options:shuffle([note,...distinctStaffDistractors(note,sameClef,3)])};
+  });
+  m.at=0; m.score=0; m.picked=null; m.missed=[];
+}
+function renderMixed(){
+  const m=state.mixed;
+  let inner;
+  if(m.phase==="setup"){
+    const pool=mixedPool();
+    inner='<div class="setup" style="border-top-color:var(--tre)"><h3>Mixed Quiz</h3>'
+      +'<p>Notes pulled at random from every set, alternating between naming a note and finding it on the staff.</p>'
+      +'<div class="field"><label>Which notes</label><div class="chips">'
+      + ["both","treble","bass"].map(c=>'<button class="chip mix" type="button" data-clef="'+c+'" aria-pressed="'+(m.clef===c)+'">'
+          + (c==="both"?"Both clefs":c==="treble"?"Treble only":"Bass only")+'</button>').join("")
+      +'</div></div>'
+      +'<div class="field"><label>How many questions</label><div class="chips">'
+      + [10,20,34].map(v=>'<button class="chip mix" type="button" data-len="'+v+'" aria-pressed="'+(m.len===v)+'">'
+          + (v>=pool.length?"All "+pool.length:v)+'</button>').join("")
+      +'</div></div>'
+      +'<button class="play" id="mixGo" type="button" style="background:var(--tre)">Start the quiz</button></div>';
+  } else if(m.at>=m.qs.length){
+    const pct=Math.round(m.score/m.qs.length*100);
+    inner='<div class="result" style="border-top-color:var(--tre)"><p class="big">'+m.score+' / '+m.qs.length+'</p>'
+      +'<p class="cap">'+(pct===100?"Every one. Nothing left to trip over."
+        :pct>=80?"Strong. Just a couple of stragglers below."
+        :pct>=50?"Getting there — the ones below are where the work is."
+        :"Worth another pass through the cards before the next round.")+'</p>'
+      + (m.missed.length ? '<p class="mixhead">Missed &mdash; work on these</p><div class="missed">'
+          + m.missed.map(n=>'<figure>'+staffSVG(n,{})+'<figcaption><b>'+n.l+'</b> '+esc(n.pos.split("\u2014")[0].trim())+'</figcaption></figure>').join("")
+          + '</div>' : '')
+      +'<div class="row-btns"><button class="cta alt" id="mixAgain" type="button">Run it again</button>'
+      +'<button class="nav" id="mixHome" type="button">Back to the sets</button></div></div>';
+  } else {
+    const cur=m.qs[m.at];
+    const hue=cur.n.clef==="treble"?"var(--tre)":"var(--bas)";
+    let head,opts;
+    if(cur.dir==="name"){
+      head='<div class="qprompt">What note is this?</div><div class="qstaff">'+staffSVG(cur.n,{blind:true})+'</div>';
+      opts='<div class="opts letters">'+cur.options.map((o,i)=>{
+        let cls="opt"; if(m.picked!==null){ if(o===cur.n.l) cls+=" right"; else if(o===m.picked) cls+=" wrong"; }
+        return '<button class="'+cls+'" data-i="'+i+'" type="button"'+(m.picked!==null?" disabled":"")+'>'+o+'</button>';
+      }).join("")+'</div>';
+    } else {
+      head='<div class="qprompt">Which '+(cur.n.clef==="treble"?"treble":"bass")+' staff shows this note?</div>'
+        +'<div class="qletter">'+cur.n.l+'</div>';
+      opts='<div class="opts">'+cur.options.map((o,i)=>{
+        let cls="opt staffopt"; if(m.picked!==null){ if(o.key===cur.n.key) cls+=" right"; else if(m.picked&&m.picked.key===o.key) cls+=" wrong"; }
+        return '<button class="'+cls+'" data-i="'+i+'" type="button"'+(m.picked!==null?" disabled":"")+'>'+staffSVG(o,{blind:true})+'</button>';
+      }).join("")+'</div>';
+    }
+    const right = m.picked!==null && (cur.dir==="name" ? m.picked===cur.n.l : m.picked && m.picked.key===cur.n.key);
+    inner='<div class="quiz" style="--hue:'+hue+'"><div class="qcard">'+head+opts
+      +'<div class="qfoot"><span class="qmsg">'
+      + (m.picked!==null
+          ? (right?'Yes &mdash; <b>'+cur.n.l+'</b>, '+esc(cur.n.pos)+'.'
+                  :'It is <b>'+cur.n.l+'</b> &mdash; '+esc(cur.n.pos)+', '+(cur.n.clef==="treble"?"treble":"bass")+' clef.')
+          : 'Drawn from every set, both clefs mixed together.')
+      +'</span>'
+      +(m.picked!==null?'<button class="nav" id="mixNext" type="button">'+(m.at===m.qs.length-1?"Finish":"Next")+' &rarr;</button>':'')
+      +'</div></div><div class="qscore">Question '+(m.at+1)+' of '+m.qs.length+' &middot; '+m.score+' correct</div></div>';
+  }
+  app.innerHTML='<div class="bar" style="--hue:var(--tre)">'
+    +'<button class="back" id="backBtn" type="button">&larr; All sets</button>'
+    +'<span class="bar-title"><em>Mixed</em>'+(m.phase==="setup"?"All 34 notes":(m.clef==="both"?"Both clefs":m.clef==="treble"?"Treble only":"Bass only"))+'</span></div>'
+    +'<div class="stage" style="--hue:var(--tre)">'+inner+'</div>';
+
+  document.getElementById("backBtn").onclick=()=>{ m.phase="setup"; state.view="home"; render(); window.scrollTo({top:0,behavior:"instant"}); };
+  if(m.phase==="setup"){
+    app.querySelectorAll(".chip.mix").forEach(c=>c.onclick=()=>{
+      if(c.dataset.clef) m.clef=c.dataset.clef; else m.len=+c.dataset.len;
+      renderMixed();
+    });
+    document.getElementById("mixGo").onclick=()=>{ buildMixed(); m.phase="play"; renderMixed(); };
+  } else if(m.at>=m.qs.length){
+    document.getElementById("mixAgain").onclick=()=>{ buildMixed(); renderMixed(); };
+    document.getElementById("mixHome").onclick=()=>{ m.phase="setup"; state.view="home"; render(); };
+  } else {
+    const cur=m.qs[m.at];
+    app.querySelectorAll(".opt").forEach(el=>el.onclick=()=>{
+      m.picked=cur.options[+el.dataset.i];
+      const ok = cur.dir==="name" ? m.picked===cur.n.l : m.picked.key===cur.n.key;
+      if(ok) m.score++; else if(!m.missed.some(x=>x.key===cur.n.key)) m.missed.push(cur.n);
+      renderMixed();
+    });
+    const nx=document.getElementById("mixNext");
+    if(nx) nx.onclick=()=>{ m.at++; m.picked=null; renderMixed(); };
+  }
+}
+
+/* ---------- wiring ---------- */
+function wireChrome(){
+  document.getElementById("backBtn").onclick=()=>{state.view="home";render();window.scrollTo({top:0,behavior:"instant"});};
+  app.querySelectorAll(".tabs button").forEach(t=>t.onclick=()=>{
+    state.tab=t.dataset.tab; if(state.tab==="quiz") state.quiz=null;
+    state.idx=0; state.flipped=false; render();
+  });
+}
+function renderInner(){
+  if(state.view!=="speed") stopTimer();
+  if(state.view==="home") renderHome();
+  else if(state.view==="speed") renderSpeed();
+  else if(state.view==="mixed") renderMixed();
+  else if(state.tab==="cards") renderCards();
+  else if(state.tab==="quiz") renderQuiz();
+  else renderList();
+  paintTally();
+}
+function render(){
+  try{ renderInner(); }
+  catch(err){
+    app.innerHTML='<div class="stage"><div class="done-card" style="border-top-color:var(--bad)">'
+      +'<h3>Something went wrong</h3><p>The page hit an error and stopped. Clearing the saved progress on this '
+      +'device will get it running again.</p><div class="row-btns">'
+      +'<button class="nav" id="hardReset" type="button">Clear and restart</button></div></div></div>';
+    const hr=document.getElementById("hardReset");
+    if(hr) hr.onclick=hardReset;
+    if(window.console) console.error(err);
+  }
+}
+function hardReset(){
+  try{ localStorage.removeItem(KEY); }catch(e){}
+  try{ learned.clear(); scores=[]; store.scores=scores; store.player=""; }catch(e){}
+  try{ stopTimer(); }catch(e){}
+  location.reload();
+}
+document.getElementById("resetBtn").onclick=hardReset;
+document.addEventListener("keydown",e=>{
+  if(e.target.tagName==="INPUT") return;
+  if(state.view==="speed" && state.speed.phase==="play"){
+    const l=e.key.toUpperCase();
+    if(LETTERS.includes(l)){ e.preventDefault(); answerSpeed(l); }
+    return;
+  }
+  if(state.view!=="set"||state.tab!=="cards") return;
+  if(e.key==="ArrowRight"){const n=document.getElementById("nextBtn");if(n&&!n.disabled)n.click();}
+  if(e.key==="ArrowLeft"){const p=document.getElementById("prevBtn");if(p&&!p.disabled)p.click();}
+});
+window.addEventListener("error",e=>{ if(window.console) console.error("uncaught",e.message); });
+render();
+</script>
+
+</body></html>

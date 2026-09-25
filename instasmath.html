@@ -1,0 +1,962 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Instasmath</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Lexend:wght@400;500;600&display=swap">
+<style>
+:root{
+  --paper:#F4F2F6;
+  --surface:#FFFFFF;
+  --surface-2:#E9E6EE;
+  --line:#D7D3DE;
+  --line-strong:#B5AFC1;
+  --ink:#1B1823;
+  --ink-2:#4F4A5D;
+  --ink-3:#7C7689;
+  --brand:#6A3EA1;
+  --brand-soft:#EAE0F7;
+  --on-brand:#FFFFFF;
+  --amber:#B0700F;
+  --amber-soft:#F7EBD6;
+  --good:#2C7A4F;
+  --good-soft:#DCEEE3;
+  --bad:#AF3427;
+  --bad-soft:#F7DFDC;
+  --shadow-sm:0 1px 2px rgba(30,20,50,.07);
+  --shadow-lg:0 2px 4px rgba(30,20,50,.06), 0 20px 40px -22px rgba(30,20,50,.45);
+}
+
+/* Each kid gets the page in their own colour. Declared after the light base
+   and again inside each dark block, so the tint survives every theme state. */
+:root[data-who="loren"]{
+  --brand:#3FA9E0; --brand-soft:#E2F2FC; --on-brand:#08334F;
+  --paper:#F0F7FC; --surface-2:#E2EFF8; --line:#CFE3F0; --line-strong:#A4C6DC;
+  --ink:#122029; --ink-2:#445966; --ink-3:#7192A6;
+}
+:root[data-who="rosie"]{
+  --brand:#1C7A5C; --brand-soft:#D9EFE5;
+  --paper:#EFF5F2; --surface-2:#E1EDE7; --line:#CEDED6; --line-strong:#A6BEB2;
+  --ink:#131E19; --ink-2:#45564E; --ink-3:#71857B;
+}
+
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#151320;
+    --surface:#1E1B29;
+    --surface-2:#2A2637;
+    --line:#38334A;
+    --line-strong:#514A66;
+    --ink:#EEEAF5;
+    --ink-2:#ADA6BC;
+    --ink-3:#817A91;
+    --brand:#B18BE8;
+    --brand-soft:#2C1F45;
+    --on-brand:#1B1226;
+    --amber:#E3A94A;
+    --amber-soft:#3A2B10;
+    --good:#67C08D;
+    --good-soft:#16321F;
+    --bad:#E27E6F;
+    --bad-soft:#3B1E1A;
+    --shadow-sm:0 1px 2px rgba(0,0,0,.45);
+    --shadow-lg:0 2px 4px rgba(0,0,0,.35), 0 20px 40px -22px rgba(0,0,0,.9);
+  }
+  :root:not([data-theme="light"])[data-who="loren"]{ --brand:#8ED2F5; --brand-soft:#11314A; --on-brand:#062334;
+    --paper:#101822; --surface:#18222E; --surface-2:#22303E; --line:#314355;
+    --line-strong:#465E73; --ink:#E6F1F9; --ink-2:#A2B6C5; --ink-3:#788E9E; }
+  :root:not([data-theme="light"])[data-who="rosie"]{ --brand:#6CC8A3; --brand-soft:#123024; --on-brand:#06251A; --paper:#111814;
+    --surface:#19221D; --surface-2:#232E27; --line:#313F37; --line-strong:#47594E;
+    --ink:#E6F1EB; --ink-2:#A2B5AB; --ink-3:#798C82; }
+}
+:root[data-theme="dark"]{
+  --paper:#151320;
+  --surface:#1E1B29;
+  --surface-2:#2A2637;
+  --line:#38334A;
+  --line-strong:#514A66;
+  --ink:#EEEAF5;
+  --ink-2:#ADA6BC;
+  --ink-3:#817A91;
+  --brand:#B18BE8;
+  --brand-soft:#2C1F45;
+  --on-brand:#1B1226;
+  --amber:#E3A94A;
+  --amber-soft:#3A2B10;
+  --good:#67C08D;
+  --good-soft:#16321F;
+  --bad:#E27E6F;
+  --bad-soft:#3B1E1A;
+  --shadow-sm:0 1px 2px rgba(0,0,0,.45);
+  --shadow-lg:0 2px 4px rgba(0,0,0,.35), 0 20px 40px -22px rgba(0,0,0,.9);
+}
+:root[data-theme="dark"][data-who="loren"]{ --brand:#8ED2F5; --brand-soft:#11314A; --on-brand:#062334;
+    --paper:#101822; --surface:#18222E; --surface-2:#22303E; --line:#314355;
+    --line-strong:#465E73; --ink:#E6F1F9; --ink-2:#A2B6C5; --ink-3:#788E9E; }
+:root[data-theme="dark"][data-who="rosie"]{ --brand:#6CC8A3; --brand-soft:#123024; --on-brand:#06251A; --paper:#111814;
+    --surface:#19221D; --surface-2:#232E27; --line:#313F37; --line-strong:#47594E;
+    --ink:#E6F1EB; --ink-2:#A2B5AB; --ink-3:#798C82; }
+
+*{box-sizing:border-box}
+body{
+  background:var(--paper);color:var(--ink);
+  font-family:Lexend,"Segoe UI",Helvetica,Arial,sans-serif;
+  font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased;
+  -webkit-tap-highlight-color:transparent;
+}
+.wrap{max-width:900px;margin:0 auto;padding:22px 18px 60px}
+button{font:inherit;color:inherit;cursor:pointer;font-family:inherit}
+:focus-visible{outline:2px solid var(--brand);outline-offset:2px;border-radius:6px}
+.num{font-family:Archivo,"Segoe UI",sans-serif;font-variant-numeric:tabular-nums;font-weight:700}
+
+/* header */
+.top{display:flex;align-items:flex-end;justify-content:space-between;gap:18px;flex-wrap:wrap;
+  padding-bottom:15px;border-bottom:1px solid var(--line)}
+.top h1{font-family:Archivo,sans-serif;font-weight:700;font-size:clamp(23px,4vw,31px);
+  margin:0;letter-spacing:-.02em}
+.top p{margin:3px 0 0;color:var(--ink-2);font-size:14px;max-width:56ch}
+.whoami{display:flex;gap:6px;background:var(--surface-2);border-radius:99px;padding:4px}
+.whoami button{background:none;border:0;border-radius:99px;padding:7px 18px;font-size:14.5px;
+  font-weight:500;color:var(--ink-2)}
+.whoami button[aria-pressed="true"]{background:var(--brand);color:var(--on-brand);font-weight:700;box-shadow:var(--shadow-sm)}
+.whoami button[data-who="Loren"]{color:#2E8FC4}
+.whoami button[data-who="Rosie"]{color:#1C7A5C}
+.whoami button[aria-pressed="true"]{color:var(--on-brand)}
+:root[data-theme="dark"] .whoami button[data-who="Loren"],
+:root[data-theme="dark"] .whoami button[data-who="Rosie"]{color:var(--ink-2)}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]) .whoami button[data-who="Loren"],
+  :root:not([data-theme="light"]) .whoami button[data-who="Rosie"]{color:var(--ink-2)}
+  :root:not([data-theme="light"]) .whoami button[aria-pressed="true"]{color:var(--on-brand)}
+}
+:root[data-theme="dark"] .whoami button[aria-pressed="true"]{color:var(--on-brand)}
+
+/* setup */
+.section-label{font-size:11.5px;text-transform:uppercase;letter-spacing:.13em;color:var(--ink-3);
+  font-weight:600;margin:26px 0 10px}
+.ops{display:flex;gap:8px;flex-wrap:wrap}
+.op{background:var(--surface);border:1px solid var(--line);border-radius:99px;padding:9px 18px;
+  font-size:14.5px;font-weight:500;box-shadow:var(--shadow-sm)}
+.op[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--paper);font-weight:600}
+
+.phases{display:grid;gap:11px;grid-template-columns:repeat(auto-fill,minmax(250px,1fr))}
+.phase{display:flex;flex-direction:column;gap:7px;text-align:left;background:var(--surface);
+  border:1px solid var(--line);border-left:3px solid var(--brand);border-radius:10px;
+  padding:14px 16px;box-shadow:var(--shadow-sm);
+  transition:transform .15s ease, box-shadow .15s ease}
+.phase:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg)}
+.phase-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.phase-n{font-family:Archivo,sans-serif;font-size:12px;font-weight:700;letter-spacing:.1em;
+  color:var(--brand);text-transform:uppercase}
+.scores{display:flex;flex-direction:column;gap:2px;align-items:flex-end;flex:none}
+.scores i{font-style:normal;display:grid;grid-template-columns:auto 2.5em;gap:8px;align-items:baseline;
+  font-size:11.5px;color:var(--ink-3);letter-spacing:.01em}
+.scores i b{font-family:Archivo,sans-serif;font-size:16px;font-variant-numeric:tabular-nums;
+  text-align:right;color:var(--ink-2);font-weight:700}
+.scores i.me{color:var(--brand);font-weight:600}
+.scores i.me b{color:var(--amber)}
+.phase h3{margin:0;font-size:17px;font-weight:600;font-family:Archivo,sans-serif}
+.phase p{margin:0;font-size:13.5px;color:var(--ink-2);line-height:1.45}
+.phase .sample{font-family:Archivo,sans-serif;font-size:13px;color:var(--ink-3);
+  font-variant-numeric:tabular-nums;margin-top:2px}
+
+/* play */
+.bar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:18px 0 16px;
+  padding-bottom:13px;border-bottom:1px solid var(--line)}
+.back{background:none;border:1px solid var(--line);border-radius:7px;padding:6px 12px;
+  font-size:14px;color:var(--ink-2)}
+.back:hover{border-color:var(--line-strong);color:var(--ink)}
+.bar-title{font-weight:600;font-size:15.5px;margin-right:auto}
+.bar-title em{font-style:normal;font-size:11.5px;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--brand);margin-right:8px;font-weight:700}
+
+.hud{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;width:100%}
+.clock{font-family:Archivo,sans-serif;font-weight:700;font-size:40px;line-height:1;
+  font-variant-numeric:tabular-nums}
+.clock.low{color:var(--bad)}
+.tri{display:flex;gap:16px;justify-content:flex-end}
+.tri div{text-align:center;min-width:2.1em}
+.tri b{display:block;font-family:Archivo,sans-serif;font-size:32px;line-height:1;font-variant-numeric:tabular-nums}
+.tri span{font-size:10px;text-transform:uppercase;letter-spacing:.09em;color:var(--ink-3);font-weight:600}
+.tri .r b{color:var(--good)} .tri .w b{color:var(--bad)} .tri .n b{color:var(--ink)}
+.timebar{width:100%;height:5px;background:var(--surface-2);border-radius:99px;overflow:hidden;margin:10px 0 18px}
+.timebar i{display:block;height:100%;background:var(--amber);transition:width .9s linear}
+
+.board{background:var(--surface);border:1px solid var(--line);border-radius:14px;
+  box-shadow:var(--shadow-lg);padding:26px 22px;text-align:center}
+.board.good{border-color:var(--good);background:var(--good-soft)}
+.board.bad{border-color:var(--bad);background:var(--bad-soft)}
+.board.taken{border-color:var(--amber);background:var(--amber-soft)}
+.feedback .taken{color:var(--amber);font-weight:600}
+.prompt{font-family:Archivo,sans-serif;font-weight:700;font-variant-numeric:tabular-nums;
+  font-size:clamp(40px,11vw,68px);line-height:1.05;letter-spacing:-.02em;margin:0}
+.prompt .eq{color:var(--ink-3);margin:0 .12em}
+.feedback{height:22px;font-size:14px;color:var(--ink-2);margin-top:8px}
+.feedback .no{color:var(--bad);font-weight:600}
+.feedback .yes{color:var(--good);font-weight:600}
+
+.choices{display:grid;gap:9px;margin-top:18px}
+.choices.c2{grid-template-columns:repeat(2,1fr)}
+.choices.c4{grid-template-columns:repeat(2,1fr)}
+.choices.c10{grid-template-columns:repeat(5,1fr)}
+.choice{background:var(--surface);border:1px solid var(--line);border-radius:11px;
+  padding:18px 6px;font-family:Archivo,sans-serif;font-weight:700;font-variant-numeric:tabular-nums;
+  font-size:26px;box-shadow:var(--shadow-sm);transition:border-color .12s ease,background .12s ease}
+.choices.c2 .choice{padding:26px 6px;font-size:34px}
+.choices.c10 .choice{padding:13px 4px;font-size:21px}
+.choice:hover:not(:disabled){border-color:var(--brand)}
+.choice.right{background:var(--good);border-color:var(--good);color:#fff}
+.choice.wrong{background:var(--bad);border-color:var(--bad);color:#fff;opacity:.85}
+.choice.wrong:disabled{cursor:not-allowed}
+.choice:disabled:not(.wrong):not(.right){opacity:.55}
+
+/* typed answers */
+.typed{font-family:Archivo,sans-serif;font-weight:700;font-variant-numeric:tabular-nums;
+  font-size:clamp(34px,9vw,52px);min-height:1.2em;letter-spacing:.04em;
+  border-bottom:3px solid var(--brand);display:inline-block;min-width:2.6em;margin-top:14px}
+.typed.empty{color:var(--ink-3)}
+.pad{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;max-width:330px;margin:18px auto 0}
+.pad button{background:var(--surface);border:1px solid var(--line);border-radius:11px;padding:16px 0;
+  font-family:Archivo,sans-serif;font-weight:700;font-size:24px;box-shadow:var(--shadow-sm)}
+.pad button:hover{border-color:var(--brand)}
+.pad .wide{grid-column:span 2}
+.pad .del{color:var(--bad)}
+
+/* phase 5: build both */
+.build{display:flex;flex-direction:column;gap:14px;margin-top:6px}
+.rowline{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:nowrap}
+.slot{width:74px;height:74px;border:2px dashed var(--line-strong);border-radius:12px;
+  background:var(--paper);display:grid;place-items:center;
+  font-family:Archivo,sans-serif;font-weight:700;font-size:30px;font-variant-numeric:tabular-nums;
+  transition:border-color .12s ease,background .12s ease}
+.slot.over{border-color:var(--brand);background:var(--brand-soft)}
+.slot.filled{border-style:solid;border-color:var(--brand);background:var(--surface);cursor:pointer}
+.sym{font-family:Archivo,sans-serif;font-weight:700;font-size:26px;color:var(--ink-3)}
+.target{font-family:Archivo,sans-serif;font-weight:700;font-size:34px;font-variant-numeric:tabular-nums;
+  background:var(--amber-soft);color:var(--amber);border-radius:11px;padding:10px 16px;min-width:82px;
+  border:2px solid transparent}
+.pool{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:20px;
+  padding-top:18px;border-top:1px dashed var(--line);min-height:96px}
+.tile{width:74px;height:74px;border:1px solid var(--line);border-radius:12px;background:var(--surface);
+  display:grid;place-items:center;font-family:Archivo,sans-serif;font-weight:700;font-size:30px;
+  font-variant-numeric:tabular-nums;box-shadow:var(--shadow-sm);cursor:grab;touch-action:none;
+  user-select:none;-webkit-user-select:none}
+.tile:active{cursor:grabbing}
+.tile.sel{border-color:var(--brand);background:var(--brand-soft);box-shadow:0 0 0 3px var(--brand-soft)}
+.tile.ghost{opacity:.25}
+.tile.flying{position:fixed;z-index:50;pointer-events:none;box-shadow:var(--shadow-lg);
+  transform:translate(-50%,-50%) scale(1.06);margin:0}
+.buildhint{font-size:13px;color:var(--ink-3);margin-top:12px}
+
+/* result */
+.result{background:var(--surface);border:1px solid var(--line);border-top:3px solid var(--amber);
+  border-radius:14px;padding:28px 22px;box-shadow:var(--shadow-lg);text-align:center}
+.cards{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.card{flex:1;min-width:92px;background:var(--paper);border:1px solid var(--line);border-radius:11px;padding:15px 8px}
+.card b{display:block;font-family:Archivo,sans-serif;font-size:40px;line-height:1;font-variant-numeric:tabular-nums}
+.card span{font-size:10.5px;text-transform:uppercase;letter-spacing:.09em;color:var(--ink-3);font-weight:600}
+.card.r{border-color:var(--good)} .card.r b{color:var(--good)}
+.card.w{border-color:var(--bad)} .card.w b{color:var(--bad)}
+.card.n{border-color:var(--amber);background:var(--surface)} .card.n b{color:var(--amber)}
+.result .cap{color:var(--ink-2);margin:12px 0 0;font-size:14.5px}
+.pb{margin:10px 0 0;color:var(--amber);font-weight:600;font-size:15px}
+.row-btns{display:flex;gap:10px;justify-content:center;margin-top:20px;flex-wrap:wrap}
+.cta{background:var(--brand);color:var(--on-brand);border:0;border-radius:9px;padding:12px 22px;
+  font-weight:600;font-size:15.5px;box-shadow:var(--shadow-sm)}
+.cta:hover{filter:brightness(1.1)}
+.nav{background:var(--surface);border:1px solid var(--line);border-radius:9px;padding:11px 18px;
+  font-size:14.5px;font-weight:500;box-shadow:var(--shadow-sm)}
+.nav:hover{border-color:var(--line-strong)}
+
+/* best table */
+.bests{margin-top:12px;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--surface)}
+.brow{display:grid;grid-template-columns:1fr auto auto;gap:12px;align-items:center;padding:9px 13px;
+  border-bottom:1px solid var(--line);font-size:14px;text-align:left}
+.brow:last-child{border-bottom:0}
+.brow .who{font-weight:600}
+.brow .ph{color:var(--ink-3);font-size:12.5px}
+.brow .sc{font-family:Archivo,sans-serif;font-weight:700;font-size:18px;font-variant-numeric:tabular-nums;color:var(--amber)}
+.empty{padding:14px;color:var(--ink-3);font-size:14px;text-align:center}
+
+.foot{margin-top:38px;padding-top:15px;border-top:1px solid var(--line);display:flex;
+  justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:13px;color:var(--ink-3)}
+.foot button{background:none;border:0;padding:0;color:var(--ink-3);text-decoration:underline;font-size:13px}
+.foot button:hover{color:var(--bad)}
+.confirm{display:inline-flex;align-items:center;gap:10px;flex-wrap:wrap;color:var(--ink-2);font-weight:500}
+.confirm button{text-decoration:none;border-radius:7px;padding:5px 12px;font-size:13px;font-weight:600}
+.confirm #resetYes{background:var(--bad);color:#fff}
+.confirm #resetYes:hover{color:#fff;filter:brightness(1.1)}
+.confirm #resetNo{border:1px solid var(--line);color:var(--ink-2);background:var(--surface)}
+.confirm #resetNo:hover{color:var(--ink);border-color:var(--line-strong)}
+
+
+/* ---------- two player: phone flat on the table between them ---------- */
+:root[data-duo] body{overflow:hidden}
+:root[data-duo] .wrap{max-width:none;padding:0;width:100%}
+:root[data-duo] .wrap > .top, :root[data-duo] .wrap > .foot{display:none}
+.duo{display:flex;flex-direction:column;height:100dvh;min-height:100dvh;width:100%;overflow:hidden}
+.duo .side{flex:1 1 0;min-width:0;min-height:0;width:100%;display:flex;flex-direction:column;
+  justify-content:center;gap:6px;padding:8px 10px;overflow:hidden}
+/* the far player reads it upside down */
+.duo .side.far{transform:rotate(180deg)}
+.duo .sidename{font-size:11px;font-weight:700;letter-spacing:.11em;text-transform:uppercase;
+  color:var(--brand);text-align:center}
+.duo .mid{position:relative;flex:none;padding:5px 12px;background:var(--surface-2);
+  border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.duo .mid .timebar{margin:0}
+.duo-quit{position:absolute;right:6px;top:50%;transform:translateY(-50%);background:none;border:0;
+  color:var(--ink-3);font-size:18px;line-height:1;padding:2px 8px}
+
+/* everything shrinks to fit half a phone */
+.duo .hud{align-items:center;padding:0 2px}
+.duo .clock{font-size:20px}
+.duo .tri{gap:10px}
+.duo .tri b{font-size:20px}
+.duo .tri span{font-size:8.5px}
+.duo .timebar{margin:4px 0 0}
+.duo .board{padding:10px 8px;border-radius:11px}
+.duo .prompt{font-size:clamp(26px,7vw,40px)}
+.duo .feedback{height:16px;font-size:12px;margin-top:3px}
+.duo .choices{gap:6px;margin-top:9px}
+.duo .choice{padding:11px 4px;font-size:20px;border-radius:9px}
+.duo .choices.c2 .choice{padding:15px 4px;font-size:25px}
+.duo .choices.c10 .choice{padding:8px 2px;font-size:15px}
+.duo .typed{font-size:30px;margin-top:6px;min-width:2.2em}
+.duo .pad{gap:5px;max-width:210px;margin-top:8px}
+.duo .pad button{padding:8px 0;font-size:17px;border-radius:8px}
+.duo .build{gap:7px}
+.duo .rowline{gap:5px}
+.duo .slot{width:44px;height:44px;font-size:20px;border-radius:9px}
+.duo .sym{font-size:17px}
+.duo .target{font-size:21px;min-width:52px;padding:5px 9px;border-radius:8px}
+.duo .pool{gap:6px;margin-top:9px;padding-top:9px;min-height:54px}
+.duo .tile{width:44px;height:44px;font-size:20px;border-radius:9px}
+.duo .buildhint{display:none}
+
+/* the dragged clone follows the finger the right way up for each player */
+.tile.flying.flipped{transform:translate(-50%,-50%) rotate(180deg) scale(1.06)}
+
+.duo .outcome{display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:2px;height:100%;text-align:center}
+.duo .verdict{font-family:Archivo,sans-serif;font-weight:700;font-size:22px;margin:0;letter-spacing:-.01em}
+.duo .outcome.win .verdict{color:var(--good)}
+.duo .outcome.lose .verdict{color:var(--bad)}
+.duo .outcome.tie .verdict{color:var(--ink-2)}
+.duo .finalnet{font-family:Archivo,sans-serif;font-weight:700;font-size:52px;line-height:1;margin:2px 0}
+.duo .outcome.win .finalnet{color:var(--good)}
+.duo .outcome.lose .finalnet{color:var(--bad)}
+.duo .finalsub{margin:0;font-size:11.5px;color:var(--ink-3)}
+.duo .outcome .row-btns{margin-top:10px;gap:8px}
+.duo .outcome .cta,.duo .outcome .nav{padding:8px 15px;font-size:13.5px}
+@media (min-height:760px){
+  .duo .slot,.duo .tile{width:56px;height:56px;font-size:25px}
+  .duo .choice{padding:15px 4px;font-size:23px}
+  .duo .pad button{padding:12px 0;font-size:20px}
+}
+
+@media (max-width:560px){
+  .choices.c10{grid-template-columns:repeat(4,1fr)}
+  .slot,.tile{width:62px;height:62px;font-size:25px}
+  .target{font-size:28px;min-width:68px;padding:8px 12px}
+  .tri{gap:11px}
+  .tri b{font-size:27px}
+}
+@media (prefers-reduced-motion:reduce){*{transition-duration:.01ms !important}}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div>
+      <h1>Instasmath</h1>
+      <p>Multiplication and division through 12, six phases, sixty seconds a round.</p>
+    </div>
+    <div class="whoami" id="whoami"></div>
+  </header>
+  <main id="app"></main>
+  <footer class="foot">
+    <span>Best scores are saved in this browser.</span>
+    <span class="resetwrap" id="resetWrap"></span>
+  </footer>
+</div>
+
+<script>
+/* ---------- basics ---------- */
+const PLAYERS=["Loren","Rosie"];
+const MAX=12, ROUND=60;
+const rnd=n=>Math.floor(Math.random()*n);
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=rnd(i+1);[a[i],a[j]]=[a[j],a[i]];}return a;};
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+const PHASES=[
+  {n:1,name:"Pick of two",   kind:"choice",choices:2, blurb:"One right answer, one wrong. Warm up and get quick.", sample:"7 × 8 → 56 or 54"},
+  {n:2,name:"Pick of four",  kind:"choice",choices:4, blurb:"Four answers. Close wrong ones, so guessing stops paying.", sample:"72 ÷ 9 → 8, 7, 9, 6"},
+  {n:3,name:"Pick of ten",   kind:"choice",choices:10,blurb:"Ten answers. You have to know it, not narrow it down.", sample:"6 × 7 → ten options"},
+  {n:4,name:"Type it",       kind:"input",            blurb:"No options at all. Key in the answer yourself.", sample:"9 × 12 → ____"},
+  {n:5,name:"Build both",    kind:"build",decoys:0, blurb:"Two products, four numbers. Drag them into place so both come out right.", sample:"6 8 4 9 → 48 and 36"},
+  {n:6,name:"Build with decoys",kind:"build",decoys:2,blurb:"The same, but six numbers now &mdash; two of them fit nowhere.", sample:"6 8 4 9 5 11 → 48 and 36"}
+];
+const OPS=[["both","× and ÷"],["mul","× only"],["div","÷ only"]];
+
+/* ---------- facts ---------- */
+function newFact(ops){
+  const a=1+rnd(MAX), b=1+rnd(MAX);
+  const div = ops==="div" || (ops==="both" && Math.random()<0.5);
+  if(div) return {op:"÷", left:a*b, right:b, ans:a};
+  return {op:"×", left:a, right:b, ans:a*b};
+}
+/* Wrong answers a kid could plausibly land on: one row off in the table,
+   an off-by-one factor, a near miss. Never the right answer, never a repeat. */
+function wrongAnswers(f, count){
+  const out=[], seen=new Set([f.ans]);
+  const add=v=>{ if(Number.isInteger(v)&&v>0&&!seen.has(v)){seen.add(v);out.push(v);} };
+  if(f.op==="×"){
+    const a=f.left,b=f.right;
+    for(const d of shuffle([1,-1,2,-2,3,-3])){ add(a*(b+d)); add((a+d)*b); }
+    for(const d of shuffle([1,-1,2,-2,10,-10])) add(f.ans+d);
+    add(a+b); add(f.ans+a); add(f.ans-a); add(f.ans+b); add(f.ans-b);
+  }else{
+    for(const q of shuffle(Array.from({length:MAX},(_,i)=>i+1))) add(q);
+    for(const d of shuffle([1,-1,2,-2,3,-3])) add(f.ans+d);
+  }
+  let guard=0;
+  while(out.length<count && guard++<400){ add(1+rnd(Math.max(24,f.ans*2))); }
+  return out.slice(0,count);
+}
+
+/* ---------- phase 5: two expressions, one solution ---------- */
+function pairKey(p){ return p.slice().sort((x,y)=>x-y).join("x"); }
+/* Pick any two tiles for the top row and any two of the rest for the bottom.
+   Counted as distinct VALUE solutions, so duplicate tiles don't inflate the
+   count and decoys can't quietly open a second right answer. */
+function solutionsFor(tiles,targets){
+  const found=new Set(), n=tiles.length;
+  for(let a=0;a<n;a++) for(let b=a+1;b<n;b++){
+    if(tiles[a]*tiles[b]!==targets[0]) continue;
+    for(let c=0;c<n;c++){ if(c===a||c===b) continue;
+      for(let d=c+1;d<n;d++){ if(d===a||d===b) continue;
+        if(tiles[c]*tiles[d]===targets[1])
+          found.add(pairKey([tiles[a],tiles[b]])+"|"+pairKey([tiles[c],tiles[d]]));
+      }
+    }
+  }
+  return found.size;
+}
+function newBuild(decoys, form){
+  decoys = decoys||0;
+  form = form || "mul";
+  for(let t=0;t<900;t++){
+    const a=2+rnd(MAX-1), b=2+rnd(MAX-1), c=2+rnd(MAX-1), d=2+rnd(MAX-1);
+    const t1=a*b, t2=c*d;
+    if(t1===t2) continue;
+    const tiles=[a,b,c,d], targets=[t1,t2];
+    for(let k=0;k<decoys;k++) tiles.push(2+rnd(MAX-1));
+    if(solutionsFor(tiles,targets)!==1) continue;   /* decoys must not fit anywhere */
+    return {tiles:shuffle(tiles), targets, form, slots:[null,null,null,null]};
+  }
+  const fb = decoys ? {tiles:[3,4,7,8,5,11],targets:[12,56]} : {tiles:[3,4,7,8],targets:[12,56]};
+  return {tiles:shuffle(fb.tiles), targets:fb.targets, form, slots:[null,null,null,null]};
+}
+
+/* ---------- storage ---------- */
+const KEY="mathdrill.v1";
+let store={player:PLAYERS[0],ops:"both",bests:{}};
+try{ const raw=localStorage.getItem(KEY); if(raw) store=Object.assign(store,JSON.parse(raw)||{}); }catch(e){}
+if(!PLAYERS.includes(store.player)) store.player=PLAYERS[0];
+if(!store.bests||typeof store.bests!=="object") store.bests={};
+function save(){ try{ localStorage.setItem(KEY,JSON.stringify(store)); }catch(e){} }
+const bestKey=(who,phase,ops)=>who+"|"+phase+"|"+ops;
+const bestOf=(who,phase,ops)=>{ const v=store.bests[bestKey(who,phase,ops)]; return typeof v==="number"?v:null; };
+
+/* ---------- state ---------- */
+const state={view:"home",phase:1,run:null,left:ROUND,timer:null,pickForDuo:false,
+  duo:{phase:1,bottom:PLAYERS[0],top:PLAYERS[1],A:null,B:null,over:false,winner:null,tally:{}}};
+const app=document.getElementById("app");
+const phaseDef=n=>PHASES.find(p=>p.n===n);
+const opsLabel=o=>(OPS.find(x=>x[0]===o)||OPS[0])[1];
+const isBuild=n=>{ const p=phaseDef(n); return !!p && p.kind==="build"; };
+const opsFor=n=>store.ops;
+/* In a ÷ build the dividend is printed and the two blanks are the divisor and
+   quotient — which still have to multiply back to it, so the pairing logic and
+   the single-solution guarantee are exactly the same as the × form. */
+function buildForm(){
+  if(store.ops==="mul") return "mul";
+  if(store.ops==="div") return "div";
+  return Math.random()<0.5 ? "mul" : "div";
+}
+
+
+
+/* ---------- home ---------- */
+function renderWho(){
+  try{ document.documentElement.setAttribute("data-who", String(store.player).toLowerCase()); }catch(e){}
+  document.getElementById("whoami").innerHTML=PLAYERS.map(p=>
+    '<button type="button" data-who="'+esc(p)+'" aria-pressed="'+(store.player===p)+'">'+esc(p)+'</button>').join("");
+  document.querySelectorAll("#whoami button").forEach(b=>b.onclick=()=>{
+    store.player=b.dataset.who; save(); render();
+  });
+}
+function sampleFor(p){
+  if(p.kind!=="build") return p.sample;
+  const d = p.decoys ? " 5 11" : "";
+  return store.ops==="div"
+    ? "56 ÷ _ = _  ·  72 ÷ _ = _   from 8 7 9 8"+d
+    : store.ops==="mul" ? p.sample : p.sample+"  (or ÷ form)";
+}
+function renderHome(){
+  app.innerHTML=
+    '<p class="section-label">Which facts</p>'
+    + '<div class="ops">'+OPS.map(([v,t])=>'<button class="op" type="button" data-ops="'+v+'" aria-pressed="'
+        +(store.ops===v)+'">'+t+'</button>').join("")+'</div>'
+    + '<div class="banner"><div><h2>Head to head</h2>'
+      + '<p>Lay the phone flat between you. Both play at once, highest net wins the round.</p></div>'
+      + '<span class="spacer"></span><button class="cta" id="duoBtn" type="button">'
+      + (state.pickForDuo?'Cancel':'Two player')+'</button></div>'
+    + '<p class="section-label">'+(state.pickForDuo
+        ? 'Two player &mdash; pick the phase you will both race ('+esc(PLAYERS[0])+' at the bottom, '+esc(PLAYERS[1])+' at the top)'
+        : 'Pick a phase &mdash; they get harder in order')+'</p>'
+    + '<div class="phases">'+PHASES.map(p=>{
+        return '<button class="phase" type="button" data-phase="'+p.n+'">'
+          +'<span class="phase-top"><span class="phase-n">Phase '+p.n+'</span>'
+          +'<span class="scores">'+PLAYERS.map(who=>{
+              const b=bestOf(who,p.n,opsFor(p.n));
+              return '<i class="'+(who===store.player?"me":"")+'">'+esc(who)
+                +'<b>'+(b!==null?b:"&mdash;")+'</b></i>';
+            }).join("")+'</span></span>'
+          +'<h3>'+esc(p.name)+'</h3><p>'+p.blurb+'</p>'
+          +'<span class="sample">'+esc(sampleFor(p))+'</span></button>';
+      }).join("")+'</div>';
+  app.querySelectorAll(".op").forEach(b=>b.onclick=()=>{ store.ops=b.dataset.ops; save(); render(); });
+  app.querySelectorAll(".phase").forEach(b=>b.onclick=()=>{
+    const n=+b.dataset.phase;
+    if(state.pickForDuo){ state.pickForDuo=false; startDuo(n); } else startRound(n);
+  });
+  const db=document.getElementById("duoBtn");
+  if(db) db.onclick=()=>{ state.pickForDuo=!state.pickForDuo; render(); };
+}
+
+/* ---------- a run: one player's state, so two can go at once ---------- */
+function makeRun(phase, who){
+  const r={phase,who,right:0,wrong:0,streak:0,bestStreak:0,flash:null,typed:"",
+           dead:[],cur:null,options:null,locked:false,sel:null};
+  nextProblem(r);
+  return r;
+}
+function nextProblem(r){
+  const p=phaseDef(r.phase);
+  r.typed=""; r.sel=null; r.locked=false; r.dead=[];
+  if(p.kind==="build"){ r.cur=newBuild(p.decoys, buildForm()); return; }
+  const f=newFact(store.ops);
+  r.cur=f;
+  if(p.kind==="choice") r.options=shuffle([f.ans,...wrongAnswers(f,p.choices-1)]);
+}
+function scoreRight(r){ r.right++; r.streak++; r.bestStreak=Math.max(r.bestStreak,r.streak); }
+function scoreWrong(r){ r.wrong++; r.streak=0; }
+const netOf=r=>r.right-r.wrong;
+
+/* ---------- one-player round ---------- */
+function startRound(phase){
+  state.phase=phase; state.view="play";
+  state.left=ROUND;
+  state.run=makeRun(phase, store.player);
+  stopClock();
+  state.timer=setInterval(()=>{
+    state.left--;
+    if(state.left<=0){ stopClock(); finishRound(); } else paintClock();
+  },1000);
+  render(); window.scrollTo({top:0,behavior:"instant"});
+}
+function stopClock(){ if(state.timer){ clearInterval(state.timer); state.timer=null; } }
+function paintClock(){
+  const pct=(state.left/ROUND*100)+"%";
+  document.querySelectorAll(".clock").forEach(c=>{
+    c.textContent="0:"+String(state.left).padStart(2,"0");
+    c.classList.toggle("low",state.left<=10);
+  });
+  document.querySelectorAll(".timebar i").forEach(b=>b.style.width=pct);
+}
+function finishRound(){
+  const r=state.run;
+  const net=netOf(r);
+  const k=bestKey(store.player,state.phase,opsFor(state.phase));
+  const prev=store.bests[k];
+  r.beatBest=(typeof prev!=="number")||net>prev;
+  if(r.beatBest){ store.bests[k]=net; save(); }
+  r.prevBest=typeof prev==="number"?prev:null;
+  state.view="done"; render();
+}
+
+/* ---------- answering (always against a given run) ---------- */
+function answerChoice(r,val){
+  if(r.locked||r.done) return;
+  if(r.dead.indexOf(val)>-1) return;
+  if(val===r.cur.ans){
+    scoreRight(r);
+    if(r.duo){ duoTake(r); return; }
+    r.flash={ok:true}; r.locked=true; repaint();
+    setTimeout(()=>{ if(!r.done){ nextProblem(r); r.flash=null; repaint(); } },260);
+  } else {
+    scoreWrong(r); r.dead.push(val); r.flash={ok:false,tried:val}; repaint();
+    setTimeout(()=>{ if(!r.done){ r.flash=null; repaint(); } },450);
+  }
+}
+function typeDigit(r,d){
+  if(r.locked||r.done) return;
+  if(r.typed.length>=4) return;
+  r.typed+=d;
+  const want=String(r.cur.ans);
+  if(r.typed===want){
+    scoreRight(r);
+    if(r.duo){ duoTake(r); return; }
+    r.flash={ok:true}; r.locked=true; repaint();
+    setTimeout(()=>{ if(!r.done){ nextProblem(r); r.flash=null; repaint(); } },220);
+  } else if(r.typed.length>=want.length){
+    scoreWrong(r); r.flash={ok:false,tried:r.typed}; r.typed=""; repaint();
+    setTimeout(()=>{ if(!r.done){ r.flash=null; repaint(); } },450);
+  } else repaint();
+}
+function typeBack(r){ if(r.typed&&!r.locked&&!r.done){ r.typed=r.typed.slice(0,-1); repaint(); } }
+function placeTile(r,tileIdx,slotIdx){
+  if(r.locked||r.done) return;
+  const c=r.cur;
+  if(c.slots.indexOf(tileIdx)>-1) c.slots[c.slots.indexOf(tileIdx)]=null;
+  c.slots[slotIdx]=tileIdx; r.sel=null;
+  if(c.slots.every(v=>v!==null&&v!==undefined)) checkBuild(r); else repaint();
+}
+function liftTile(r,slotIdx){
+  if(r.locked||r.done) return;
+  if(r.cur.slots[slotIdx]!==null){ r.cur.slots[slotIdx]=null; repaint(); }
+}
+function checkBuild(r){
+  const c=r.cur, v=c.slots.map(i=>c.tiles[i]);
+  const ok=v[0]*v[1]===c.targets[0] && v[2]*v[3]===c.targets[1];
+  if(ok){
+    scoreRight(r);
+    if(r.duo){ duoTake(r); return; }
+    r.flash={ok:true}; r.locked=true; repaint();
+    setTimeout(()=>{ if(!r.done){ nextProblem(r); r.flash=null; repaint(); } },380);
+  } else {
+    scoreWrong(r); r.flash={ok:false}; r.locked=true; repaint();
+    setTimeout(()=>{ if(!r.done){ c.slots=[null,null,null,null]; r.locked=false; r.flash=null; repaint(); } },650);
+  }
+}
+function repaint(){ if(state.view==="play") renderPlay(); else if(state.view==="duo") renderDuo(); }
+
+/* ---------- the problem board, shared by both modes ---------- */
+function hudHTML(r){
+  return '<div class="hud"><div class="clock'+(state.left<=10?" low":"")+'">0:'
+    +String(state.left).padStart(2,"0")+'</div>'
+    +'<div class="tri">'
+      +'<div class="r"><b>'+r.right+'</b><span>right</span></div>'
+      +'<div class="w"><b>'+r.wrong+'</b><span>wrong</span></div>'
+      +'<div class="n"><b>'+netOf(r)+'</b><span>net</span></div>'
+    +'</div></div>';
+}
+function feedbackHTML(r){
+  const p=phaseDef(r.phase);
+  if(!r.flash) return '&nbsp;';
+  if(r.flash.took) return '<span class="yes">You took it</span>';
+  if(r.flash.lost) return '<span class="taken">'+esc(r.flash.by)+' took it</span>';
+  if(r.flash.ok) return '<span class="yes">Yes</span>';
+  if(p.kind==="build") return '<span class="no">Not quite</span>';
+  if(p.kind==="choice") return '<span class="no">Not '+esc(r.flash.tried)+' &mdash; keep going</span>';
+  return '<span class="no">Not '+esc(r.flash.tried)+'</span>';
+}
+function boardHTML(r){
+  const p=phaseDef(r.phase);
+  let body;
+  if(p.kind==="build"){
+    const c=r.cur;
+    const slot=i=>{ const t=c.slots[i];
+      return '<div class="slot'+(t!==null&&t!==undefined?" filled":"")+'" data-slot="'+i+'">'
+        +(t!==null&&t!==undefined?c.tiles[t]:"")+'</div>'; };
+    const row=(i,j,t)=> c.form==="div"
+      ? '<div class="rowline"><span class="target">'+t+'</span><span class="sym">&divide;</span>'
+        +slot(i)+'<span class="sym">=</span>'+slot(j)+'</div>'
+      : '<div class="rowline">'+slot(i)+'<span class="sym">&times;</span>'+slot(j)
+        +'<span class="sym">=</span><span class="target">'+t+'</span></div>';
+    const used=c.slots.filter(v=>v!==null&&v!==undefined);
+    body='<div class="build">'+row(0,1,c.targets[0])+row(2,3,c.targets[1])+'</div>'
+      +'<div class="feedback">'+feedbackHTML(r)+'</div>'
+      +'<div class="pool">'+c.tiles.map((v,i)=>used.indexOf(i)>-1?''
+          :'<div class="tile'+(r.sel===i?" sel":"")+'" data-tile="'+i+'">'+v+'</div>').join("")+'</div>';
+  } else if(p.kind==="input"){
+    body='<p class="prompt">'+r.cur.left+' <span class="eq">'+r.cur.op+'</span> '+r.cur.right+'</p>'
+      +'<div class="typed'+(r.typed?"":" empty")+'">'+(r.typed||"&nbsp;")+'</div>'
+      +'<div class="feedback">'+feedbackHTML(r)+'</div>'
+      +'<div class="pad">'+[1,2,3,4,5,6,7,8,9].map(d=>'<button type="button" data-d="'+d+'">'+d+'</button>').join("")
+        +'<button type="button" class="wide" data-d="0">0</button>'
+        +'<button type="button" class="del" data-del="1">&#9003;</button></div>';
+  } else {
+    const cls=p.choices===2?"c2":p.choices===4?"c4":"c10";
+    body='<p class="prompt">'+r.cur.left+' <span class="eq">'+r.cur.op+'</span> '+r.cur.right+'</p>'
+      +'<div class="feedback">'+feedbackHTML(r)+'</div>'
+      +'<div class="choices '+cls+'">'+r.options.map(v=>{
+          const out=r.dead.indexOf(v)>-1;
+          let k="choice"; if(out) k+=" wrong";
+          if(v===r.cur.ans && r.flash && r.flash.ok) k+=" right";
+          return '<button class="'+k+'" type="button" data-v="'+v+'"'+(r.locked||out?" disabled":"")+'>'+v+'</button>';
+        }).join("")+'</div>';
+  }
+  const tone=r.flash?(r.flash.ok?" good":(r.flash.lost?" taken":" bad")):"";
+  return '<div class="board'+tone+'">'+body+'</div>';
+}
+
+/* ---------- one-player play view ---------- */
+function renderPlay(){
+  const r=state.run, p=phaseDef(r.phase);
+  app.innerHTML='<div class="bar">'
+    +'<button class="back" id="backBtn" type="button">&larr; Phases</button>'
+    +'<span class="bar-title"><em>Phase '+p.n+'</em>'+esc(p.name)+' &middot; '+esc(store.player)+'</span></div>'
+    + hudHTML(r)
+    +'<div class="timebar"><i style="width:'+(state.left/ROUND*100)+'%"></i></div>'
+    + boardHTML(r);
+  document.getElementById("backBtn").onclick=()=>{ stopClock(); state.view="home"; render(); };
+  wirePanel(app,r);
+}
+
+/* ---------- two-player: one phone flat on the table ---------- */
+/* Head to head runs ONE question at a time, on the table between them.
+   First correct answer takes it and both move on. */
+function newDuoQuestion(d){
+  const p=phaseDef(d.phase);
+  let q;
+  if(p.kind==="build"){ q=newBuild(p.decoys, buildForm()); }
+  else {
+    const f=newFact(store.ops);
+    q={fact:f, options: p.kind==="choice" ? shuffle([f.ans,...wrongAnswers(f,p.choices-1)]) : null};
+  }
+  [d.A,d.B].forEach(r=>{
+    r.typed=""; r.sel=null; r.locked=false; r.dead=[]; r.flash=null;
+    if(p.kind==="build") r.cur={tiles:q.tiles,targets:q.targets,form:q.form,slots:[null,null,null,null]};
+    else { r.cur=q.fact; r.options=q.options; }
+  });
+}
+function duoTake(r){
+  const d=state.duo, other = (r===d.A) ? d.B : d.A;
+  r.flash={ok:true,took:true}; other.flash={ok:false,lost:true,by:other===d.A?d.top:d.bottom};
+  r.locked=true; other.locked=true;
+  renderDuo();
+  setTimeout(()=>{ if(!d.over){ newDuoQuestion(d); renderDuo(); } },750);
+}
+function startDuo(phase){
+  const d=state.duo;
+  d.phase=phase;
+  const blank=who=>({phase,who,duo:true,right:0,wrong:0,streak:0,bestStreak:0,
+                     flash:null,typed:"",dead:[],cur:null,options:null,locked:false,sel:null});
+  d.A=blank(d.bottom); d.B=blank(d.top);
+  newDuoQuestion(d);
+  d.over=false;
+  state.view="duo"; state.left=ROUND;
+  stopClock();
+  state.timer=setInterval(()=>{
+    state.left--;
+    if(state.left<=0){ stopClock(); finishDuo(); } else paintClock();
+  },1000);
+  render(); window.scrollTo({top:0,behavior:"instant"});
+}
+function finishDuo(){
+  const d=state.duo;
+  d.A.done=true; d.B.done=true; d.over=true;
+  const a=netOf(d.A), b=netOf(d.B);
+  d.winner = a===b ? null : (a>b ? d.bottom : d.top);
+  if(d.winner) d.tally[d.winner]=(d.tally[d.winner]||0)+1;
+  [[d.bottom,a,d.A],[d.top,b,d.B]].forEach(([who,net])=>{
+    const k=bestKey(who,d.phase,opsFor(d.phase));
+    const prev=store.bests[k];
+    if(typeof prev!=="number"||net>prev) store.bests[k]=net;
+  });
+  save(); renderDuo();
+}
+function sideHTML(r,who,cls){
+  const d=state.duo;
+  if(d.over){
+    const net=netOf(r);
+    const verdict = d.winner===null ? "Tie" : (d.winner===who ? "You win" : "You lose");
+    return '<section class="side '+cls+'" data-side="'+cls+'"><div class="outcome '
+      +(d.winner===null?"tie":(d.winner===who?"win":"lose"))+'">'
+      +'<p class="verdict">'+verdict+'</p>'
+      +'<p class="finalnet">'+net+'</p>'
+      +'<p class="finalsub">'+esc(who)+' &middot; '+r.right+' right, '+r.wrong+' wrong</p>'
+      +'<p class="finalsub">rounds won &mdash; '+esc(d.bottom)+' '+(d.tally[d.bottom]||0)
+        +' &middot; '+esc(d.top)+' '+(d.tally[d.top]||0)+'</p>'
+      +'<div class="row-btns"><button class="cta duo-again" type="button">Go again</button>'
+      +'<button class="nav duo-home" type="button">Done</button></div></div></section>';
+  }
+  return '<section class="side '+cls+'" data-side="'+cls+'">'
+    +'<div class="sidename">'+esc(who)+'</div>'
+    + hudHTML(r) + boardHTML(r) + '</section>';
+}
+function renderDuo(){
+  const d=state.duo;
+  app.innerHTML='<div class="duo">'
+    + sideHTML(d.B,d.top,"far")
+    + '<div class="mid"><div class="timebar"><i style="width:'+(state.left/ROUND*100)+'%"></i></div>'
+      + '<button class="duo-quit" type="button" title="End the match">&times;</button></div>'
+    + sideHTML(d.A,d.bottom,"near")
+    + '</div>';
+  const far=app.querySelector('.side.far'), near=app.querySelector('.side.near');
+  if(!d.over){ wirePanel(far,d.B); wirePanel(near,d.A); }
+  app.querySelectorAll(".duo-again").forEach(b=>b.onclick=()=>startDuo(d.phase));
+  app.querySelectorAll(".duo-home").forEach(b=>b.onclick=()=>{ stopClock(); state.view="home"; render(); });
+  const q=app.querySelector(".duo-quit");
+  if(q) q.onclick=()=>{ stopClock(); d.A.done=d.B.done=true; state.view="home"; render(); };
+}
+
+/* ---------- wiring, scoped to one panel so two can run at once ---------- */
+let drag=null;
+function wirePanel(root,r){
+  if(!root) return;
+  const p=phaseDef(r.phase);
+  if(p.kind==="choice"){
+    root.querySelectorAll(".choice").forEach(btn=>btn.onclick=()=>answerChoice(r,+btn.dataset.v));
+  } else if(p.kind==="input"){
+    root.querySelectorAll(".pad button").forEach(btn=>btn.onclick=()=>{
+      if(btn.dataset.del) typeBack(r); else typeDigit(r,btn.dataset.d);
+    });
+  } else {
+    const rotated = !!(root.classList && root.classList.contains("far"));
+    root.querySelectorAll(".tile").forEach(el=>{
+      el.addEventListener("pointerdown",ev=>{
+        if(r.locked||r.done) return;
+        ev.preventDefault();
+        const rect=el.getBoundingClientRect();
+        drag={idx:+el.dataset.tile,el,rotated,moved:0,x:ev.clientX,y:ev.clientY,
+              fly:null,w:rect.width,h:rect.height};
+        if(el.setPointerCapture) el.setPointerCapture(ev.pointerId);
+      });
+      el.addEventListener("pointermove",ev=>{
+        if(!drag||drag.el!==el) return;
+        drag.moved=Math.max(drag.moved,Math.hypot(ev.clientX-drag.x,ev.clientY-drag.y));
+        if(drag.moved>7){
+          if(!drag.fly){
+            const f=el.cloneNode(true);
+            f.className="tile flying"+(drag.rotated?" flipped":"");
+            f.style.width=drag.w+"px"; f.style.height=drag.h+"px";
+            document.body.appendChild(f); drag.fly=f; el.classList.add("ghost");
+          }
+          drag.fly.style.left=ev.clientX+"px"; drag.fly.style.top=ev.clientY+"px";
+          const over=slotUnder(ev.clientX,ev.clientY,root);
+          root.querySelectorAll(".slot").forEach(sl=>sl.classList.toggle("over",sl===over));
+        }
+      });
+      el.addEventListener("pointerup",ev=>{
+        if(!drag||drag.el!==el) return;
+        const g=drag; drag=null;
+        if(g.fly){ g.fly.remove(); el.classList.remove("ghost"); }
+        root.querySelectorAll(".slot").forEach(sl=>sl.classList.remove("over"));
+        if(g.moved>7){
+          const sl=slotUnder(ev.clientX,ev.clientY,root);
+          if(sl) placeTile(r,g.idx,+sl.dataset.slot); else repaint();
+        } else { r.sel = r.sel===g.idx ? null : g.idx; repaint(); }
+      });
+      el.addEventListener("pointercancel",()=>{
+        if(drag&&drag.fly){ drag.fly.remove(); el.classList.remove("ghost"); }
+        drag=null; root.querySelectorAll(".slot").forEach(sl=>sl.classList.remove("over"));
+      });
+    });
+    root.querySelectorAll(".slot").forEach(sl=>sl.onclick=()=>{
+      if(r.locked||r.done) return;
+      const i=+sl.dataset.slot;
+      if(r.sel!==null&&r.sel!==undefined) placeTile(r,r.sel,i); else liftTile(r,i);
+    });
+  }
+}
+/* elementFromPoint respects CSS transforms, so this works inside the
+   upside-down half too. Scoped to the panel so a stray drag can't drop a
+   tile onto the other player's board. */
+function slotUnder(x,y,root){
+  const el=document.elementFromPoint(x,y);
+  const sl=el?el.closest(".slot"):null;
+  return (sl && root.contains(sl)) ? sl : null;
+}
+
+/* ---------- results ---------- */
+function renderDone(){
+  const r=state.run, p=phaseDef(state.phase), net=r.right-r.wrong;
+  app.innerHTML='<div class="bar">'
+    +'<button class="back" id="backBtn" type="button">&larr; Phases</button>'
+    +'<span class="bar-title"><em>Phase '+p.n+'</em>'+esc(p.name)+' &middot; '+esc(store.player)+'</span></div>'
+    +'<div class="result">'
+      +'<div class="cards">'
+        +'<div class="card r"><b>'+r.right+'</b><span>right</span></div>'
+        +'<div class="card w"><b>'+r.wrong+'</b><span>wrong</span></div>'
+        +'<div class="card n"><b>'+net+'</b><span>net score</span></div>'
+      +'</div>'
+      +'<p class="cap">sixty seconds &middot; '+esc(opsLabel(opsFor(p.n)))
+        +(r.bestStreak>=5?' &middot; best run of '+r.bestStreak:'')+'</p>'
+      +(r.beatBest
+         ? '<p class="pb">New best for '+esc(store.player)+(r.prevBest!==null?' &mdash; beat '+r.prevBest:'')+'</p>'
+         : '<p class="cap">'+esc(store.player)+"'s best here is "+bestOf(store.player,p.n,opsFor(p.n))+'</p>')
+      +'<div class="row-btns"><button class="cta" id="againBtn" type="button">Go again</button>'
+      +(p.n<PHASES.length?'<button class="nav" id="nextPh" type="button">Try phase '+(p.n+1)+'</button>':'')
+      +'<button class="nav" id="homeBtn" type="button">All phases</button></div>'
+    +'</div>';
+  document.getElementById("backBtn").onclick=()=>{ state.view="home"; render(); };
+  document.getElementById("homeBtn").onclick=()=>{ state.view="home"; render(); };
+  document.getElementById("againBtn").onclick=()=>startRound(state.phase);
+  const nx=document.getElementById("nextPh");
+  if(nx) nx.onclick=()=>startRound(state.phase+1);
+}
+
+/* ---------- render ---------- */
+function renderInner(){
+  if(state.view!=="play"&&state.view!=="duo") stopClock();
+  try{
+    if(state.view==="duo") document.documentElement.setAttribute("data-duo","1");
+    else document.documentElement.removeAttribute("data-duo");
+  }catch(e){}
+  renderWho();
+  if(state.view==="home") renderHome();
+  else if(state.view==="play") renderPlay();
+  else if(state.view==="duo") renderDuo();
+  else renderDone();
+}
+function render(){
+  try{ renderInner(); }
+  catch(err){
+    app.innerHTML='<div class="result" style="border-top-color:var(--bad)"><h3>Something went wrong</h3>'
+      +'<p class="cap">Clearing the saved scores on this device should get it running again.</p>'
+      +'<div class="row-btns"><button class="nav" id="hardReset" type="button">Clear and restart</button></div></div>';
+    const h=document.getElementById("hardReset"); if(h) h.onclick=hardReset;
+    if(window.console) console.error(err);
+  }
+}
+function hardReset(){
+  try{ localStorage.removeItem(KEY); }catch(e){}
+  try{ stopClock(); }catch(e){}
+  location.reload();
+}
+/* Two taps to wipe the scores: an accidental brush of the link shouldn't
+   erase weeks of best scores. */
+let confirming=false;
+function paintReset(){
+  const wrap=document.getElementById("resetWrap");
+  if(!wrap) return;
+  wrap.innerHTML = confirming
+    ? '<span class="confirm">Erase every best score?'
+      + '<button type="button" id="resetYes" class="danger">Yes, erase</button>'
+      + '<button type="button" id="resetNo">Keep them</button></span>'
+    : '<button type="button" id="resetBtn">Reset all scores</button>';
+  if(confirming){
+    document.getElementById("resetYes").onclick=hardReset;
+    document.getElementById("resetNo").onclick=()=>{ confirming=false; paintReset(); };
+  } else {
+    document.getElementById("resetBtn").onclick=()=>{ confirming=true; paintReset(); };
+  }
+}
+paintReset();
+document.addEventListener("keydown",e=>{
+  if(state.view!=="play"||!state.run) return;     /* two-player is touch only */
+  const r=state.run, p=phaseDef(r.phase);
+  if(p.kind==="input"){
+    if(/^[0-9]$/.test(e.key)){ e.preventDefault(); typeDigit(r,e.key); }
+    else if(e.key==="Backspace"){ e.preventDefault(); typeBack(r); }
+  } else if(p.kind==="choice"){
+    const n=parseInt(e.key,10);
+    if(!isNaN(n)&&n>=1&&n<=r.options.length){ e.preventDefault(); answerChoice(r,r.options[n-1]); }
+  }
+});
+window.addEventListener("error",e=>{ if(window.console) console.error("uncaught",e.message); });
+render();
+</script>
+
+</body></html>

@@ -1,0 +1,944 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>The Root Table</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+:root{
+  --paper:#F1F3F1;
+  --surface:#FFFFFF;
+  --surface-2:#E7EAE7;
+  --line:#D2D7D2;
+  --line-strong:#B4BCB6;
+  --ink:#16181D;
+  --ink-2:#4C525A;
+  --ink-3:#787F88;
+  --lat:#8F631A;
+  --lat-bg:#F4E9D4;
+  --lat-edge:#DEC79B;
+  --grk:#1C6A85;
+  --grk-bg:#DAE9EE;
+  --grk-edge:#9CC6D3;
+  --good:#3C7B4F;
+  --good-bg:#DEEBE1;
+  --bad:#A94334;
+  --bad-bg:#F3DFDB;
+  --mix:#5A4A76;
+  --shadow-sm:0 1px 2px rgba(18,28,32,.07);
+  --shadow-lg:0 2px 4px rgba(18,28,32,.06), 0 18px 36px -20px rgba(18,28,32,.35);
+}
+
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#121518;
+    --surface:#1A1E22;
+    --surface-2:#242A2F;
+    --line:#2F3740;
+    --line-strong:#47515A;
+    --ink:#E6EAE8;
+    --ink-2:#A4ACB3;
+    --ink-3:#79828A;
+    --lat:#D8A455;
+    --lat-bg:#33280F;
+    --lat-edge:#5B4820;
+    --grk:#63B7D2;
+    --grk-bg:#12303B;
+    --grk-edge:#26505F;
+    --good:#6CBD85;
+    --good-bg:#183524;
+    --bad:#E07E6E;
+    --bad-bg:#3A1F1A;
+    --mix:#A996D4;
+    --mix:#A996D4;
+  --shadow-sm:0 1px 2px rgba(0,0,0,.4);
+    --shadow-lg:0 2px 4px rgba(0,0,0,.3), 0 18px 36px -20px rgba(0,0,0,.8);
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#121518;
+  --surface:#1A1E22;
+  --surface-2:#242A2F;
+  --line:#2F3740;
+  --line-strong:#47515A;
+  --ink:#E6EAE8;
+  --ink-2:#A4ACB3;
+  --ink-3:#79828A;
+  --lat:#D8A455;
+  --lat-bg:#33280F;
+  --lat-edge:#5B4820;
+  --grk:#63B7D2;
+  --grk-bg:#12303B;
+  --grk-edge:#26505F;
+  --good:#6CBD85;
+  --good-bg:#183524;
+  --bad:#E07E6E;
+  --bad-bg:#3A1F1A;
+  --shadow-sm:0 1px 2px rgba(0,0,0,.4);
+  --shadow-lg:0 2px 4px rgba(0,0,0,.3), 0 18px 36px -20px rgba(0,0,0,.8);
+}
+
+*{box-sizing:border-box}
+body{
+  background:var(--paper);
+  color:var(--ink);
+  font-family:"IBM Plex Sans","Segoe UI",Helvetica,Arial,sans-serif;
+  font-size:16px;
+  line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1040px;margin:0 auto;padding:24px 20px 72px}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:2px solid var(--grk);outline-offset:2px;border-radius:4px}
+
+/* ---------- header ---------- */
+.top{
+  display:flex;align-items:flex-end;justify-content:space-between;
+  gap:20px;flex-wrap:wrap;
+  padding-bottom:16px;border-bottom:1px solid var(--line);
+}
+.brand h1{
+  font-family:Cinzel,Georgia,serif;font-weight:600;
+  font-size:clamp(24px,4vw,34px);letter-spacing:.02em;
+  margin:0;text-wrap:balance;
+}
+.brand p{margin:4px 0 0;color:var(--ink-2);font-size:14.5px;max-width:52ch}
+.tally{display:flex;align-items:center;gap:12px}
+.tally .count{
+  font-family:"IBM Plex Mono",monospace;font-variant-numeric:tabular-nums;
+  font-size:19px;font-weight:500;white-space:nowrap;
+}
+.tally .count small{color:var(--ink-3);font-size:13px;font-weight:400}
+.meter{width:130px;height:6px;background:var(--surface-2);border-radius:99px;overflow:hidden}
+.meter i{display:block;height:100%;background:var(--grk);transition:width .35s ease}
+
+/* ---------- mixed quiz banner ---------- */
+.banner{
+  display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin-top:24px;
+  background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--mix);
+  border-radius:9px;padding:15px 18px;box-shadow:var(--shadow-sm);
+}
+.banner h2{font-family:Cinzel,Georgia,serif;font-size:18px;font-weight:600;margin:0}
+.banner p{margin:2px 0 0;color:var(--ink-2);font-size:14px}
+.banner .spacer{flex:1;min-width:8px}
+.cta{background:var(--mix);color:var(--surface);border:0;border-radius:8px;
+  padding:10px 18px;font-weight:600;font-size:15px;box-shadow:var(--shadow-sm)}
+.cta:hover{filter:brightness(1.1)}
+.setup{width:100%;max-width:620px;background:var(--surface);border:1px solid var(--line);
+  border-top:3px solid var(--mix);border-radius:12px;padding:24px;box-shadow:var(--shadow-lg)}
+.setup h3{font-family:Cinzel,Georgia,serif;font-size:23px;margin:0 0 6px}
+.setup p{margin:0 0 18px;color:var(--ink-2);font-size:14.5px}
+.field{margin-bottom:16px}
+.field label{display:block;font-family:"IBM Plex Mono",monospace;font-size:11px;
+  text-transform:uppercase;letter-spacing:.12em;color:var(--ink-3);margin-bottom:8px}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{background:var(--paper);border:1px solid var(--line);border-radius:99px;
+  padding:8px 16px;font-size:14px;font-weight:500}
+.chip[aria-pressed="true"]{background:var(--mix);border-color:var(--mix);color:var(--surface);font-weight:600}
+.play{width:100%;background:var(--mix);color:var(--surface);border:0;border-radius:9px;
+  padding:13px;font-size:16px;font-weight:600;box-shadow:var(--shadow-sm)}
+.play:hover{filter:brightness(1.1)}
+.result{width:100%;max-width:620px;background:var(--surface);border:1px solid var(--line);
+  border-top:3px solid var(--mix);border-radius:12px;padding:30px 24px;box-shadow:var(--shadow-lg);text-align:center}
+.result .big{font-family:Cinzel,Georgia,serif;font-size:52px;font-weight:600;line-height:1;margin:0}
+.result .cap{color:var(--ink-2);margin:6px 0 0;font-size:15px}
+.mixhead{font-family:"IBM Plex Mono",monospace;font-size:11px;text-transform:uppercase;
+  letter-spacing:.12em;color:var(--ink-3);margin:22px 0 0;text-align:left}
+.missed{display:flex;flex-direction:column;gap:0;margin-top:10px;text-align:left;
+  border:1px solid var(--line);border-radius:9px;overflow:hidden}
+.missed div{display:grid;grid-template-columns:120px 1fr;gap:12px;padding:9px 12px;
+  border-bottom:1px solid var(--line);font-size:14.5px;align-items:baseline}
+.missed div:last-child{border-bottom:0}
+.missed b{font-family:"IBM Plex Mono",monospace;font-weight:500;font-size:14px;color:var(--hue)}
+.missed span{color:var(--ink-2)}
+
+/* ---------- batch grid ---------- */
+.lane{margin-top:30px}
+.lane-head{display:flex;align-items:baseline;gap:10px;margin-bottom:12px}
+.lane-head h2{
+  font-family:Cinzel,Georgia,serif;font-weight:500;font-size:16px;
+  letter-spacing:.14em;text-transform:uppercase;margin:0;
+}
+.lane-head span{font-size:13.5px;color:var(--ink-3)}
+.lane.latin .lane-head h2{color:var(--lat)}
+.lane.greek .lane-head h2{color:var(--grk)}
+.grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(188px,1fr))}
+.tile{
+  display:flex;flex-direction:column;gap:9px;text-align:left;
+  background:var(--surface);border:1px solid var(--line);
+  border-left:3px solid var(--edge);
+  border-radius:8px;padding:13px 14px 12px;
+  box-shadow:var(--shadow-sm);
+  transition:transform .16s ease, box-shadow .16s ease, border-color .16s ease;
+}
+.tile.latin{--edge:var(--lat);--hue:var(--lat)}
+.tile.greek{--edge:var(--grk);--hue:var(--grk)}
+.tile:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg)}
+.tile.done{border-left-color:var(--good)}
+.tile-top{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.tile-name{font-weight:600;font-size:15px}
+.tile-score{
+  font-family:"IBM Plex Mono",monospace;font-size:12.5px;
+  font-variant-numeric:tabular-nums;color:var(--ink-3);
+}
+.tile.done .tile-score{color:var(--good);font-weight:500}
+.dots{display:flex;gap:3px}
+.dots i{flex:1;height:4px;border-radius:99px;background:var(--surface-2)}
+.dots i.on{background:var(--hue)}
+.tile.done .dots i.on{background:var(--good)}
+.tile-roots{
+  font-family:"IBM Plex Mono",monospace;font-size:11.5px;line-height:1.5;
+  color:var(--ink-3);word-break:break-word;
+}
+
+/* ---------- study view ---------- */
+.bar{
+  display:flex;align-items:center;gap:12px;flex-wrap:wrap;
+  margin:22px 0 18px;padding-bottom:14px;border-bottom:1px solid var(--line);
+}
+.back{
+  background:none;border:1px solid var(--line);border-radius:7px;
+  padding:6px 12px;font-size:14px;color:var(--ink-2);
+}
+.back:hover{border-color:var(--line-strong);color:var(--ink)}
+.bar-title{font-weight:600;font-size:16px;margin-right:auto}
+.bar-title em{
+  font-style:normal;font-family:"IBM Plex Mono",monospace;
+  font-size:12px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--hue);margin-right:8px;
+}
+.tabs{display:flex;background:var(--surface-2);border-radius:8px;padding:3px;gap:2px}
+.tabs button{
+  background:none;border:0;border-radius:6px;padding:5px 13px;
+  font-size:13.5px;font-weight:500;color:var(--ink-2);
+}
+.tabs button[aria-selected="true"]{background:var(--surface);color:var(--ink);box-shadow:var(--shadow-sm)}
+
+.stage{display:flex;flex-direction:column;align-items:center;gap:18px}
+.deckline{
+  display:flex;align-items:center;gap:14px;width:100%;max-width:620px;
+  font-size:13px;color:var(--ink-3);
+  font-family:"IBM Plex Mono",monospace;font-variant-numeric:tabular-nums;
+}
+.deckline .meter{flex:1;width:auto}
+.deckline .meter i{background:var(--hue)}
+.switch{
+  display:flex;align-items:center;gap:6px;font-family:"IBM Plex Sans",sans-serif;
+  color:var(--ink-2);cursor:pointer;user-select:none;
+}
+.switch input{accent-color:var(--grk);width:14px;height:14px;cursor:pointer}
+
+.card-shell{width:100%;max-width:620px;perspective:1600px}
+.card{
+  position:relative;width:100%;min-height:340px;
+  transform-style:preserve-3d;transition:transform .5s cubic-bezier(.4,.1,.2,1);
+  cursor:pointer;
+}
+.card.flipped{transform:rotateY(180deg)}
+.face{
+  position:absolute;inset:0;backface-visibility:hidden;
+  background:var(--surface);border:1px solid var(--line);
+  border-top:3px solid var(--hue);border-radius:12px;
+  box-shadow:var(--shadow-lg);
+  padding:26px 28px;display:flex;flex-direction:column;
+}
+.face.back{transform:rotateY(180deg)}
+.face-tag{
+  font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--hue);
+}
+.front-mid{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px}
+.glyph{
+  font-family:"IBM Plex Mono",monospace;font-weight:500;
+  font-size:clamp(38px,9vw,62px);letter-spacing:-.01em;line-height:1.1;
+  text-align:center;word-break:break-word;
+}
+.glyph-alt{font-family:"IBM Plex Mono",monospace;font-size:15px;color:var(--ink-3)}
+.hint{font-size:13px;color:var(--ink-3);text-align:center}
+.meaning{
+  font-family:Cinzel,Georgia,serif;font-size:clamp(24px,5vw,34px);
+  font-weight:600;margin:10px 0 0;text-wrap:balance;
+}
+.back-root{font-family:"IBM Plex Mono",monospace;font-size:16px;color:var(--ink-2);margin-top:2px}
+.words{list-style:none;margin:18px 0 0;padding:0;display:flex;flex-direction:column;gap:7px}
+.words li{
+  display:flex;align-items:baseline;gap:10px;font-size:15.5px;
+  padding-bottom:7px;border-bottom:1px dashed var(--line);
+}
+.words li:last-child{border-bottom:0}
+.words b{font-weight:600}
+.words b mark{background:var(--hue-bg);color:var(--hue);padding:0 2px;border-radius:3px;font-weight:600}
+.words span{color:var(--ink-2);font-size:14px}
+.face.back{--hue-bg:var(--tint)}
+.note{
+  margin-top:14px;font-size:13.5px;color:var(--ink-2);
+  background:var(--surface-2);border-radius:7px;padding:9px 11px;
+}
+.note b{color:var(--ink);font-weight:600}
+
+.controls{display:flex;align-items:center;gap:10px;width:100%;max-width:620px}
+.nav{
+  background:var(--surface);border:1px solid var(--line);border-radius:8px;
+  padding:9px 15px;font-size:14px;font-weight:500;box-shadow:var(--shadow-sm);
+}
+.nav:hover:not(:disabled){border-color:var(--line-strong)}
+.nav:disabled{opacity:.4;cursor:default}
+.learn{
+  flex:1;background:var(--surface);border:1px solid var(--line);border-radius:8px;
+  padding:10px 16px;font-size:15px;font-weight:600;box-shadow:var(--shadow-sm);
+  display:flex;align-items:center;justify-content:center;gap:8px;
+}
+.learn:hover{border-color:var(--line-strong)}
+.learn[aria-pressed="true"]{background:var(--good-bg);border-color:var(--good);color:var(--good)}
+.learn .box{
+  width:16px;height:16px;border:1.5px solid currentColor;border-radius:4px;
+  display:grid;place-items:center;font-size:11px;line-height:1;opacity:.6;
+}
+.learn[aria-pressed="true"] .box{opacity:1;background:var(--good);color:var(--surface);border-color:var(--good)}
+
+/* ---------- list ---------- */
+.list{display:flex;flex-direction:column;gap:0;max-width:760px;margin:0 auto;
+  background:var(--surface);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.row{
+  display:grid;grid-template-columns:26px 108px 1fr;gap:14px;align-items:baseline;
+  padding:11px 14px;border-bottom:1px solid var(--line);background:none;border-left:0;border-right:0;border-top:0;
+  text-align:left;width:100%;
+}
+.row:last-child{border-bottom:0}
+.row:hover{background:var(--surface-2)}
+.row .box{
+  width:17px;height:17px;border:1.5px solid var(--line-strong);border-radius:5px;
+  display:grid;place-items:center;font-size:11px;color:transparent;align-self:center;
+}
+.row.on .box{background:var(--good);border-color:var(--good);color:#fff}
+.row .rt{font-family:"IBM Plex Mono",monospace;font-size:14.5px;font-weight:500;color:var(--hue)}
+.row .mn{font-weight:600;font-size:14.5px}
+.row .ex{display:block;color:var(--ink-3);font-size:13px;font-family:"IBM Plex Mono",monospace}
+.row.on .mn,.row.on .rt{opacity:.55}
+
+/* ---------- quiz ---------- */
+.quiz{width:100%;max-width:620px;display:flex;flex-direction:column;gap:16px}
+.qcard{
+  background:var(--surface);border:1px solid var(--line);border-top:3px solid var(--hue);
+  border-radius:12px;padding:26px 24px;box-shadow:var(--shadow-lg);
+}
+.qprompt{font-size:14px;color:var(--ink-2)}
+.qword{
+  font-family:Cinzel,Georgia,serif;font-size:clamp(28px,6vw,40px);font-weight:600;
+  margin:8px 0 22px;text-wrap:balance;
+}
+.opts{display:grid;gap:9px}
+.opt{
+  display:flex;align-items:center;gap:12px;text-align:left;
+  background:var(--paper);border:1px solid var(--line);border-radius:9px;
+  padding:12px 14px;font-size:16px;font-family:"IBM Plex Mono",monospace;
+  transition:border-color .14s ease, background .14s ease;
+}
+.opt:hover:not(:disabled){border-color:var(--hue)}
+.opt:disabled{cursor:default}
+.opt .k{
+  width:22px;height:22px;border-radius:5px;background:var(--surface-2);
+  display:grid;place-items:center;font-size:11.5px;color:var(--ink-3);flex:none;
+}
+.opt.right{background:var(--good-bg);border-color:var(--good);color:var(--good)}
+.opt.right .k{background:var(--good);color:var(--surface)}
+.opt.wrong{background:var(--bad-bg);border-color:var(--bad);color:var(--bad)}
+.opt.wrong .k{background:var(--bad);color:var(--surface)}
+.qfoot{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:18px}
+.qmsg{font-size:14px;color:var(--ink-2)}
+.qmsg b{color:var(--ink)}
+.qscore{
+  font-family:"IBM Plex Mono",monospace;font-size:13px;color:var(--ink-3);
+  font-variant-numeric:tabular-nums;
+}
+
+/* ---------- empty / done ---------- */
+.done-card{
+  max-width:620px;width:100%;text-align:center;background:var(--surface);
+  border:1px solid var(--line);border-top:3px solid var(--good);border-radius:12px;
+  padding:44px 28px;box-shadow:var(--shadow-lg);
+}
+.done-card h3{font-family:Cinzel,Georgia,serif;font-size:26px;margin:0 0 8px}
+.done-card p{color:var(--ink-2);margin:0 auto;max-width:44ch}
+.done-card .row-btns{display:flex;gap:10px;justify-content:center;margin-top:20px;flex-wrap:wrap}
+
+.foot{
+  margin-top:44px;padding-top:16px;border-top:1px solid var(--line);
+  display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;
+  font-size:13px;color:var(--ink-3);
+}
+.foot button{background:none;border:0;padding:0;color:var(--ink-3);text-decoration:underline;font-size:13px}
+.foot button:hover{color:var(--bad)}
+
+@media (max-width:520px){
+  .row{grid-template-columns:24px 92px 1fr;gap:10px}
+  .face{padding:22px 20px}
+  .controls{flex-wrap:wrap}
+  .learn{order:-1;flex-basis:100%}
+}
+@media (prefers-reduced-motion:reduce){
+  *{transition-duration:.01ms !important;animation-duration:.01ms !important}
+  .card{transition:none}
+}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div class="brand">
+      <h1>The Root Table</h1>
+      <p>100 Greek and Latin word roots, in sets of ten. Learn a set, check them off, and they stop coming back.</p>
+    </div>
+    <div class="tally">
+      <div class="count" id="tallyCount">0<small>/100 learned</small></div>
+      <div class="meter"><i id="tallyBar" style="width:0%"></i></div>
+    </div>
+  </header>
+
+  <main id="app"></main>
+
+  <footer class="foot">
+    <span>Roots marked learned are saved in this browser.</span>
+    <button id="resetBtn" type="button">Reset all progress</button>
+  </footer>
+</div>
+
+<script>
+const LATIN = [
+  {r:"aqua",   alts:["aqua","aque"],            m:"water",             w:[["aquarium","a tank of water for fish"],["aqueduct","a channel that carries water"],["aquatic","living in water"]]},
+  {r:"audi",   alts:["audi","audit"],    m:"hear",              w:[["audience","the people who hear it"],["audible","loud enough to be heard"],["auditorium","a room built for hearing"]]},
+  {r:"bene",   alts:["bene","benef"],    m:"good, well",        w:[["benefit","a good result"],["benevolent","wishing people well"],["beneficial","doing good"]]},
+  {r:"cap, cept", alts:["cap","cept"],   m:"take, seize",       w:[["capture","to take hold of"],["intercept","to take something in transit"],["reception","the taking in of guests or a signal"]]},
+  {r:"cred",   alts:["cred"],            m:"believe, trust",    w:[["credit","trust that you will pay"],["incredible","not believable"],["credentials","papers that prove you are trustworthy"]]},
+  {r:"dict",   alts:["dict"],            m:"say, speak",        w:[["dictate","to say aloud for writing"],["predict","to say beforehand"],["contradict","to speak against"]]},
+  {r:"duc, duct", alts:["duc","duct"],   m:"lead",              w:[["conduct","to lead along"],["induce","to lead someone into doing"],["deduce","to lead an answer out of clues"]]},
+  {r:"fract, frag", alts:["fract","frag"], m:"break",           w:[["fracture","a break in a bone"],["fragment","a broken-off piece"],["fragile","easily broken"]]},
+  {r:"ject",   alts:["ject"],            m:"throw",             w:[["eject","to throw out"],["project","to throw forward"],["injection","a throwing-in of medicine"]]},
+  {r:"mal",    alts:["mal"],             m:"bad, evil",         w:[["malice","the wish to do bad"],["malfunction","to work badly"],["malignant","harmful, dangerously bad"]]},
+
+  {r:"man, manu", alts:["man","manu"],   m:"hand",              w:[["manual","done by hand"],["manufacture","to make, first by hand"],["manicure","care for the hands"]]},
+  {r:"mit, miss", alts:["mit","miss"],   m:"send",              w:[["transmit","to send across"],["mission","a job someone is sent to do"],["dismiss","to send away"]]},
+  {r:"mot, mov, mob", alts:["mot","mov","mob"], m:"move",       w:[["motion","movement"],["remove","to move away"],["mobile","able to be moved"]]},
+  {r:"ped",    alts:["ped"],             m:"foot",              w:[["pedal","worked by the foot"],["pedestrian","a person on foot"],["biped","a two-footed animal"]], n:"In Greek words, <b>ped</b> means <b>child</b> instead — a pediatrician treats children, not feet."},
+  {r:"pend, pens", alts:["pend","pens"], m:"hang, weigh",       w:[["pendant","a jewel that hangs"],["suspend","to hang up, to hold off"],["pensive","weighing things in your mind"]]},
+  {r:"port",   alts:["port"],            m:"carry",             w:[["transport","to carry across"],["portable","able to be carried"],["export","to carry goods out"]]},
+  {r:"rupt",   alts:["rupt"],            m:"break, burst",      w:[["erupt","to burst out"],["interrupt","to break in"],["rupture","a bursting or tearing"]]},
+  {r:"scrib, script", alts:["scrib","script"], m:"write",       w:[["describe","to write down what it is like"],["scripture","sacred writing"],["inscription","words carved or written on something"]]},
+  {r:"spect",  alts:["spect"],           m:"look, see",         w:[["inspect","to look into"],["spectator","one who watches"],["spectacle","something worth looking at"]]},
+  {r:"struct", alts:["struct"],          m:"build",             w:[["structure","a built thing"],["construct","to build together"],["destruction","the un-building of something"]]},
+
+  {r:"tract",  alts:["tract"],           m:"pull, drag",        w:[["tractor","a machine that pulls"],["attract","to pull toward"],["extract","to pull out"]]},
+  {r:"ven, vent", alts:["ven","vent"],   m:"come",              w:[["invent","to come upon a new idea"],["convene","to come together"],["prevent","to come before and stop"]]},
+  {r:"vert, vers", alts:["vert","vers"], m:"turn",              w:[["convert","to turn into something else"],["reverse","to turn back"],["versatile","able to turn to many uses"]]},
+  {r:"vid, vis", alts:["vid","vis"],     m:"see",               w:[["video","something you watch"],["visible","able to be seen"],["evidence","what lets you see the truth"]]},
+  {r:"voc, vok", alts:["voc","vok"],     m:"call, voice",       w:[["vocal","using the voice"],["invoke","to call on"],["advocate","one who speaks for another"]]},
+  {r:"flect, flex", alts:["flect","flex"], m:"bend",            w:[["reflect","to bend light back"],["flexible","able to bend"],["deflect","to bend aside"]]},
+  {r:"gress",  alts:["gress"],           m:"step, go",          w:[["progress","to step forward"],["congress","a group that steps together"],["regress","to step backward"]]},
+  {r:"junct",  alts:["junct","join"],    m:"join",              w:[["junction","a place where roads join"],["conjunction","a word that joins"],["juncture","a joining point in time"]]},
+  {r:"luc, lum", alts:["luc","lum"],     m:"light",             w:[["translucent","letting light through"],["illuminate","to light up"],["lucid","clear, as if lit"]]},
+  {r:"scend",  alts:["scend","scent"],   m:"climb",             w:[["ascend","to climb up"],["descend","to climb down"],["transcend","to climb beyond"]]},
+
+  {r:"terr",   alts:["terr"],            m:"earth, land",       w:[["terrain","the shape of the land"],["territory","a stretch of land"],["subterranean","under the earth"]]},
+  {r:"sol",    alts:["sol"],             m:"sun",               w:[["solar","of the sun"],["solstice","when the sun seems to stand still"],["parasol","a shade against the sun"]]},
+  {r:"luna",   alts:["luna","lun"],      m:"moon",              w:[["lunar","of the moon"],["lunatic","once thought moonstruck"],["lunation","one full cycle of the moon"]]},
+  {r:"cent",   alts:["cent"],            m:"hundred",           w:[["century","a hundred years"],["percent","out of a hundred"],["centipede","the hundred-footed one"]]},
+  {r:"mille, milli", alts:["mille","milli","mill"], m:"thousand", w:[["millennium","a thousand years"],["millimeter","a thousandth of a meter"],["millipede","the thousand-footed one"]]},
+  {r:"annu, enni", alts:["annu","enni","anni"], m:"year",       w:[["annual","happening each year"],["anniversary","a yearly turning"],["centennial","a hundred-year mark"]]},
+  {r:"nat",    alts:["nat"],             m:"born, birth",       w:[["native","born in a place"],["nature","what a thing is born as"],["prenatal","before birth"]]},
+  {r:"corp",   alts:["corp"],            m:"body",              w:[["corpse","a dead body"],["corporation","a group treated as one body"],["corporal","of the body"]]},
+  {r:"viv, vit", alts:["viv","vit"],     m:"life, alive",       w:[["survive","to stay alive"],["vivid","lively and bright"],["vital","necessary for life"]]},
+  {r:"mort",   alts:["mort"],            m:"death",             w:[["mortal","able to die"],["mortician","one who tends the dead"],["immortal","never dying"]]},
+
+  {r:"equ",    alts:["equ"],             m:"equal, even",       w:[["equator","the line that halves the earth evenly"],["equation","two sides made equal"],["equivalent","of equal worth"]]},
+  {r:"magn",   alts:["magn"],            m:"great, large",      w:[["magnify","to make larger"],["magnificent","greatly impressive"],["magnitude","how great something is"]]},
+  {r:"min",    alts:["min"],             m:"small, less",       w:[["minimum","the smallest amount"],["miniature","a small copy"],["diminish","to make less"]]},
+  {r:"nov",    alts:["nov"],             m:"new",               w:[["novel","new, or a new story"],["novice","a newcomer"],["innovate","to bring in the new"]]},
+  {r:"reg, rect", alts:["reg","rect"],   m:"rule, straight",    w:[["regulate","to rule or control"],["correct","set straight"],["rectangle","a straight-angled shape"]]},
+  {r:"loc",    alts:["loc"],             m:"place",             w:[["location","a place"],["local","of this place"],["dislocate","to knock out of place"]]},
+  {r:"fid",    alts:["fid"],             m:"faith, trust",      w:[["fidelity","faithfulness"],["confide","to trust with a secret"],["confident","full of trust in yourself"]]},
+  {r:"pre-",   alts:["pre"],             m:"before",            w:[["preview","a look before"],["predict","to say before"],["precaution","care taken beforehand"]]},
+  {r:"sub-",   alts:["sub"],             m:"under, below",      w:[["submarine","under the sea"],["submerge","to sink under"],["subheading","a heading under the main one"]]},
+  {r:"trans-", alts:["trans"],           m:"across, beyond",    w:[["transport","to carry across"],["translate","to carry meaning across languages"],["transatlantic","across the Atlantic"]]}
+];
+
+const GREEK = [
+  {r:"auto",   alts:["auto"],            m:"self",              w:[["automatic","working by itself"],["autonomy","self-rule"],["automobile","the self-moving machine"]]},
+  {r:"bio",    alts:["bio"],             m:"life",              w:[["antibiotic","against living germs"],["biosphere","the zone of life on earth"],["biodegradable","broken down by living things"]]},
+  {r:"chron",  alts:["chron"],           m:"time",              w:[["synchronize","to put in the same time"],["chronic","lasting a long time"],["anachronism","a thing in the wrong time"]]},
+  {r:"geo",    alts:["geo"],             m:"earth",             w:[["geothermal","heat from the earth"],["geography","writing about the earth"],["geology","the study of the earth"]]},
+  {r:"graph, gram", alts:["graph","gram"], m:"write, draw",     w:[["telegram","writing sent far"],["paragraph","a written block"],["graphic","drawn, vivid"]]},
+  {r:"hydr",   alts:["hydr"],            m:"water",             w:[["hydrant","a water outlet"],["dehydrate","to take water out"],["hydroelectric","power from moving water"]]},
+  {r:"logy, log", alts:["logy","log"],   m:"word, study of",    w:[["dialogue","words between people"],["logic","reasoning in words"],["apology","a word given in defense"]]},
+  {r:"meter, metr", alts:["meter","metr"], m:"measure",         w:[["thermometer","a heat measurer"],["diameter","the measure across"],["perimeter","the measure around"]]},
+  {r:"micro",  alts:["micro"],           m:"small",             w:[["microscope","a viewer for small things"],["microwave","a very short wave"],["microbe","a tiny living thing"]]},
+  {r:"phon",   alts:["phon"],            m:"sound, voice",      w:[["telephone","sound from far off"],["symphony","sounds together"],["phonics","sounding out letters"]]},
+
+  {r:"photo, phos", alts:["photo","phos"], m:"light",           w:[["photograph","drawing with light"],["photosynthesis","building with light"],["phosphorus","the light-bearer"]]},
+  {r:"scope",  alts:["scope","scop"],    m:"look at, examine",  w:[["microscope","a viewer for small things"],["periscope","a viewer that looks around"],["stethoscope","a listener that examines the chest"]]},
+  {r:"tele",   alts:["tele"],            m:"far off",           w:[["television","seeing from far"],["telegram","writing sent far"],["telepathy","feeling across a distance"]]},
+  {r:"therm",  alts:["therm"],           m:"heat",              w:[["thermal","of heat"],["thermos","a heat-keeping bottle"],["hypothermia","dangerously low body heat"]]},
+  {r:"astro, aster", alts:["astro","aster"], m:"star",          w:[["astronomy","the study of the stars"],["asterisk","a little star"],["disaster","an ill-starred event"]]},
+  {r:"path",   alts:["path"],            m:"feeling, suffering",w:[["sympathy","feeling with someone"],["empathy","feeling into someone"],["pathetic","stirring pity"]]},
+  {r:"psych",  alts:["psych"],           m:"mind, soul",        w:[["psychology","the study of the mind"],["psychic","of the mind"],["psychiatrist","a doctor of the mind"]]},
+  {r:"phil",   alts:["phil"],            m:"love, fondness",    w:[["philosophy","the love of wisdom"],["philanthropy","the love of people"],["bibliophile","a book lover"]]},
+  {r:"arch",   alts:["arch"],            m:"chief, ruler, first",w:[["monarch","a single ruler"],["architect","the chief builder"],["archaic","from the first times, old"]]},
+  {r:"dem",    alts:["dem"],             m:"people",            w:[["epidemic","spreading among the people"],["demographic","a slice of the people"],["democracy","rule by the people"]]},
+
+  {r:"soph",   alts:["soph"],            m:"wisdom, wise",      w:[["philosophy","the love of wisdom"],["sophisticated","worldly-wise"],["sophomore","the wise fool of year two"]]},
+  {r:"anthrop",alts:["anthrop"],         m:"human being",       w:[["anthropology","the study of humans"],["philanthropy","the love of humankind"],["misanthrope","a hater of people"]]},
+  {r:"cracy, crat", alts:["cracy","crat"], m:"rule, government",w:[["democracy","rule by the people"],["autocrat","a self-appointed ruler"],["bureaucracy","rule by desks and offices"]]},
+  {r:"poli",   alts:["poli","polis"],    m:"city",              w:[["politics","the business of the city"],["metropolis","the mother city"],["police","those who keep the city"]]},
+  {r:"mono",   alts:["mono","mon"],      m:"one, single",       w:[["monotone","one unchanging tone"],["monologue","one person speaking"],["monorail","a single-rail train"]]},
+  {r:"di",     alts:["di"],              m:"two, double",       w:[["dioxide","holding two oxygens"],["dilemma","a choice between two"],["dichotomy","a split into two"]]},
+  {r:"tri",    alts:["tri"],             m:"three",             w:[["triangle","three angles"],["tripod","three feet"],["trilogy","three books or films"]]},
+  {r:"poly",   alts:["poly"],            m:"many",              w:[["polygon","many angles"],["polyester","many units linked"],["polytheism","belief in many gods"]]},
+  {r:"pan",    alts:["pan"],             m:"all, every",        w:[["pandemic","across all people"],["panorama","a view of everything"],["pantheon","a temple to all the gods"]]},
+  {r:"hyper",  alts:["hyper"],           m:"over, beyond, too much",w:[["hyperactive","overly active"],["hyperbole","an over-the-top exaggeration"],["hypertension","blood pressure that runs too high"]]},
+
+  {r:"hypo",   alts:["hypo"],            m:"under, below",      w:[["hypothermia","body heat below safe"],["hypodermic","under the skin"],["hypocrite","one who acts under a mask"]]},
+  {r:"syn, sym", alts:["syn","sym"],     m:"together, with",    w:[["symphony","sounds together"],["synchronize","to time together"],["symmetry","matching measure on both sides"]]},
+  {r:"anti",   alts:["anti"],            m:"against, opposite", w:[["antibiotic","against germs"],["antisocial","against company"],["antidote","given against a poison"]]},
+  {r:"a-, an-",alts:["an","a"],              m:"without, not",      w:[["atypical","not typical"],["anarchy","without a ruler"],["apathy","without feeling"]]},
+  {r:"peri",   alts:["peri"],            m:"around",            w:[["perimeter","the measure around"],["periscope","a viewer that looks around"],["peripheral","off around the edges"]]},
+  {r:"dia",    alts:["dia"],             m:"through, across",   w:[["diameter","the measure through"],["dialogue","words passing across"],["diagnose","to know a thing all the way through"]]},
+  {r:"epi",    alts:["epi"],             m:"on, upon, over",    w:[["epicenter","the point over the quake"],["epilogue","words after and upon the story"],["epitaph","words upon a tomb"]]},
+  {r:"thes, thet", alts:["thes","thet"], m:"put, place",        w:[["thesis","an idea you put forward"],["synthetic","put together by people"],["parenthesis","a phrase put in beside"]]},
+  {r:"phob",   alts:["phob"],            m:"fear",              w:[["phobia","a strong fear"],["claustrophobia","fear of closed spaces"],["hydrophobic","repelled by water"]]},
+  {r:"onym, nym", alts:["onym","nym"],   m:"name, word",        w:[["pseudonym","a false name"],["synonym","a word with the same meaning"],["anonymous","with no name"]]},
+
+  {r:"morph",  alts:["morph"],           m:"form, shape",       w:[["metamorphosis","a change of form"],["amorphous","with no shape"],["morpheme","the smallest unit of word-form"]]},
+  {r:"gen",    alts:["gen"],             m:"birth, kind, origin",w:[["genesis","a beginning"],["generate","to bring into being"],["genetics","the study of what is passed down"]]},
+  {r:"derm",   alts:["derm"],            m:"skin",              w:[["dermatology","the study of skin"],["epidermis","the outer skin"],["taxidermy","the arranging of skins"]]},
+  {r:"cardi",  alts:["cardi"],           m:"heart",             w:[["cardiac","of the heart"],["cardiology","the study of the heart"],["cardiovascular","of heart and vessels"]]},
+  {r:"neur",   alts:["neur"],            m:"nerve",             w:[["neuron","a nerve cell"],["neurology","the study of nerves"],["neuralgia","nerve pain"]]},
+  {r:"opt, ops",alts:["opt","ops"],      m:"eye, sight",        w:[["optic","of the eye"],["optical","having to do with sight"],["synopsis","a view of the whole at once"]]},
+  {r:"phys",   alts:["phys"],            m:"nature, body",      w:[["physical","of the body"],["physics","the study of nature's laws"],["physician","a healer of the body"]]},
+  {r:"techn",  alts:["techn"],           m:"art, skill, craft", w:[["technology","the craft of tools"],["technique","a way of doing a skill"],["technical","of the craft"]]},
+  {r:"naut",   alts:["naut"],            m:"sailor, ship",      w:[["astronaut","a sailor of the stars"],["nautical","of ships"],["aeronautics","the sailing of the air"]]},
+  {r:"cosm",   alts:["cosm"],            m:"world, universe, order",w:[["cosmos","the ordered universe"],["cosmic","of the universe"],["cosmopolitan","at home anywhere in the world"]]}
+];
+
+/* ---------- build batches ---------- */
+const BATCHES = [];
+function makeBatches(list, lang, label){
+  for(let i=0;i<list.length;i+=10){
+    const idx = BATCHES.length;
+    BATCHES.push({
+      id: lang[0].toUpperCase() + (Math.floor(i/10)+1),
+      lang, label,
+      name: label + " · Set " + (Math.floor(i/10)+1),
+      roots: list.slice(i,i+10).map((rt,j)=>({...rt, key: lang+"-"+(i+j), batch: idx, lang}))
+    });
+  }
+}
+makeBatches(LATIN,"latin","Latin");
+makeBatches(GREEK,"greek","Greek");
+const ALL = BATCHES.flatMap(b=>b.roots);
+
+/* ---------- storage ---------- */
+const KEY = "roottable.v1";
+let learned = new Set();
+try{
+  const raw = localStorage.getItem(KEY);
+  if(raw) JSON.parse(raw).forEach(k=>learned.add(k));
+}catch(e){}
+function save(){
+  try{ localStorage.setItem(KEY, JSON.stringify([...learned])); }catch(e){}
+}
+function isLearned(r){ return learned.has(r.key); }
+function toggle(r){
+  if(learned.has(r.key)) learned.delete(r.key); else learned.add(r.key);
+  save(); paintTally();
+}
+
+/* ---------- view state ---------- */
+const state = { view:"home", batch:0, tab:"cards", idx:0, flipped:false, showLearned:false, quiz:null,
+  mixed:{ phase:"setup", lang:"all", len:20, qs:[], at:0, picked:null, score:0, missed:[] } };
+const app = document.getElementById("app");
+
+/* ---------- helpers ---------- */
+const esc = s => s.replace(/[&<>]/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
+function highlight(word, alts){
+  for(const a of alts){
+    const i = word.toLowerCase().indexOf(a);
+    if(i > -1) return esc(word.slice(0,i)) + "<mark>" + esc(word.slice(i,i+a.length)) + "</mark>" + esc(word.slice(i+a.length));
+  }
+  return esc(word);
+}
+function batchLearned(b){ return b.roots.filter(isLearned).length; }
+function paintTally(){
+  const n = ALL.filter(isLearned).length;
+  document.getElementById("tallyCount").innerHTML = n + "<small>/100 learned</small>";
+  document.getElementById("tallyBar").style.width = n + "%";
+}
+
+/* ---------- home ---------- */
+function renderHome(){
+  const lane = (langKey, title, blurb) => {
+    const bs = BATCHES.filter(b=>b.lang===langKey);
+    const tiles = bs.map(b=>{
+      const done = batchLearned(b);
+      const dots = b.roots.map(r=>'<i class="'+(isLearned(r)?"on":"")+'"></i>').join("");
+      return '<button class="tile '+b.lang+(done===10?" done":"")+'" data-batch="'+BATCHES.indexOf(b)+'">'
+        + '<span class="tile-top"><span class="tile-name">'+esc(b.name)+'</span>'
+        + '<span class="tile-score">'+done+'/10</span></span>'
+        + '<span class="dots">'+dots+'</span>'
+        + '<span class="tile-roots">'+b.roots.map(r=>esc(r.r)).join(" · ")+'</span></button>';
+    }).join("");
+    return '<section class="lane '+langKey+'"><div class="lane-head"><h2>'+title+'</h2><span>'+blurb+'</span></div>'
+      + '<div class="grid">'+tiles+'</div></section>';
+  };
+  app.innerHTML =
+    '<div class="banner"><div><h2>Mixed Quiz</h2>'
+    + '<p>Questions drawn at random from all 100 roots, Latin and Greek together.</p></div>'
+    + '<span class="spacer"></span><button class="cta" id="mixBtn" type="button">Start</button></div>'
+    + lane("latin","Latin","50 roots — the bones of everyday English")
+    + lane("greek","Greek","50 roots — the language of science and ideas");
+  app.querySelectorAll(".tile").forEach(t=>{
+    t.addEventListener("click", ()=>{
+      state.batch = +t.dataset.batch; state.view="batch"; state.tab="cards";
+      state.idx=0; state.flipped=false; state.quiz=null;
+      render(); window.scrollTo({top:0,behavior:"instant"});
+    });
+  });
+  document.getElementById("mixBtn").onclick = ()=>{
+    state.view="mixed"; state.mixed.phase="setup";
+    render(); window.scrollTo({top:0,behavior:"instant"});
+  };
+}
+
+/* ---------- deck ---------- */
+function deck(){
+  const b = BATCHES[state.batch];
+  return state.showLearned ? b.roots : b.roots.filter(r=>!isLearned(r));
+}
+
+/* ---------- batch chrome ---------- */
+function chrome(inner){
+  const b = BATCHES[state.batch];
+  const done = batchLearned(b);
+  return '<div class="bar" style="--hue:var(--'+(b.lang==="latin"?"lat":"grk")+')">'
+    + '<button class="back" id="backBtn" type="button">&larr; All sets</button>'
+    + '<span class="bar-title"><em>'+b.label+'</em>Set '+b.id.slice(1)+' &middot; '+done+' of 10 learned</span>'
+    + '<div class="tabs" role="tablist">'
+    + ['cards','quiz','list'].map(t=>'<button role="tab" data-tab="'+t+'" aria-selected="'+(state.tab===t)+'">'
+        + ({cards:"Cards",quiz:"Quiz",list:"List"})[t] + '</button>').join("")
+    + '</div></div>'
+    + '<div class="stage" style="--hue:var(--'+(b.lang==="latin"?"lat":"grk")+');--tint:var(--'+(b.lang==="latin"?"lat-bg":"grk-bg")+')">'
+    + inner + '</div>';
+}
+
+function renderCards(){
+  const b = BATCHES[state.batch];
+  const d = deck();
+  let inner;
+  if(!d.length){
+    inner = '<div class="done-card"><h3>Set complete</h3><p>All ten roots in '+esc(b.name)
+      + ' are marked learned. Come back for a review round, or take the quiz to prove it.</p>'
+      + '<div class="row-btns"><button class="nav" id="reviewBtn" type="button">Review all ten</button>'
+      + '<button class="nav" id="quizBtn" type="button">Take the quiz</button></div></div>';
+  } else {
+    if(state.idx >= d.length) state.idx = 0;
+    const r = d[state.idx];
+    const words = r.w.map(([w,def])=>'<li><b>'+highlight(w,r.alts)+'</b><span>'+esc(def)+'</span></li>').join("");
+    inner =
+      '<div class="deckline"><span>'+(state.idx+1)+' / '+d.length+'</span>'
+      + '<span class="meter"><i style="width:'+((state.idx+1)/d.length*100)+'%"></i></span>'
+      + '<label class="switch"><input type="checkbox" id="showLearned"'+(state.showLearned?" checked":"")+'> review learned too</label></div>'
+      + '<div class="card-shell"><div class="card'+(state.flipped?" flipped":"")+'" id="card" tabindex="0" role="button" aria-label="Flip card">'
+        + '<div class="face front"><span class="face-tag">'+b.label+' root</span>'
+          + '<div class="front-mid"><div class="glyph">'+esc(r.r.split(",")[0])+'</div>'
+          + (r.r.includes(",") ? '<div class="glyph-alt">also written '+esc(r.r.split(",").slice(1).join(",").trim())+'</div>' : "")
+          + '</div><p class="hint">Click the card to reveal the meaning</p></div>'
+        + '<div class="face back"><span class="face-tag">Meaning</span>'
+          + '<h3 class="meaning">'+esc(r.m)+'</h3>'
+          + '<div class="back-root">'+esc(r.r)+'</div>'
+          + '<ul class="words">'+words+'</ul>'
+          + (r.n ? '<div class="note">'+r.n+'</div>' : "")
+        + '</div></div></div>'
+      + '<div class="controls">'
+      + '<button class="nav" id="prevBtn" type="button"'+(state.idx===0?" disabled":"")+'>&larr;</button>'
+      + '<button class="learn" id="learnBtn" type="button" aria-pressed="'+isLearned(r)+'">'
+        + '<span class="box">&check;</span>'+(isLearned(r)?"Learned":"Mark as learned")+'</button>'
+      + '<button class="nav" id="nextBtn" type="button"'+(state.idx>=d.length-1?" disabled":"")+'>&rarr;</button>'
+      + '</div>';
+  }
+  app.innerHTML = chrome(inner);
+  wireChrome();
+  const card = document.getElementById("card");
+  if(card){
+    const flip = ()=>{ state.flipped=!state.flipped; card.classList.toggle("flipped",state.flipped); };
+    card.addEventListener("click", flip);
+    card.addEventListener("keydown", e=>{ if(e.key===" "||e.key==="Enter"){ e.preventDefault(); flip(); } });
+    document.getElementById("prevBtn").onclick = ()=>{ state.idx--; state.flipped=false; renderCards(); };
+    document.getElementById("nextBtn").onclick = ()=>{ state.idx++; state.flipped=false; renderCards(); };
+    document.getElementById("showLearned").onchange = e=>{ state.showLearned=e.target.checked; state.idx=0; state.flipped=false; renderCards(); };
+    document.getElementById("learnBtn").onclick = ()=>{
+      const d2 = deck(), r2 = d2[state.idx];
+      const wasNew = !isLearned(r2);
+      toggle(r2);
+      if(wasNew && !state.showLearned) state.flipped=false;
+      renderCards();
+    };
+  } else {
+    document.getElementById("reviewBtn").onclick = ()=>{ state.showLearned=true; state.idx=0; state.flipped=false; renderCards(); };
+    document.getElementById("quizBtn").onclick = ()=>{ state.tab="quiz"; render(); };
+  }
+}
+
+/* ---------- list ---------- */
+function renderList(){
+  const b = BATCHES[state.batch];
+  const rows = b.roots.map((r,i)=>
+    '<button class="row'+(isLearned(r)?" on":"")+'" data-i="'+i+'" type="button" aria-pressed="'+isLearned(r)+'">'
+    + '<span class="box">&check;</span>'
+    + '<span class="rt">'+esc(r.r)+'</span>'
+    + '<span><span class="mn">'+esc(r.m)+'</span>'
+    + '<span class="ex">'+r.w.map(w=>esc(w[0])).join("  ·  ")+'</span></span></button>').join("");
+  app.innerHTML = chrome('<div class="list">'+rows+'</div>');
+  wireChrome();
+  app.querySelectorAll(".row").forEach(el=>{
+    el.onclick = ()=>{ toggle(b.roots[+el.dataset.i]); renderList(); };
+  });
+}
+
+/* ---------- quiz ---------- */
+function safeWords(root, b){
+  const others = b.roots.filter(x=>x!==root).flatMap(x=>x.alts).filter(a=>a.length>=3);
+  const ok = root.w.filter(([w])=>!others.some(a=>w.toLowerCase().includes(a)));
+  return ok.length ? ok : root.w;
+}
+function shuffle(a){ a=a.slice(); for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; }
+function buildQuiz(){
+  const b = BATCHES[state.batch];
+  const qs = shuffle(b.roots).map(root=>{
+    const pool = safeWords(root, b);
+    const [word, def] = pool[Math.floor(Math.random()*pool.length)];
+    const wrong = shuffle(b.roots.filter(x=>x!==root)).slice(0,3);
+    return { word, def, answer:root, options: shuffle([root,...wrong]) };
+  });
+  state.quiz = { qs, at:0, score:0, picked:null };
+}
+function renderQuiz(){
+  if(!state.quiz) buildQuiz();
+  const q = state.quiz, b = BATCHES[state.batch];
+  let inner;
+  if(q.at >= q.qs.length){
+    const pct = Math.round(q.score/q.qs.length*100);
+    inner = '<div class="done-card"><h3>'+q.score+' out of '+q.qs.length+'</h3>'
+      + '<p>'+(pct===100 ? "Perfect round on "+esc(b.name)+". These are yours."
+              : pct>=80 ? "Strong round. Flip back through the two or three that slipped."
+              : "Worth another pass through the cards before the next round.")+'</p>'
+      + '<div class="row-btns"><button class="nav" id="againBtn" type="button">Run it again</button>'
+      + '<button class="nav" id="toCardsBtn" type="button">Back to cards</button></div></div>';
+  } else {
+    const cur = q.qs[q.at];
+    const opts = cur.options.map((o,i)=>{
+      let cls = "opt";
+      if(q.picked){
+        if(o===cur.answer) cls += " right";
+        else if(o===q.picked) cls += " wrong";
+      }
+      return '<button class="'+cls+'" data-i="'+i+'" type="button"'+(q.picked?" disabled":"")+'>'
+        + '<span class="k">'+"ABCD"[i]+'</span>'+esc(o.r)+'</button>';
+    }).join("");
+    inner = '<div class="quiz"><div class="qcard">'
+      + '<div class="qprompt">Which root is hiding in this word?</div>'
+      + '<div class="qword">'+esc(cur.word)+'</div>'
+      + '<div class="opts">'+opts+'</div>'
+      + '<div class="qfoot"><span class="qmsg">'
+        + (q.picked
+            ? (q.picked===cur.answer ? '<b>'+esc(cur.answer.r)+'</b> — '+esc(cur.answer.m)+'. '+esc(cur.word)+' means &ldquo;'+esc(cur.def)+'.&rdquo;'
+                                     : 'It is <b>'+esc(cur.answer.r)+'</b> — '+esc(cur.answer.m)+'. '+esc(cur.word)+' means &ldquo;'+esc(cur.def)+'.&rdquo;')
+            : "Ten questions, one per root in this set.")
+      + '</span>'
+      + (q.picked ? '<button class="nav" id="nextQ" type="button">'+(q.at===q.qs.length-1?"Finish":"Next")+' &rarr;</button>' : '')
+      + '</div></div>'
+      + '<div class="qscore">Question '+(q.at+1)+' of '+q.qs.length+' &middot; '+q.score+' correct</div></div>';
+  }
+  app.innerHTML = chrome(inner);
+  wireChrome();
+  if(q.at >= q.qs.length){
+    document.getElementById("againBtn").onclick = ()=>{ buildQuiz(); renderQuiz(); };
+    document.getElementById("toCardsBtn").onclick = ()=>{ state.tab="cards"; render(); };
+  } else {
+    app.querySelectorAll(".opt").forEach(el=>{
+      el.onclick = ()=>{
+        const cur = q.qs[q.at];
+        q.picked = cur.options[+el.dataset.i];
+        if(q.picked===cur.answer) q.score++;
+        renderQuiz();
+      };
+    });
+    const nq = document.getElementById("nextQ");
+    if(nq) nq.onclick = ()=>{ q.at++; q.picked=null; renderQuiz(); };
+  }
+}
+
+/* ---------- mixed quiz: draws from every set ---------- */
+function mixedPool(){
+  const m = state.mixed;
+  return m.lang==="all" ? ALL : ALL.filter(r=>r.lang===m.lang);
+}
+/* A distractor whose own spelling appears in the word would be a second
+   right answer. Only roots absent from the word can stand as wrong options. */
+function rootDistractors(answer, word, pool, count){
+  const w = word.toLowerCase();
+  const ok = pool.filter(x =>
+    x.key !== answer.key &&
+    x.m !== answer.m &&
+    !x.alts.some(a => a.length >= 3 && w.includes(a)));
+  return shuffle(ok).slice(0, count);
+}
+function meaningDistractors(answer, pool, count){
+  const seen = new Set([answer.m]), out = [];
+  for(const cand of shuffle(pool)){
+    if(seen.has(cand.m)) continue;
+    seen.add(cand.m); out.push(cand);
+    if(out.length === count) break;
+  }
+  return out;
+}
+function buildMixed(){
+  const m = state.mixed, pool = mixedPool();
+  const picked = shuffle(pool).slice(0, Math.min(m.len, pool.length));
+  m.qs = picked.map((root, i) => {
+    if(i % 2 === 0){
+      const [word, def] = root.w[Math.floor(Math.random()*root.w.length)];
+      return { dir:"root", root, word, def,
+               options: shuffle([root, ...rootDistractors(root, word, pool, 3)]) };
+    }
+    return { dir:"meaning", root,
+             options: shuffle([root, ...meaningDistractors(root, pool, 3)]) };
+  });
+  m.at = 0; m.score = 0; m.picked = null; m.missed = [];
+}
+function renderMixed(){
+  const m = state.mixed;
+  let inner;
+  if(m.phase === "setup"){
+    const pool = mixedPool();
+    inner = '<div class="setup"><h3>Mixed Quiz</h3>'
+      + '<p>Roots pulled at random from every set, alternating between spotting a root inside a word and recalling what it means.</p>'
+      + '<div class="field"><label>Which roots</label><div class="chips">'
+      + [["all","Latin and Greek"],["latin","Latin only"],["greek","Greek only"]].map(([v,t])=>
+          '<button class="chip mix" type="button" data-lang="'+v+'" aria-pressed="'+(m.lang===v)+'">'+t+'</button>').join("")
+      + '</div></div>'
+      + '<div class="field"><label>How many questions</label><div class="chips">'
+      + [10,20,50].map(v=>'<button class="chip mix" type="button" data-len="'+v+'" aria-pressed="'+(m.len===v)+'">'
+          + (v>=pool.length ? "All "+pool.length : v)+'</button>').join("")
+      + '</div></div>'
+      + '<button class="play" id="mixGo" type="button">Start the quiz</button></div>';
+  } else if(m.at >= m.qs.length){
+    const pct = Math.round(m.score/m.qs.length*100);
+    inner = '<div class="result"><p class="big">'+m.score+' / '+m.qs.length+'</p>'
+      + '<p class="cap">'+(pct===100 ? "Every one. These are yours."
+          : pct>=80 ? "Strong round — just the few below to firm up."
+          : pct>=50 ? "Solid start. The list below is where the work is."
+          : "Worth another pass through the cards before the next round.")+'</p>'
+      + (m.missed.length ? '<p class="mixhead">Missed &mdash; worth another look</p><div class="missed">'
+          + m.missed.map(r=>'<div style="--hue:var(--'+(r.lang==="latin"?"lat":"grk")+')"><b>'+esc(r.r)+'</b>'
+              + '<span>'+esc(r.m)+' &middot; '+esc(r.w[0][0])+'</span></div>').join("")
+          + '</div>' : '')
+      + '<div class="row-btns"><button class="cta" id="mixAgain" type="button">Run it again</button>'
+      + '<button class="nav" id="mixHome" type="button">Back to the sets</button></div></div>';
+  } else {
+    const cur = m.qs[m.at];
+    const hue = cur.root.lang==="latin" ? "var(--lat)" : "var(--grk)";
+    const tint = cur.root.lang==="latin" ? "var(--lat-bg)" : "var(--grk-bg)";
+    let head, opts;
+    if(cur.dir === "root"){
+      head = '<div class="qprompt">Which root is hiding in this word?</div>'
+           + '<div class="qword">'+esc(cur.word)+'</div>';
+      opts = '<div class="opts">'+cur.options.map((o,i)=>{
+        let cls="opt";
+        if(m.picked){ if(o.key===cur.root.key) cls+=" right"; else if(m.picked.key===o.key) cls+=" wrong"; }
+        return '<button class="'+cls+'" data-i="'+i+'" type="button"'+(m.picked?" disabled":"")+'>'
+             + '<span class="k">'+"ABCD"[i]+'</span>'+esc(o.r)+'</button>';
+      }).join("")+'</div>';
+    } else {
+      head = '<div class="qprompt">What does this root mean?</div>'
+           + '<div class="qword" style="font-family:\'IBM Plex Mono\',monospace">'+esc(cur.root.r)+'</div>';
+      opts = '<div class="opts">'+cur.options.map((o,i)=>{
+        let cls="opt";
+        if(m.picked){ if(o.key===cur.root.key) cls+=" right"; else if(m.picked.key===o.key) cls+=" wrong"; }
+        return '<button class="'+cls+'" data-i="'+i+'" type="button"'+(m.picked?" disabled":"")+'>'
+             + '<span class="k">'+"ABCD"[i]+'</span>'+esc(o.m)+'</button>';
+      }).join("")+'</div>';
+    }
+    const right = m.picked && m.picked.key===cur.root.key;
+    inner = '<div class="quiz" style="--hue:'+hue+';--tint:'+tint+'"><div class="qcard">'+head+opts
+      + '<div class="qfoot"><span class="qmsg">'
+      + (m.picked
+          ? (cur.dir==="root"
+              ? (right?'Yes &mdash; ':'It is ')+'<b>'+esc(cur.root.r)+'</b>, '+esc(cur.root.m)+'. '
+                + esc(cur.word)+' means &ldquo;'+esc(cur.def)+'.&rdquo;'
+              : (right?'Yes &mdash; ':'It is ')+'<b>'+esc(cur.root.m)+'</b>. As in '+esc(cur.root.w[0][0])+'.')
+          : 'Pulled from all 100 roots, both languages mixed.')
+      + '</span>'
+      + (m.picked ? '<button class="nav" id="mixNext" type="button">'+(m.at===m.qs.length-1?"Finish":"Next")+' &rarr;</button>' : '')
+      + '</div></div><div class="qscore">Question '+(m.at+1)+' of '+m.qs.length+' &middot; '+m.score+' correct</div></div>';
+  }
+  app.innerHTML = '<div class="bar" style="--hue:var(--mix)">'
+    + '<button class="back" id="backBtn" type="button">&larr; All sets</button>'
+    + '<span class="bar-title"><em>Mixed</em>'
+    + (m.phase==="setup" ? "All 100 roots"
+       : m.lang==="all" ? "Latin and Greek" : m.lang==="latin" ? "Latin only" : "Greek only")+'</span></div>'
+    + '<div class="stage" style="--hue:var(--mix)">'+inner+'</div>';
+
+  document.getElementById("backBtn").onclick = ()=>{
+    m.phase="setup"; state.view="home"; render(); window.scrollTo({top:0,behavior:"instant"});
+  };
+  if(m.phase === "setup"){
+    app.querySelectorAll(".chip.mix").forEach(c=>c.onclick = ()=>{
+      if(c.dataset.lang) m.lang=c.dataset.lang; else m.len=+c.dataset.len;
+      renderMixed();
+    });
+    document.getElementById("mixGo").onclick = ()=>{ buildMixed(); m.phase="play"; renderMixed(); };
+  } else if(m.at >= m.qs.length){
+    document.getElementById("mixAgain").onclick = ()=>{ buildMixed(); renderMixed(); };
+    document.getElementById("mixHome").onclick = ()=>{ m.phase="setup"; state.view="home"; render(); };
+  } else {
+    const cur = m.qs[m.at];
+    app.querySelectorAll(".opt").forEach(el=>el.onclick = ()=>{
+      m.picked = cur.options[+el.dataset.i];
+      if(m.picked.key===cur.root.key) m.score++;
+      else if(!m.missed.some(x=>x.key===cur.root.key)) m.missed.push(cur.root);
+      renderMixed();
+    });
+    const nx = document.getElementById("mixNext");
+    if(nx) nx.onclick = ()=>{ m.at++; m.picked=null; renderMixed(); };
+  }
+}
+
+/* ---------- wiring ---------- */
+function wireChrome(){
+  document.getElementById("backBtn").onclick = ()=>{ state.view="home"; render(); window.scrollTo({top:0,behavior:"instant"}); };
+  app.querySelectorAll(".tabs button").forEach(t=>{
+    t.onclick = ()=>{
+      state.tab = t.dataset.tab;
+      if(state.tab==="quiz") state.quiz = null;
+      state.idx = 0; state.flipped = false;
+      render();
+    };
+  });
+}
+function render(){
+  if(state.view==="home") renderHome();
+  else if(state.view==="mixed") renderMixed();
+  else if(state.tab==="cards") renderCards();
+  else if(state.tab==="quiz") renderQuiz();
+  else renderList();
+  paintTally();
+}
+document.getElementById("resetBtn").onclick = ()=>{
+  learned.clear(); save(); state.view="home"; state.quiz=null; render();
+};
+document.addEventListener("keydown", e=>{
+  if(state.view!=="batch" || state.tab!=="cards") return;
+  if(e.target.tagName==="INPUT") return;
+  if(e.key==="ArrowRight"){ const n=document.getElementById("nextBtn"); if(n&&!n.disabled) n.click(); }
+  if(e.key==="ArrowLeft"){ const p=document.getElementById("prevBtn"); if(p&&!p.disabled) p.click(); }
+});
+render();
+</script>
+
+</body></html>
