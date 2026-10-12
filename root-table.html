@@ -151,6 +151,17 @@ button{font:inherit;color:inherit;cursor:pointer}
 .missed b{font-family:"IBM Plex Mono",monospace;font-weight:500;font-size:14px;color:var(--hue)}
 .missed span{color:var(--ink-2)}
 
+.phase-head{
+  font-family:Cinzel,Georgia,serif;font-weight:600;font-size:20px;margin:34px 0 0;
+  display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;
+  padding-bottom:8px;border-bottom:1px solid var(--line);
+}
+.phase-head span{
+  font-family:"IBM Plex Sans",sans-serif;font-weight:400;font-size:13.5px;color:var(--ink-3);
+  letter-spacing:0;text-transform:none;
+}
+.phase-head + .lane{margin-top:18px}
+
 /* ---------- batch grid ---------- */
 .lane{margin-top:30px}
 .lane-head{display:flex;align-items:baseline;gap:10px;margin-bottom:12px}
@@ -385,10 +396,10 @@ button{font:inherit;color:inherit;cursor:pointer}
   <header class="top">
     <div class="brand">
       <h1>The Root Table</h1>
-      <p>100 Greek and Latin word roots, in sets of ten. Learn a set, check them off, and they stop coming back.</p>
+      <p>200 Greek and Latin word roots in two phases, ten to a set. Learn a set, check them off, and they stop coming back.</p>
     </div>
     <div class="tally">
-      <div class="count" id="tallyCount">0<small>/100 learned</small></div>
+      <div class="count" id="tallyCount">0<small>/200 learned</small></div>
       <div class="meter"><i id="tallyBar" style="width:0%"></i></div>
     </div>
   </header>
@@ -516,22 +527,143 @@ const GREEK = [
   {r:"cosm",   alts:["cosm"],            m:"world, universe, order",w:[["cosmos","the ordered universe"],["cosmic","of the universe"],["cosmopolitan","at home anywhere in the world"]]}
 ];
 
+/* ---------- Phase Two: the next fifty Latin roots ---------- */
+const LATIN2 = [
+  {r:"ag, act",   alts:["ag","act"],        m:"do, drive",          w:[["action","a thing done"],["agent","one who acts"],["agenda","things to be driven forward"]]},
+  {r:"am, amor",  alts:["am","amor"],       m:"love",               w:[["amiable","easy to love"],["amorous","full of love"],["amateur","one who does it for love"]]},
+  {r:"cad, cas",  alts:["cad","cas","cid"], m:"fall",               w:[["cascade","a falling of water"],["accident","something that befalls you"],["casualty","one who falls"]]},
+  {r:"ced, cess", alts:["ced","cess"],      m:"go, yield",          w:[["recede","to go back"],["concession","a yielding"],["precedent","what went before"]]},
+  {r:"clam, claim",alts:["clam","claim"],   m:"shout, cry out",     w:[["exclaim","to cry out"],["clamor","a loud outcry"],["proclaim","to shout forth"]]},
+  {r:"clud, clus",alts:["clud","clus","clos"], m:"shut, close",     w:[["include","to shut in"],["seclude","to shut away"],["recluse","one shut off from others"]]},
+  {r:"cord",      alts:["cord"],            m:"heart",              w:[["cordial","warm-hearted"],["accord","hearts in agreement"],["discord","hearts at odds"]]},
+  {r:"cur, curs", alts:["cur","curs"],      m:"run",                w:[["current","the running flow"],["cursive","running handwriting"],["excursion","a running out, a trip"]]},
+  {r:"dent",      alts:["dent"],            m:"tooth",              w:[["dentist","a tooth doctor"],["trident","a three-toothed spear"],["denture","a set of teeth"]]},
+  {r:"doc, doct", alts:["doc","doct"],      m:"teach",              w:[["doctor","originally a teacher"],["document","something that teaches"],["doctrine","what is taught"]]},
+
+  {r:"domin",     alts:["domin"],           m:"master, lord",       w:[["dominate","to master"],["dominion","a mastered territory"],["predominant","mastering above the rest"]]},
+  {r:"don, dat",  alts:["don","dat"],       m:"give",               w:[["donate","to give"],["pardon","to give through, to forgive"],["data","things given"]]},
+  {r:"dur",       alts:["dur"],             m:"hard, lasting",      w:[["durable","lasting"],["endure","to last through"],["duration","how long it lasts"]]},
+  {r:"fac, fect, fic",alts:["fac","fect","fic"], m:"make, do",      w:[["factory","a place of making"],["perfect","thoroughly made"],["efficient","making it work well"]]},
+  {r:"fer",       alts:["fer"],             m:"carry, bear",        w:[["transfer","to carry across"],["fertile","bearing much"],["conifer","a cone-bearer"]]},
+  {r:"fin",       alts:["fin"],             m:"end, limit",         w:[["final","at the end"],["infinite","without limit"],["define","to set the limits of"]]},
+  {r:"flu, flux", alts:["flu","flux"],      m:"flow",               w:[["fluid","something that flows"],["influence","a flowing in"],["fluctuate","to flow back and forth"]]},
+  {r:"form",      alts:["form"],            m:"shape",              w:[["formation","a shaping"],["reform","to shape again"],["uniform","of one shape"]]},
+  {r:"grad, gress",alts:["grad"],           m:"step, degree",       w:[["gradual","step by step"],["graduate","to step up a degree"],["degrade","to step down"]], n:"Phase One had <b>gress</b> — the same family, from the same verb for stepping."},
+  {r:"grat",      alts:["grat"],            m:"pleasing, thankful", w:[["grateful","full of thanks"],["gratitude","thankfulness"],["gratuity","a thank-you given freely"]]},
+
+  {r:"leg, lect", alts:["leg","lect"],      m:"read, choose, gather",w:[["legible","able to be read"],["collect","to gather together"],["election","a choosing"]]},
+  {r:"liber",     alts:["liber"],           m:"free",               w:[["liberty","freedom"],["liberate","to set free"],["deliberate","weighed out freely"]], n:"A different Latin <b>liber</b> means <b>book</b> — that one gives us library."},
+  {r:"lingu",     alts:["lingu"],           m:"tongue, language",   w:[["linguist","one who studies languages"],["bilingual","two-tongued"],["linguistics","the study of language"]]},
+  {r:"liter",     alts:["liter"],           m:"letter",             w:[["literal","to the letter"],["literature","written letters"],["obliterate","to wipe out the letters"]]},
+  {r:"loqu, locut",alts:["loqu","locut"],   m:"speak",              w:[["eloquent","speaking well"],["soliloquy","speaking alone"],["loquacious","given to speaking a lot"]]},
+  {r:"mem",       alts:["mem"],             m:"mindful, remember",  w:[["memory","what is remembered"],["commemorate","to remember together"],["memento","a reminder"]]},
+  {r:"mens, mensur",alts:["mens","mensur"], m:"measure",            w:[["dimension","a measuring out"],["immense","beyond measuring"],["commensurate","measured alongside"]]},
+  {r:"migr",      alts:["migr"],            m:"wander, move",       w:[["migrate","to move from one place to another"],["immigrant","one who moves in"],["migratory","given to moving"]]},
+  {r:"mod",       alts:["mod"],             m:"measure, manner",    w:[["moderate","kept to measure"],["modify","to change the manner of"],["accommodate","to fit to the measure"]]},
+  {r:"nomin",     alts:["nomin"],           m:"name",               w:[["nominate","to name for a post"],["nominal","in name only"],["denomination","a naming apart"]]},
+
+  {r:"omni",      alts:["omni"],            m:"all",                w:[["omnivore","eating all things"],["omnipotent","all-powerful"],["omnipresent","present everywhere"]]},
+  {r:"pac, plac",  alts:["pac","plac"],     m:"peace, please",      w:[["pacify","to make peaceful"],["placid","peaceful, calm"],["complacent","pleased with oneself"]]},
+  {r:"par",       alts:["par"],             m:"equal",              w:[["compare","to set equal alongside"],["parity","equality"],["disparate","not equal, unalike"]]},
+  {r:"pel, puls",  alts:["pel","puls"],     m:"drive, push",        w:[["propel","to drive forward"],["repel","to drive back"],["pulse","a driving beat"]]},
+  {r:"plic, plex", alts:["plic","plex"],    m:"fold",               w:[["complicate","to fold together"],["duplex","two-fold"],["implicate","to fold someone in"]]},
+  {r:"pon, pos",   alts:["pon","pos"],      m:"place, put",         w:[["postpone","to place after"],["position","where a thing is put"],["deposit","to put down"]]},
+  {r:"prim",      alts:["prim"],            m:"first",              w:[["primary","first in order"],["primitive","from the first times"],["primate","the first rank"]]},
+  {r:"quir, quis", alts:["quir","quis","quer"], m:"ask, seek",      w:[["inquire","to ask into"],["inquisitive","given to asking"],["query","a question"]]},
+  {r:"sal, sult",  alts:["sal","sult"],     m:"leap",               w:[["insult","a leaping upon someone"],["result","what leaps back out"],["salient","leaping out at you"]]},
+  {r:"sci",       alts:["sci"],             m:"know",               w:[["science","a body of knowing"],["conscious","knowing with yourself"],["omniscient","all-knowing"]]},
+
+  {r:"sect",      alts:["sect"],            m:"cut",                w:[["section","a cut piece"],["dissect","to cut apart"],["intersect","to cut across"]]},
+  {r:"sent, sens", alts:["sent","sens"],    m:"feel",               w:[["sentiment","a feeling"],["sensation","something felt"],["resent","to feel against"]]},
+  {r:"serv",      alts:["serv"],            m:"keep, save, serve",  w:[["preserve","to keep beforehand"],["reservation","something kept back"],["servant","one who serves"]]},
+  {r:"sign",      alts:["sign"],            m:"mark, sign",         w:[["signal","a sign given"],["designate","to mark out"],["signature","your own mark"]]},
+  {r:"simil, simul",alts:["simil","simul"], m:"like, same",         w:[["similar","alike"],["assimilate","to make alike"],["simultaneous","at the same time"]]},
+  {r:"sta, stat",  alts:["stat","sta"],     m:"stand",              w:[["stationary","standing still"],["stable","standing firm"],["statue","a standing figure"]]},
+  {r:"tang, tact", alts:["tang","tact"],    m:"touch",              w:[["tangible","able to be touched"],["contact","a touching together"],["intact","untouched"]]},
+  {r:"temp",      alts:["temp"],            m:"time",               w:[["temporary","lasting a short time"],["contemporary","of the same time"],["tempo","the pace of time"]]},
+  {r:"ten, tain",  alts:["ten","tain"],     m:"hold",               w:[["retain","to hold back"],["tenacious","holding fast"],["contain","to hold within"]]},
+  {r:"urb",       alts:["urb"],             m:"city",               w:[["urban","of the city"],["suburb","under the city, at its edge"],["urbane","city-polished"]]}
+];
+
+/* ---------- Phase Two: the next fifty Greek roots ---------- */
+const GREEK2 = [
+  {r:"aer",       alts:["aer"],             m:"air",                w:[["aerial","of the air"],["aerobic","needing air"],["aerodynamic","shaped for moving through air"]]},
+  {r:"agon",      alts:["agon"],            m:"struggle, contest",  w:[["agony","extreme struggle"],["protagonist","the first struggler, the hero"],["antagonize","to struggle against"]]},
+  {r:"alg",       alts:["alg"],             m:"pain",               w:[["neuralgia","nerve pain"],["analgesic","something that removes pain"],["nostalgia","the ache for home"]]},
+  {r:"amphi",     alts:["amphi"],           m:"both, on both sides",w:[["amphibian","living both in water and on land"],["amphitheater","seats on all sides"],["amphibious","at home in both"]]},
+  {r:"andr",      alts:["andr"],            m:"man, male",          w:[["android","man-shaped"],["androgynous","having both male and female traits"],["polyandry","having many husbands"]]},
+  {r:"arthr",     alts:["arthr"],           m:"joint",              w:[["arthritis","inflamed joints"],["arthropod","jointed-foot animal"],["arthroscopy","looking inside a joint"]]},
+  {r:"biblio",    alts:["biblio","bibli"],  m:"book",               w:[["bibliography","a writing-out of books"],["bibliophile","a book lover"],["bibliotheca","a book collection"]]},
+  {r:"chrom",     alts:["chrom"],           m:"color",              w:[["chromatic","of color"],["monochrome","one color"],["chromosome","the colored body in a cell"]]},
+  {r:"cycl",      alts:["cycl"],            m:"circle, wheel",      w:[["bicycle","two wheels"],["cyclone","a circling storm"],["recycle","to send around again"]]},
+  {r:"dynam",     alts:["dynam"],           m:"power",              w:[["dynamic","full of power"],["dynamite","the powerful explosive"],["aerodynamic","of the power of moving air"]]},
+
+  {r:"eco, oik",  alts:["eco"],             m:"house, household",   w:[["ecology","the study of our household, the earth"],["economy","the managing of a household"],["ecosystem","a household of living things"]]},
+  {r:"erg",       alts:["erg"],             m:"work",               w:[["energy","work within"],["ergonomic","fitted to the way we work"],["synergy","working together"]]},
+  {r:"ethn",      alts:["ethn"],            m:"nation, people",     w:[["ethnic","of a people"],["ethnography","writing about peoples"],["ethnicity","belonging to a people"]]},
+  {r:"gastr",     alts:["gastr"],           m:"stomach",            w:[["gastric","of the stomach"],["gastronomy","the rules of good eating"],["gastritis","an inflamed stomach"]]},
+  {r:"glyph",     alts:["glyph"],           m:"carving",            w:[["hieroglyph","a sacred carving"],["petroglyph","a carving in rock"],["glyph","a carved or cut mark"]]},
+  {r:"gon",       alts:["gon"],             m:"angle",              w:[["polygon","many angles"],["pentagon","five angles"],["diagonal","angle to angle across"]]},
+  {r:"helio",     alts:["helio","heli"],    m:"sun",                w:[["heliocentric","sun-centered"],["heliotrope","a plant that turns to the sun"],["aphelion","the point farthest from the sun"]]},
+  {r:"hem, hemat",alts:["hem","hemat","em"],m:"blood",              w:[["hemoglobin","the blood's oxygen carrier"],["hemorrhage","a bursting of blood"],["hematology","the study of blood"]]},
+  {r:"heter",     alts:["heter"],           m:"different, other",   w:[["heterogeneous","of different kinds"],["heterodox","holding a different opinion"],["heteronym","a word spelled the same but said differently"]]},
+  {r:"homo",      alts:["homo"],            m:"same",               w:[["homonym","same name, different meaning"],["homogeneous","all of the same kind"],["homograph","written the same"]]},
+
+  {r:"icon",      alts:["icon"],            m:"image, likeness",    w:[["icon","an image"],["iconic","standing as the image of something"],["iconoclast","an image-breaker"]]},
+  {r:"idi",       alts:["idi"],             m:"one's own, personal",w:[["idiom","a turn of phrase a language owns"],["idiosyncrasy","a personal quirk"],["idiomatic","in a language's own way"]]},
+  {r:"kine, cine",alts:["kine","cine"],     m:"movement",           w:[["kinetic","of motion"],["kinesiology","the study of movement"],["cinema","moving pictures"]]},
+  {r:"lith",      alts:["lith"],            m:"stone",              w:[["monolith","a single stone"],["lithograph","printing from stone"],["megalith","a great stone"]]},
+  {r:"macro",     alts:["macro"],           m:"large, long",        w:[["macroscopic","large enough to see"],["macrocosm","the large world"],["macroeconomics","the economy at large"]]},
+  {r:"mega",      alts:["mega","megal"],    m:"great, large",       w:[["megaphone","a great sound"],["megalith","a great stone"],["megabyte","a million bytes"]]},
+  {r:"meta",      alts:["meta"],            m:"change, beyond",     w:[["metamorphosis","a change of form"],["metaphor","a carrying beyond"],["metabolism","the body's changing of food"]]},
+  {r:"mim",       alts:["mim"],             m:"imitate",            w:[["mimic","to imitate"],["pantomime","imitating everything without words"],["mimicry","imitation"]]},
+  {r:"necr",      alts:["necr"],            m:"death, the dead",    w:[["necropolis","a city of the dead"],["necromancy","divining by the dead"],["necrosis","the dying of tissue"]]},
+  {r:"neo",       alts:["neo"],             m:"new",                w:[["neolithic","the new stone age"],["neophyte","a new plant, a beginner"],["neologism","a newly coined word"]]},
+
+  {r:"nom",       alts:["nom"],             m:"law, custom, order", w:[["astronomy","the ordering of the stars"],["autonomy","making your own law"],["gastronomy","the rules of good eating"]], n:"Latin <b>nomin</b> means <b>name</b> — a different root that looks nearly the same."},
+  {r:"ortho",     alts:["ortho"],           m:"straight, correct",  w:[["orthodontist","one who straightens teeth"],["orthodox","holding the correct opinion"],["orthopedic","straightening children's bones"]]},
+  {r:"patr, pater",alts:["patr","pater"],            m:"father",             w:[["patriarch","the father-ruler"],["patriot","one loyal to the fatherland"],["paternal","fatherly"]]},
+  {r:"ped",       alts:["ped"],             m:"child",              w:[["pediatrician","a children's doctor"],["pedagogy","the leading of children, teaching"],["orthopedic","straightening children's bones"]], n:"Latin <b>ped</b> means <b>foot</b>. Same spelling, opposite field — a pedestrian walks, a pediatrician does not."},
+  {r:"phan, phen",alts:["phan","phen","fant"],m:"appear, show",     w:[["phenomenon","a thing that appears"],["phantom","an appearance, a ghost"],["fantasy","what appears to the mind"]]},
+  {r:"pharmac",   alts:["pharmac"],         m:"drug, medicine",     w:[["pharmacy","where medicines are made"],["pharmacist","one who prepares medicine"],["pharmacology","the study of drugs"]]},
+  {r:"phyt",      alts:["phyt"],            m:"plant, growth",      w:[["phytoplankton","drifting plant life"],["neophyte","a new growth, a beginner"],["epiphyte","a plant growing on another"]]},
+  {r:"pneum",     alts:["pneum"],           m:"air, breath, lung",  w:[["pneumonia","a disease of the lungs"],["pneumatic","worked by air"],["pneumatics","the study of air pressure"]]},
+  {r:"pod",       alts:["pod"],             m:"foot",               w:[["tripod","three feet"],["podiatrist","a foot doctor"],["arthropod","jointed-foot animal"]]},
+  {r:"proto",     alts:["proto","prot"],    m:"first, earliest",    w:[["prototype","the first model"],["protagonist","the first actor"],["protozoa","the first animals"]]},
+
+  {r:"pseud",     alts:["pseud"],           m:"false",              w:[["pseudonym","a false name"],["pseudoscience","false science"],["pseudopod","a false foot"]]},
+  {r:"pyr",       alts:["pyr"],             m:"fire",               w:[["pyrotechnics","the craft of fire"],["pyromania","a madness for fire"],["pyre","a fire for burning"]]},
+  {r:"schol",     alts:["schol"],           m:"school, leisure",    w:[["scholar","one who studies"],["scholastic","of the school"],["scholarship","learning, or aid for it"]]},
+  {r:"seism",     alts:["seism"],           m:"shake, earthquake",  w:[["seismic","of earthquakes"],["seismograph","a shake-writer"],["seismology","the study of earthquakes"]]},
+  {r:"soma, somat",alts:["soma","somat","some"],m:"body",           w:[["psychosomatic","of mind and body together"],["somatic","of the body"],["chromosome","the colored body in a cell"]]},
+  {r:"stas, stat",alts:["stas","stat"],     m:"standing, stopping", w:[["thermostat","something that keeps heat standing still"],["stasis","a standing still"],["homeostasis","holding the body steady"]], n:"Latin <b>sta</b> also means <b>stand</b> — the two languages inherited it from the same older root."},
+  {r:"tax",       alts:["tax"],             m:"arrangement, order",  w:[["taxonomy","the law of arrangement"],["syntax","the arranging of words together"],["taxidermy","the arranging of skins"]]},
+  {r:"taph",      alts:["taph"],            m:"tomb",               w:[["epitaph","words upon a tomb"],["cenotaph","an empty tomb"],["taphonomy","the study of burial and fossils"]]},
+  {r:"spher",     alts:["spher"],           m:"ball, globe",        w:[["hemisphere","half a globe"],["atmosphere","the ball of air around us"],["spherical","shaped like a ball"]]},
+  {r:"zo",        alts:["zo"],              m:"animal, living being",w:[["zoology","the study of animals"],["protozoa","the first animals"],["zodiac","the circle of animal signs"]]}
+];
+
 /* ---------- build batches ---------- */
 const BATCHES = [];
-function makeBatches(list, lang, label){
+/* keyTag namespaces phase two's saved keys ("latin2-0"), so the checkmarks
+   already earned on phase one keep pointing at the same roots. */
+function makeBatches(list, lang, label, tier, startNum, keyTag){
   for(let i=0;i<list.length;i+=10){
-    const idx = BATCHES.length;
+    const idx = BATCHES.length, n = startNum + Math.floor(i/10);
     BATCHES.push({
-      id: lang[0].toUpperCase() + (Math.floor(i/10)+1),
-      lang, label,
-      name: label + " · Set " + (Math.floor(i/10)+1),
-      roots: list.slice(i,i+10).map((rt,j)=>({...rt, key: lang+"-"+(i+j), batch: idx, lang}))
+      id: lang[0].toUpperCase() + n,
+      lang, label, tier,
+      name: label + " · Set " + n,
+      roots: list.slice(i,i+10).map((rt,j)=>({...rt, key: lang+keyTag+"-"+(i+j), batch: idx, lang, tier}))
     });
   }
 }
-makeBatches(LATIN,"latin","Latin");
-makeBatches(GREEK,"greek","Greek");
+makeBatches(LATIN,"latin","Latin",1,1,"");
+makeBatches(GREEK,"greek","Greek",1,1,"");
+makeBatches(LATIN2,"latin","Latin",2,6,"2");
+makeBatches(GREEK2,"greek","Greek",2,6,"2");
 const ALL = BATCHES.flatMap(b=>b.roots);
+const TOTAL = ALL.length;
 
 /* ---------- storage ---------- */
 const KEY = "roottable.v1";
@@ -551,7 +683,7 @@ function toggle(r){
 
 /* ---------- view state ---------- */
 const state = { view:"home", batch:0, tab:"cards", idx:0, flipped:false, showLearned:false, quiz:null,
-  mixed:{ phase:"setup", lang:"all", len:20, qs:[], at:0, picked:null, score:0, missed:[] } };
+  mixed:{ phase:"setup", lang:"all", tier:"all", len:20, qs:[], at:0, picked:null, score:0, missed:[] } };
 const app = document.getElementById("app");
 
 /* ---------- helpers ---------- */
@@ -566,14 +698,14 @@ function highlight(word, alts){
 function batchLearned(b){ return b.roots.filter(isLearned).length; }
 function paintTally(){
   const n = ALL.filter(isLearned).length;
-  document.getElementById("tallyCount").innerHTML = n + "<small>/100 learned</small>";
-  document.getElementById("tallyBar").style.width = n + "%";
+  document.getElementById("tallyCount").innerHTML = n + "<small>/" + TOTAL + " learned</small>";
+  document.getElementById("tallyBar").style.width = (n / TOTAL * 100) + "%";
 }
 
 /* ---------- home ---------- */
 function renderHome(){
-  const lane = (langKey, title, blurb) => {
-    const bs = BATCHES.filter(b=>b.lang===langKey);
+  const lane = (langKey, tier, title, blurb) => {
+    const bs = BATCHES.filter(b=>b.lang===langKey && b.tier===tier);
     const tiles = bs.map(b=>{
       const done = batchLearned(b);
       const dots = b.roots.map(r=>'<i class="'+(isLearned(r)?"on":"")+'"></i>').join("");
@@ -588,10 +720,14 @@ function renderHome(){
   };
   app.innerHTML =
     '<div class="banner"><div><h2>Mixed Quiz</h2>'
-    + '<p>Questions drawn at random from all 100 roots, Latin and Greek together.</p></div>'
+    + '<p>Questions drawn at random from any phase you choose, Latin and Greek together.</p></div>'
     + '<span class="spacer"></span><button class="cta" id="mixBtn" type="button">Start</button></div>'
-    + lane("latin","Latin","50 roots — the bones of everyday English")
-    + lane("greek","Greek","50 roots — the language of science and ideas");
+    + '<h2 class="phase-head">Phase One<span>the first hundred &mdash; the most common roots</span></h2>'
+    + lane("latin",1,"Latin","50 roots &mdash; the bones of everyday English")
+    + lane("greek",1,"Greek","50 roots &mdash; the language of science and ideas")
+    + '<h2 class="phase-head">Phase Two<span>the next hundred &mdash; common, then steadily less familiar</span></h2>'
+    + lane("latin",2,"Latin","50 more &mdash; from doing and making out to rarer ground")
+    + lane("greek",2,"Greek","50 more &mdash; deeper into science, medicine and measure");
   app.querySelectorAll(".tile").forEach(t=>{
     t.addEventListener("click", ()=>{
       state.batch = +t.dataset.batch; state.view="batch"; state.tab="cards";
@@ -776,7 +912,9 @@ function renderQuiz(){
 /* ---------- mixed quiz: draws from every set ---------- */
 function mixedPool(){
   const m = state.mixed;
-  return m.lang==="all" ? ALL : ALL.filter(r=>r.lang===m.lang);
+  return ALL.filter(r =>
+    (m.lang==="all" || r.lang===m.lang) &&
+    (m.tier==="all" || r.tier===+m.tier));
 }
 /* A distractor whose own spelling appears in the word would be a second
    right answer. Only roots absent from the word can stand as wrong options. */
@@ -817,13 +955,17 @@ function renderMixed(){
   if(m.phase === "setup"){
     const pool = mixedPool();
     inner = '<div class="setup"><h3>Mixed Quiz</h3>'
-      + '<p>Roots pulled at random from every set, alternating between spotting a root inside a word and recalling what it means.</p>'
+      + '<p>Roots pulled at random from the sets you pick, alternating between spotting a root inside a word and recalling what it means.</p>'
       + '<div class="field"><label>Which roots</label><div class="chips">'
       + [["all","Latin and Greek"],["latin","Latin only"],["greek","Greek only"]].map(([v,t])=>
           '<button class="chip mix" type="button" data-lang="'+v+'" aria-pressed="'+(m.lang===v)+'">'+t+'</button>').join("")
       + '</div></div>'
+      + '<div class="field"><label>Which phase</label><div class="chips">'
+      + [["all","Both phases"],["1","Phase 1 only"],["2","Phase 2 only"]].map(([v,t])=>
+          '<button class="chip mix" type="button" data-tier="'+v+'" aria-pressed="'+(m.tier===v)+'">'+t+'</button>').join("")
+      + '</div></div>'
       + '<div class="field"><label>How many questions</label><div class="chips">'
-      + [10,20,50].map(v=>'<button class="chip mix" type="button" data-len="'+v+'" aria-pressed="'+(m.len===v)+'">'
+      + [10,20,50,100].map(v=>'<button class="chip mix" type="button" data-len="'+v+'" aria-pressed="'+(m.len===v)+'">'
           + (v>=pool.length ? "All "+pool.length : v)+'</button>').join("")
       + '</div></div>'
       + '<button class="play" id="mixGo" type="button">Start the quiz</button></div>';
@@ -872,7 +1014,7 @@ function renderMixed(){
               ? (right?'Yes &mdash; ':'It is ')+'<b>'+esc(cur.root.r)+'</b>, '+esc(cur.root.m)+'. '
                 + esc(cur.word)+' means &ldquo;'+esc(cur.def)+'.&rdquo;'
               : (right?'Yes &mdash; ':'It is ')+'<b>'+esc(cur.root.m)+'</b>. As in '+esc(cur.root.w[0][0])+'.')
-          : 'Pulled from all 100 roots, both languages mixed.')
+          : 'Pulled at random from '+mixedPool().length+' roots.')
       + '</span>'
       + (m.picked ? '<button class="nav" id="mixNext" type="button">'+(m.at===m.qs.length-1?"Finish":"Next")+' &rarr;</button>' : '')
       + '</div></div><div class="qscore">Question '+(m.at+1)+' of '+m.qs.length+' &middot; '+m.score+' correct</div></div>';
@@ -880,8 +1022,9 @@ function renderMixed(){
   app.innerHTML = '<div class="bar" style="--hue:var(--mix)">'
     + '<button class="back" id="backBtn" type="button">&larr; All sets</button>'
     + '<span class="bar-title"><em>Mixed</em>'
-    + (m.phase==="setup" ? "All 100 roots"
-       : m.lang==="all" ? "Latin and Greek" : m.lang==="latin" ? "Latin only" : "Greek only")+'</span></div>'
+    + (m.phase==="setup" ? "All "+TOTAL+" roots"
+       : ((m.lang==="all" ? "Latin and Greek" : m.lang==="latin" ? "Latin only" : "Greek only")
+          + (m.tier==="all" ? "" : " · Phase "+m.tier)))+'</span></div>'
     + '<div class="stage" style="--hue:var(--mix)">'+inner+'</div>';
 
   document.getElementById("backBtn").onclick = ()=>{
@@ -889,7 +1032,9 @@ function renderMixed(){
   };
   if(m.phase === "setup"){
     app.querySelectorAll(".chip.mix").forEach(c=>c.onclick = ()=>{
-      if(c.dataset.lang) m.lang=c.dataset.lang; else m.len=+c.dataset.len;
+      if(c.dataset.lang) m.lang=c.dataset.lang;
+      else if(c.dataset.tier) m.tier=c.dataset.tier;
+      else m.len=+c.dataset.len;
       renderMixed();
     });
     document.getElementById("mixGo").onclick = ()=>{ buildMixed(); m.phase="play"; renderMixed(); };
