@@ -16,8 +16,10 @@ ul{list-style:none;margin:0;padding:0;display:grid;gap:12px}
 ul a{display:block;text-decoration:none;color:inherit;background:var(--card);border:1px solid var(--line);
   border-left:4px solid var(--accent);border-radius:10px;padding:16px 18px}
 ul a:hover,ul a:focus-visible{border-color:var(--accent)}
-ul a b{display:block;font-size:1.15rem}
-ul a span{color:var(--ink-2);font-size:.95rem}
+ul a .t{display:flex;flex-wrap:wrap;align-items:baseline;column-gap:10px}
+ul a b{font-size:1.15rem;line-height:1.25}
+ul a time{color:var(--ink-2);font-size:.8rem;font-weight:400;white-space:nowrap}
+ul a .t + span{display:block;color:var(--ink-2);font-size:.95rem}
 p.home{margin:0 0 18px}
 p.home a{color:var(--accent);text-decoration:none;font-size:.95rem;padding:10px 0;display:inline-block}
 p.home a:hover,p.home a:focus-visible{text-decoration:underline}
@@ -28,15 +30,19 @@ p.home a:hover,p.home a:focus-visible{text-decoration:underline}
   <p class="home"><a href="/">← Floating Shores</a></p>
   <h1>Flashcard Games</h1>
   <p class="sub">Tap a game to play.</p>
+  <!-- Oldest at the top. To add a game, append an <li> at the bottom: <b>title</b>, <time datetime="YYYY-MM-DD">Mon D, YYYY</time>, then the one-line description. -->
   <ul>
-    <li><a href="https://flower-flashcards.pages.dev"><b>Flower Flashcards</b><span>Name the flower in the picture</span></a></li>
-    <li><a href="https://founders-flashcards.pages.dev"><b>Founders Flashcards</b><span>Portraits of the founders, and who they were</span></a></li>
-    <li><a href="https://clothing-flashcards.pages.dev"><b>Clothing Flashcards</b><span>Name the shirt, shoe, coat, or other clothes</span></a></li>
-    <li><a href="https://country-clues.pages.dev"><b>Country Clues</b><span>Guess the country from a picture clue</span></a></li>
-    <li><a href="https://kitchen-flashcards.pages.dev"><b>Kitchen Flashcards</b><span>Name the spoon, pot, whisk, or other kitchen tool</span></a></li>
-    <li><a href="https://closeup-quiz.pages.dev"><b>Close-up Quiz</b><span>Guess everyday things seen through a microscope</span></a></li>
-    <li><a href="https://fruit-closeup.pages.dev"><b>Fruit Close-up</b><span>Name the fruit from a close-up of peel or seeds</span></a></li>
-    <li><a href="https://tools-flashcards.pages.dev"><b>Tools Flashcards</b><span>Name the hammer, saw, drill, or other tool</span></a></li>
+    <li><a href="https://flower-flashcards.pages.dev"><span class="t"><b>Flower Flashcards</b><time datetime="2026-10-14">Oct 14, 2026</time></span><span>Name the flower in the picture</span></a></li>
+    <li><a href="https://founders-flashcards.pages.dev"><span class="t"><b>Founders Flashcards</b><time datetime="2026-10-14">Oct 14, 2026</time></span><span>Portraits of the founders, and who they were</span></a></li>
+    <li><a href="https://clothing-flashcards.pages.dev"><span class="t"><b>Clothing Flashcards</b><time datetime="2026-10-15">Oct 15, 2026</time></span><span>Name the shirt, shoe, coat, or other clothes</span></a></li>
+    <li><a href="https://country-clues.pages.dev"><span class="t"><b>Country Clues</b><time datetime="2026-10-15">Oct 15, 2026</time></span><span>Guess the country from a picture clue</span></a></li>
+    <li><a href="https://kitchen-flashcards.pages.dev"><span class="t"><b>Kitchen Flashcards</b><time datetime="2026-10-16">Oct 16, 2026</time></span><span>Name the spoon, pot, whisk, or other kitchen tool</span></a></li>
+    <li><a href="https://closeup-quiz.pages.dev"><span class="t"><b>Close-up Quiz</b><time datetime="2026-10-17">Oct 17, 2026</time></span><span>Guess everyday things seen through a microscope</span></a></li>
+    <li><a href="https://fruit-closeup.pages.dev"><span class="t"><b>Fruit Close-up</b><time datetime="2026-10-17">Oct 17, 2026</time></span><span>Name the fruit from a close-up of peel or seeds</span></a></li>
+    <li><a href="https://tools-flashcards.pages.dev"><span class="t"><b>Tools Flashcards</b><time datetime="2026-10-21">Oct 21, 2026</time></span><span>Name the hammer, saw, drill, or other tool</span></a></li>
+    <li><a href="https://closeup-mixed-1.pages.dev"><span class="t"><b>Close-up: Mixed Mystery 1</b><time datetime="2026-10-21">Oct 21, 2026</time></span><span>A mixed bag of animals, plants, foods and everyday things up close</span></a></li>
+    <li><a href="https://closeup-raw-foods.pages.dev"><span class="t"><b>Close-up: Raw Foods</b><time datetime="2026-10-21">Oct 21, 2026</time></span><span>Vegetables and other raw foods up close</span></a></li>
+    <li><a href="https://closeup-mixed-2.pages.dev"><span class="t"><b>Close-up: Mixed Mystery 2</b><time datetime="2026-10-21">Oct 21, 2026</time></span><span>Household objects, gadgets, baked foods and nature up close</span></a></li>
   </ul>
 </div>
 </body>
