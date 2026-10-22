@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Flashcard Games</title>
+<style>
+:root{--paper:#F5F3EE;--card:#FFFFFF;--line:#DDD8CE;--ink:#1D1B18;--ink-2:#5C574F;--accent:#2F6B6B}
+@media (prefers-color-scheme:dark){:root{--paper:#161616;--card:#202020;--line:#343230;--ink:#ECE9E3;--ink-2:#A8A39A;--accent:#7FC4C4}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:640px;margin:0 auto;padding:40px 16px 60px}
+h1{font:600 2rem/1.1 Georgia,"Times New Roman",serif;margin:0 0 6px}
+p.sub{margin:0 0 28px;color:var(--ink-2)}
+ul{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+ul a{display:block;text-decoration:none;color:inherit;background:var(--card);border:1px solid var(--line);
+  border-left:4px solid var(--accent);border-radius:10px;padding:16px 18px}
+ul a:hover,ul a:focus-visible{border-color:var(--accent)}
+ul a b{display:block;font-size:1.15rem}
+ul a span{color:var(--ink-2);font-size:.95rem}
+p.home{margin:0 0 18px}
+p.home a{color:var(--accent);text-decoration:none;font-size:.95rem;padding:10px 0;display:inline-block}
+p.home a:hover,p.home a:focus-visible{text-decoration:underline}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="home"><a href="/">← Floating Shores</a></p>
+  <h1>Flashcard Games</h1>
+  <p class="sub">Tap a game to play.</p>
+  <ul>
+    <li><a href="https://flower-flashcards.pages.dev"><b>Flower Flashcards</b><span>Name the flower in the picture</span></a></li>
+    <li><a href="https://founders-flashcards.pages.dev"><b>Founders Flashcards</b><span>Portraits of the founders, and who they were</span></a></li>
+    <li><a href="https://clothing-flashcards.pages.dev"><b>Clothing Flashcards</b><span>Name the shirt, shoe, coat, or other clothes</span></a></li>
+    <li><a href="https://country-clues.pages.dev"><b>Country Clues</b><span>Guess the country from a picture clue</span></a></li>
+    <li><a href="https://kitchen-flashcards.pages.dev"><b>Kitchen Flashcards</b><span>Name the spoon, pot, whisk, or other kitchen tool</span></a></li>
+    <li><a href="https://closeup-quiz.pages.dev"><b>Close-up Quiz</b><span>Guess everyday things seen through a microscope</span></a></li>
+    <li><a href="https://fruit-closeup.pages.dev"><b>Fruit Close-up</b><span>Name the fruit from a close-up of peel or seeds</span></a></li>
+    <li><a href="https://tools-flashcards.pages.dev"><b>Tools Flashcards</b><span>Name the hammer, saw, drill, or other tool</span></a></li>
+  </ul>
+</div>
+</body>
+</html>
