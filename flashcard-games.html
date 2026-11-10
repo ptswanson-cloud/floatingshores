@@ -23,6 +23,12 @@ ul a .t + span{display:block;color:var(--ink-2);font-size:.95rem}
 p.home{margin:0 0 18px}
 p.home a{color:var(--accent);text-decoration:none;font-size:.95rem;padding:10px 0;display:inline-block}
 p.home a:hover,p.home a:focus-visible{text-decoration:underline}
+ul li{position:relative}
+ul li .done{position:absolute;z-index:2;left:4px;top:0;bottom:0;width:44px;min-height:44px;margin:0;display:flex;align-items:center;justify-content:center;cursor:pointer;user-select:none;touch-action:manipulation}
+ul li .done input{width:20px;height:20px;margin:0;accent-color:var(--accent);cursor:pointer}
+ul li .done input:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+ul li.has-check > a{padding-left:46px}
+ul li.is-done > a{background:color-mix(in srgb, var(--accent) 10%, var(--card))}
 </style>
 </head>
 <body>
@@ -30,7 +36,7 @@ p.home a:hover,p.home a:focus-visible{text-decoration:underline}
   <p class="home"><a href="/">← Floating Shores</a></p>
   <h1>Flashcard Games</h1>
   <p class="sub">Tap a game to play.</p>
-  <!-- Oldest at the top. To add a game, append an <li> at the bottom: <b>title</b>, <time datetime="YYYY-MM-DD">Mon D, YYYY</time>, then the one-line description. -->
+  <!-- Oldest at the top. To add a game, append an <li> at the bottom: <b>title</b>, <time datetime="YYYY-MM-DD">Mon D, YYYY</time>, then the one-line description. Each row gets a done checkbox; checks are saved in this browser. -->
   <ul>
     <li><a href="https://flower-flashcards.pages.dev"><span class="t"><b>Flower Flashcards</b><time datetime="2026-10-14">Oct 14, 2026</time></span><span>Name the flower in the picture</span></a></li>
     <li><a href="https://founders-flashcards.pages.dev"><span class="t"><b>Founders Flashcards</b><time datetime="2026-10-14">Oct 14, 2026</time></span><span>Portraits of the founders, and who they were</span></a></li>
@@ -67,5 +73,80 @@ p.home a:hover,p.home a:focus-visible{text-decoration:underline}
     <li><a href="https://what-should-you-do-quiz.pages.dev"><span class="t"><b>What Should You Do?</b><time datetime="2026-11-09">Nov 9, 2026</time></span><span>24 situation pictures for little kids: spilled cup, bear nearby, fire alarm, dirty face, rainy day, hot stove, and more</span></a></li>
   </ul>
 </div>
+<script>
+(function () {
+  var list = document.querySelector(".wrap > ul");
+  if (!list) return;
+  var STORAGE_KEY = "flashcard-games-done";
+  var done = {};
+  var rows = [];
+
+  function readDone() {
+    try {
+      var saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
+      if (saved && typeof saved === "object" && !Array.isArray(saved)) return saved;
+    } catch (err) {}
+    return {};
+  }
+
+  function persist() {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(done));
+    } catch (err) {}
+  }
+
+  function apply() {
+    done = readDone();
+    for (var i = 0; i < rows.length; i++) {
+      var on = !!done[rows[i].href];
+      rows[i].box.checked = on;
+      rows[i].li.classList.toggle("is-done", on);
+    }
+  }
+
+  for (var i = 0; i < list.children.length; i++) {
+    var li = list.children[i];
+    if (li.tagName !== "LI") continue;
+    var link = li.querySelector("a[href]");
+    if (!link) continue;
+    var href = link.getAttribute("href");
+    if (!href) continue;
+    var titleEl = link.querySelector("b");
+    var title = titleEl && titleEl.textContent ? titleEl.textContent.replace(/\s+/g, " ").trim() : "This game";
+
+    var label = document.createElement("label");
+    label.className = "done";
+    var box = document.createElement("input");
+    box.type = "checkbox";
+    box.setAttribute("aria-label", title + ", done");
+    label.appendChild(box);
+    li.classList.add("has-check");
+    li.insertBefore(label, li.firstChild);
+
+    // The control sits outside the link. Stop the click here so it cannot follow the game.
+    label.addEventListener("click", function (event) {
+      event.stopPropagation();
+    });
+    box.addEventListener("click", function (event) {
+      event.stopPropagation();
+    });
+
+    (function (row) {
+      row.box.addEventListener("change", function () {
+        if (row.box.checked) done[row.href] = true;
+        else delete done[row.href];
+        row.li.classList.toggle("is-done", row.box.checked);
+        persist();
+      });
+    })({ li: li, box: box, href: href });
+
+    rows.push({ li: li, box: box, href: href });
+  }
+
+  apply();
+  document.addEventListener("DOMContentLoaded", apply);
+  window.addEventListener("pageshow", apply);
+})();
+</script>
 </body>
 </html>
