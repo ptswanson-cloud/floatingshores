@@ -396,10 +396,10 @@ button{font:inherit;color:inherit;cursor:pointer}
   <header class="top">
     <div class="brand">
       <h1>The Root Table</h1>
-      <p>200 Greek and Latin word roots in two phases, ten to a set. Learn a set, check them off, and they stop coming back.</p>
+      <p>300 Greek and Latin word roots in three phases, ten to a set. Learn a set, check them off, and they stop coming back.</p>
     </div>
     <div class="tally">
-      <div class="count" id="tallyCount">0<small>/200 learned</small></div>
+      <div class="count" id="tallyCount">0<small>/300 learned</small></div>
       <div class="meter"><i id="tallyBar" style="width:0%"></i></div>
     </div>
   </header>
@@ -643,10 +643,126 @@ const GREEK2 = [
   {r:"zo",        alts:["zo"],              m:"animal, living being",w:[["zoology","the study of animals"],["protozoa","the first animals"],["zodiac","the circle of animal signs"]]}
 ];
 
+/* ---------- Phase Three: the next fifty Latin roots ---------- */
+const LATIN3 = [
+  {r:"re-",       alts:["re"],              m:"again, back",        w:[["return","to turn back"],["rewrite","to write again"],["rebuild","to build again"]]},
+  {r:"inter-",    alts:["inter"],           m:"between, among",     w:[["international","between nations"],["internet","a net among nets"],["interlude","a space between"]]},
+  {r:"de-",       alts:["de"],              m:"down, away, off",    w:[["deflate","to let the air down and out"],["dethrone","to take down from the throne"],["decompose","to break down"]]},
+  {r:"dis-",      alts:["dis"],             m:"apart, not",         w:[["disappear","to pass out of sight"],["disagree","to not agree"],["disconnect","to take apart"]]},
+  {r:"in-, im-",  alts:["in","im"],         m:"in, into, or not",   w:[["invisible","not able to be seen"],["import","to bring into a country"],["inhabit","to live in"]], n:"The same prefix can mean <b>not</b> — as in invisible — or <b>in</b> or <b>into</b> — as in inhabit and import."},
+  {r:"pro-",      alts:["pro"],             m:"forward, for, forth",w:[["proceed","to go forward"],["propose","to put forward"],["promote","to move forward"]]},
+  {r:"ex-",       alts:["ex"],              m:"out, out of",        w:[["exit","a way out"],["export","to carry goods out"],["exhale","to breathe out"]]},
+  {r:"con-, com-",alts:["con","com","co"],  m:"with, together",     w:[["conduct","to lead together"],["combine","to join two things together"],["cooperate","to work with someone"]]},
+  {r:"super, sur",alts:["super","sur"],     m:"above, over",        w:[["superhero","a hero above the ordinary"],["supermarket","a market bigger than the usual"],["surface","the top, over the rest"]]},
+  {r:"ad-",       alts:["ad"],              m:"to, toward",         w:[["adapt","to fit toward a new use"],["adverb","a word added to a verb"],["adhere","to stick to"]]},
+
+  {r:"tend, tens, tent",alts:["tend","tens","tent"], m:"stretch",   w:[["extend","to stretch out"],["tension","a stretched tightness"],["attend","to stretch your mind toward"]], n:"Phase Two's <b>ten, tain</b> means <b>hold</b> — a different family. This one, from the verb for stretching, gives us extend and tension."},
+  {r:"sequ, secut",alts:["sequ","secut"],   m:"follow",             w:[["sequence","things that follow in order"],["consecutive","following one after another"],["sequel","the story that follows"]]},
+  {r:"sed, sess, sid",alts:["sed","sess","sid"], m:"sit",           w:[["sediment","what sits at the bottom"],["session","a sitting, a meeting"],["preside","to sit in charge"]]},
+  {r:"spir",      alts:["spir"],            m:"breathe",            w:[["inspire","to breathe life into"],["spirit","the breath of life"],["respiration","the act of breathing"]]},
+  {r:"jud, jur, jus",alts:["jud","jur","jus"], m:"law, judge",      w:[["judge","one who judges"],["jury","a group sworn to judge"],["justice","what the law says is fair"]]},
+  {r:"ple, plet, plen",alts:["plet","plen","ple"], m:"fill",        w:[["complete","filled out, finished"],["plenty","more than a full amount"],["deplete","to empty of what filled it"]]},
+  {r:"solv, solut",alts:["solv","solut"],   m:"loosen, untie",      w:[["solve","to loosen a problem"],["solution","the untying of a problem"],["dissolve","to loosen into a liquid"]]},
+  {r:"fund, fus", alts:["fund","fus"],      m:"pour",               w:[["refund","to pour money back"],["fusion","a pouring together"],["confuse","to pour together so it blurs"]]},
+  {r:"press",     alts:["press"],           m:"press, squeeze",     w:[["pressure","a pressing force"],["express","to press out, to say"],["compress","to press together"]]},
+  {r:"ger, gest", alts:["gest","ger"],      m:"bring, carry on",    w:[["gesture","a motion you carry on with the body"],["digest","to carry food through the body"],["suggest","to bring an idea up from under"]]},
+
+  {r:"uni",       alts:["uni"],             m:"one",                w:[["unit","a single one"],["unique","the only one of its kind"],["unicorn","a one-horned creature"]]},
+  {r:"val",       alts:["val"],             m:"worth, be strong",   w:[["value","what a thing is worth"],["valid","strong enough to hold up"],["valor","strength of heart"]]},
+  {r:"ver",       alts:["ver"],             m:"true",               w:[["verify","to prove true"],["verdict","a true saying, a judgment"],["veracity","truthfulness"]]},
+  {r:"vinc, vict",alts:["vinc","vict"],     m:"conquer",            w:[["victory","a conquering"],["convince","to conquer someone's doubt"],["invincible","not able to be conquered"]]},
+  {r:"volv, volut",alts:["volv","volut","volu"], m:"roll, turn",    w:[["revolve","to roll around"],["evolution","a rolling out, a gradual change"],["volume","a rolled scroll, then a book"]]},
+  {r:"popul, publ",alts:["popul","publ"],   m:"people",             w:[["population","the people of a place"],["public","of the people"],["popular","liked by the people"]]},
+  {r:"soci",      alts:["soci"],            m:"companion",          w:[["social","of companions, of company"],["society","companions living together"],["associate","to keep company with"]]},
+  {r:"verb",      alts:["verb"],            m:"word",               w:[["verb","an action word"],["verbal","in words"],["proverb","a saying put forth in words"]]},
+  {r:"via",       alts:["via"],             m:"way",                w:[["viaduct","a road carried across"],["deviate","to turn from the way"],["trivia","three ways, little facts along the way"]]},
+  {r:"son",       alts:["son"],             m:"sound, noise",       w:[["sonic","of sound"],["resonate","to sound again"],["unison","one sound, together"]]},
+
+  {r:"cis, cide", alts:["cide","cis"],      m:"cut, kill",          w:[["decide","to cut a choice off from the rest"],["incision","a cut into"],["pesticide","a killer of pests"]], n:"Phase Two's <b>cid</b> (in cad, cas, cid) means <b>fall</b> — a different family. This <b>cis, cide</b> means to cut or kill."},
+  {r:"lex, legis",alts:["lex","legis","legi"], m:"law",             w:[["legislature","the body that writes the laws"],["legislate","to make law"],["legitimacy","the standing of being lawful"]], n:"Phase Two's <b>leg, lect</b> means <b>read, choose, gather</b> — a different Latin family. This one is the word for law."},
+  {r:"capit",     alts:["capit"],           m:"head, chief",        w:[["capital","the head city"],["decapitate","to take the head off"],["capitol","the building at the head of government"]], n:"Phase One's <b>cap, cept</b> means <b>take, seize</b> — a different family, from the verb for taking. This one is the word for head."},
+  {r:"civ",       alts:["civ"],             m:"citizen",            w:[["civic","of the citizen"],["civil","of citizens, polite"],["civilization","the life of citizens together"]]},
+  {r:"her, hes",  alts:["her","hes"],       m:"stick",              w:[["adhere","to stick to"],["adhesive","a stuff that sticks"],["hesitate","to get stuck, to pause"]]},
+  {r:"term, termin",alts:["termin","term"], m:"end, boundary",      w:[["terminate","to bring to an end"],["terminal","at the end"],["determine","to set the boundaries of"]]},
+  {r:"tex, text", alts:["text","tex"],      m:"weave",              w:[["textile","a woven cloth"],["text","woven words"],["texture","the feel of a weave"]]},
+  {r:"spond, spons",alts:["spond","spons"], m:"pledge, answer",     w:[["respond","to answer back"],["sponsor","one who pledges for another"],["responsible","able to answer for something"]]},
+  {r:"cre, cresc, crea",alts:["cresc","crea","cre"], m:"grow, make", w:[["create","to make, to bring into being"],["increase","to grow larger"],["crescent","the growing moon"]]},
+  {r:"cern, cert",alts:["cern","cret","cert"], m:"sift, make sure",  w:[["discern","to sift one thing from another"],["secret","something sifted apart, kept hidden"],["certain","sifted out, made sure"]]},
+
+  {r:"anim",      alts:["anim"],            m:"mind, spirit, life", w:[["animal","a living creature"],["animate","to give life to"],["unanimous","of one mind"]]},
+  {r:"fort",      alts:["fort"],            m:"strong, firm",       w:[["fortify","to make strong"],["comfort","strength given with someone"],["effort","a putting of strength out"]]},
+  {r:"labor",     alts:["labor"],           m:"work, toil",         w:[["laboratory","a place of work"],["elaborate","worked out with care"],["collaborate","to work together"]]},
+  {r:"put",       alts:["put"],             m:"think, consider",    w:[["compute","to think together, to reckon"],["reputation","what people think of you"],["dispute","to think against, to argue"]]},
+  {r:"pet",       alts:["pet"],             m:"seek, aim at",       w:[["compete","to seek together, to strive"],["petition","a request you seek"],["appetite","a seeking toward food"]], n:"Greek <b>petr</b> means <b>rock</b> — a different root that starts the same way."},
+  {r:"part",      alts:["part"],            m:"part, share",        w:[["participate","to take a part in"],["depart","to part from a place"],["particle","a little part"]]},
+  {r:"vac",       alts:["vac"],             m:"empty",              w:[["vacant","empty"],["vacuum","an empty space"],["vacation","a time emptied of ordinary work"]]},
+  {r:"vor",       alts:["vor"],             m:"eat, devour",        w:[["carnivore","a flesh-eater"],["herbivore","a plant-eater"],["voracious","wanting to devour a lot"]]},
+  {r:"pot, poss", alts:["pot","poss"],      m:"able, powerful",     w:[["potent","powerful"],["potential","able to become"],["possible","able to be done"]]},
+  {r:"trib, tribut",alts:["tribut","trib"], m:"assign, grant",      w:[["tribute","a grant paid to another"],["contribute","to grant your share"],["distribute","to assign out in shares"]]}
+];
+
+/* ---------- Phase Three: the next fifty Greek roots ---------- */
+const GREEK3 = [
+  {r:"dys",       alts:["dys"],             m:"bad, difficult",     w:[["dyslexia","difficulty with reading"],["dystrophy","a disorder of nourishment and growth"],["dysfunction","working badly"]]},
+  {r:"eu",        alts:["eu"],              m:"well, good",         w:[["eulogy","good words spoken of someone"],["euphemism","a milder, better-sounding phrase"],["euphoria","a feeling of great well-being"]]},
+  {r:"endo",      alts:["endo"],            m:"within, inside",     w:[["endocrine","secreting within the body"],["endoskeleton","a skeleton on the inside"],["endoscope","a tool for looking inside"]]},
+  {r:"ecto, exo", alts:["ecto","exo"],      m:"outside, external",  w:[["exoskeleton","a skeleton on the outside"],["ectoderm","the outer layer of a developing animal"],["exothermic","giving heat out"]]},
+  {r:"cata",      alts:["cata"],            m:"down",               w:[["catastrophe","a sudden downturn"],["catalog","a list written down"],["catapult","a machine that hurls down and out"]]},
+  {r:"para",      alts:["para"],            m:"beside, alongside",  w:[["parallel","lying alongside, never meeting"],["paradox","an idea that stands beside itself, a seeming contradiction"],["parasite","a living thing that feeds beside another"]], n:"Latin <b>par</b> means <b>equal</b> — a different root that looks nearly the same."},
+  {r:"hemi",      alts:["hemi"],            m:"half",               w:[["hemisphere","half a globe"],["hemicycle","a half circle"],["hemiplegia","paralysis of one half of the body"]]},
+  {r:"penta",     alts:["penta"],           m:"five",               w:[["pentagon","a five-angled shape"],["pentagram","a five-pointed star"],["pentathlon","a contest of five events"]]},
+  {r:"tetra",     alts:["tetra"],           m:"four",               w:[["tetrahedron","a solid with four faces"],["tetrapod","a four-footed animal"],["tetralogy","a set of four works"]]},
+  {r:"oct, octa", alts:["octo","octa","oct"], m:"eight",            w:[["octopus","an eight-footed sea animal"],["octagon","an eight-angled shape"],["October","once the eighth month"]]},
+
+  {r:"deca",      alts:["deca"],            m:"ten",                w:[["decade","a span of ten years"],["decathlon","a contest of ten events"],["decapod","a ten-footed animal, like a crab"]]},
+  {r:"gnos",      alts:["gnos"],            m:"know, recognize",    w:[["diagnosis","a knowing all the way through"],["agnostic","one who says the thing cannot be known"],["prognosis","a knowing beforehand, an outlook"]]},
+  {r:"theo",      alts:["theo","thei","theist"], m:"god",           w:[["theology","the study of God"],["monotheism","belief in one god"],["atheist","one who is without a god"]], n:"Not the same as <b>thes</b> (put, place) or <b>thea</b> (look, view), which only look similar."},
+  {r:"tom, tomy", alts:["tomy","tom"],      m:"cut, slice",         w:[["anatomy","a cutting up to study the body"],["atom","something once thought uncuttable"],["appendectomy","a cutting-out of the appendix"]]},
+  {r:"cyt",       alts:["cyt"],             m:"cell",               w:[["cytoplasm","the living stuff of a cell"],["cytology","the study of cells"],["leukocyte","a white blood cell"]]},
+  {r:"lys, lysis",alts:["lysis","lys"],     m:"loosen, dissolve",   w:[["analysis","a loosening apart to understand"],["paralysis","a loosening of the ability to move"],["electrolysis","a loosening by electricity"]]},
+  {r:"tox",       alts:["tox"],             m:"poison",             w:[["toxic","poisonous"],["toxin","a poison"],["detox","to take the poison out"]]},
+  {r:"typ",       alts:["typ"],             m:"stamp, model",       w:[["type","a stamp, a kind"],["typical","matching the model"],["typewriter","a machine that stamps letters"]]},
+  {r:"plas, plast, plasm",alts:["plasm","plast","plas"], m:"mold, form", w:[["plastic","able to be molded"],["plasma","a molded, living stuff"],["cytoplasm","the molded living stuff of a cell"]]},
+  {r:"phag",      alts:["phag"],            m:"eat, swallow",       w:[["esophagus","the tube that swallows food down"],["macrophage","a large cell that eats invaders"],["sarcophagus","a stone coffin, a flesh-eater"]]},
+
+  {r:"top",       alts:["top"],             m:"place, region",      w:[["topic","the place a talk is about"],["topography","the writing-out of a place's shape"],["utopia","a good place that is no place"]]},
+  {r:"trop",      alts:["trop"],            m:"turn, manner",       w:[["tropical","of the turning zone near the equator"],["trope","a turn of phrase"],["phototropic","turning toward the light"]]},
+  {r:"troph",     alts:["troph"],           m:"nourish",            w:[["atrophy","a wasting from lack of nourishment"],["trophy","a prize, first a memorial of nourishment and victory"],["dystrophy","a disorder of nourishment and growth"]]},
+  {r:"oxy",       alts:["oxy","oxi"],        m:"sharp, acid",        w:[["oxygen","the sharp acid-maker, the gas we breathe"],["oxide","a compound of oxygen"],["oxymoron","a sharp dullness, two opposite words put together"]]},
+  {r:"iso",       alts:["iso"],             m:"equal, alike",       w:[["isotope","an element in an equal place, a twin form"],["isosceles","a triangle with two equal legs"],["isometric","of equal measure"]]},
+  {r:"chlor",     alts:["chlor"],           m:"green",              w:[["chlorophyll","the green of a leaf"],["chlorine","the green-yellow element"],["chloroplast","the green body in a plant cell"]]},
+  {r:"petr",      alts:["petr"],            m:"rock",               w:[["petrify","to turn to rock"],["petroleum","rock oil"],["petroglyph","a carving in rock"]], n:"Latin <b>pet</b> means <b>seek, aim at</b> — a different root that starts the same way."},
+  {r:"oste",      alts:["oste"],            m:"bone",               w:[["osteoporosis","a thinning of the bones"],["osteopath","one who treats through the bones"],["osteology","the study of bones"]]},
+  {r:"cephal",    alts:["cephal"],          m:"head",               w:[["encephalitis","inflammation in the head"],["cephalopod","a head-footed animal, like an octopus"],["hydrocephalus","water on the head"]]},
+  {r:"ball, bol", alts:["ball","blem","bol"], m:"throw, toss",      w:[["ballistic","of things thrown"],["problem","a thing thrown forward to be solved"],["symbol","two meanings thrown together"]]},
+
+  {r:"centr",     alts:["centr"],           m:"center",             w:[["central","at the center"],["centrifuge","a machine that flings things from the center"],["eccentric","off from the center, unusual"]], n:"Latin <b>cent</b> means <b>hundred</b> — a different root, though <b>center</b> happens to begin with the same letters."},
+  {r:"thea, theor",alts:["theor","theat","thea"], m:"look, view",   w:[["theater","a place for looking"],["theory","a way of looking at how things work"],["theorem","a truth arrived at by looking closely"]], n:"Not the same as <b>theo</b> (god) or <b>thes</b> (put, place)."},
+  {r:"histor",    alts:["histor"],          m:"inquiry, narrative", w:[["history","an inquiry into what happened"],["historical","of that inquiry, of the past"],["prehistory","the time before written narrative"]]},
+  {r:"ide",       alts:["ide"],             m:"idea, form",         w:[["idea","a form in the mind"],["ideal","matching the perfect form"],["ideology","a system of ideas"]], n:"Phase Two's <b>idi</b> means <b>one's own</b> — a different root, though it looks close."},
+  {r:"eth, ethic",alts:["ethic","ethos","eth"], m:"character, custom", w:[["ethics","the study of right character"],["ethical","of good character"],["ethos","the character of a person or a people"]], n:"Phase Two's <b>ethn</b> means <b>nation, people</b> — a different root that looks close."},
+  {r:"prag, prac",alts:["prag","prac"],     m:"do, practice",       w:[["practice","to do a thing again and again"],["practical","able to be done, useful"],["pragmatic","concerned with what works in the doing"]]},
+  {r:"mech, mach",alts:["mech","mach"],     m:"machine",            w:[["machine","a device that does work"],["mechanical","of machines"],["mechanism","the working of a machine"]]},
+  {r:"myth",      alts:["myth"],            m:"story, legend",      w:[["myth","an old story of gods or beginnings"],["mythology","a body of such stories"],["mythical","of legend, not of fact"]]},
+  {r:"muse",      alts:["muse","mus"],      m:"Muse, the arts",     w:[["music","the art of the Muses"],["museum","a place of the Muses, of the arts"],["musician","one who makes music"]]},
+  {r:"poe, poie", alts:["poie","poe"],      m:"make, compose",      w:[["poet","a maker of verse"],["poetry","made verse"],["onomatopoeia","the making of a word from a sound"]]},
+
+  {r:"therap",    alts:["therap"],          m:"treat, heal",        w:[["therapy","a treatment"],["therapeutic","helping to heal"],["chemotherapy","a healing treatment with chemicals"]]},
+  {r:"athl",      alts:["athl"],            m:"prize, sport",       w:[["athlete","one who competes for a prize"],["athletic","of sport and contest"],["triathlon","a contest of three sports"]]},
+  {r:"crypt",     alts:["crypt"],           m:"hidden, secret",     w:[["cryptic","hidden in meaning"],["encrypt","to hide in a code"],["cryptography","the writing of hidden codes"]]},
+  {r:"mnem",      alts:["mnem","mnes","mne"], m:"memory",           w:[["mnemonic","a trick for memory"],["amnesia","a being without memory"],["amnesty","a forgetting of a wrong"]], n:"Latin <b>mem</b> also has to do with remembering — a different language's root for a nearby idea."},
+  {r:"paleo",     alts:["paleo"],           m:"ancient, old",       w:[["paleontology","the study of ancient life"],["Paleolithic","the old stone age"],["Paleozoic","an ancient era of life"]]},
+  {r:"phem, phas",alts:["phem","phas","phet"], m:"speak, speech",   w:[["euphemism","a better-sounding way of speaking"],["aphasia","a loss of speech"],["prophet","one who speaks for another"]]},
+  {r:"phor",      alts:["phor"],            m:"bear, carry forth",  w:[["metaphor","a meaning carried beyond the literal"],["semaphore","a device that carries a sign"],["euphoria","a well-being borne within"]]},
+  {r:"hod, odus", alts:["hod","odus","odo"], m:"way, path",         w:[["method","a way after a way, a path of doing"],["exodus","a way out"],["odometer","a measurer of the way"]]},
+  {r:"saur",      alts:["saur"],            m:"lizard",             w:[["dinosaur","a terrible lizard"],["sauropod","a lizard-footed giant"],["stegosaurus","a lizard with a roof of plates"]]},
+  {r:"bacter",    alts:["bacter"],          m:"rod, bacteria",      w:[["bacteria","tiny rod-shaped living things"],["bacteriophage","a virus that eats bacteria"],["bacteriology","the study of bacteria"]]}
+];
+
 /* ---------- build batches ---------- */
 const BATCHES = [];
-/* keyTag namespaces phase two's saved keys ("latin2-0"), so the checkmarks
-   already earned on phase one keep pointing at the same roots. */
+/* keyTag namespaces later phases' saved keys ("latin2-0", "latin3-0"), so
+   the checkmarks already earned on earlier phases keep pointing at the same roots. */
 function makeBatches(list, lang, label, tier, startNum, keyTag){
   for(let i=0;i<list.length;i+=10){
     const idx = BATCHES.length, n = startNum + Math.floor(i/10);
@@ -662,6 +778,8 @@ makeBatches(LATIN,"latin","Latin",1,1,"");
 makeBatches(GREEK,"greek","Greek",1,1,"");
 makeBatches(LATIN2,"latin","Latin",2,6,"2");
 makeBatches(GREEK2,"greek","Greek",2,6,"2");
+makeBatches(LATIN3,"latin","Latin",3,11,"3");
+makeBatches(GREEK3,"greek","Greek",3,11,"3");
 const ALL = BATCHES.flatMap(b=>b.roots);
 const TOTAL = ALL.length;
 
@@ -727,7 +845,10 @@ function renderHome(){
     + lane("greek",1,"Greek","50 roots &mdash; the language of science and ideas")
     + '<h2 class="phase-head">Phase Two<span>the next hundred &mdash; common, then steadily less familiar</span></h2>'
     + lane("latin",2,"Latin","50 more &mdash; from doing and making out to rarer ground")
-    + lane("greek",2,"Greek","50 more &mdash; deeper into science, medicine and measure");
+    + lane("greek",2,"Greek","50 more &mdash; deeper into science, medicine and measure")
+    + '<h2 class="phase-head">Phase Three<span>the next hundred &mdash; still common, reaching farther</span></h2>'
+    + lane("latin",3,"Latin","50 more &mdash; prefixes and stems still hiding in everyday English")
+    + lane("greek",3,"Greek","50 more &mdash; farther into science, story, and making");
   app.querySelectorAll(".tile").forEach(t=>{
     t.addEventListener("click", ()=>{
       state.batch = +t.dataset.batch; state.view="batch"; state.tab="cards";
@@ -961,11 +1082,11 @@ function renderMixed(){
           '<button class="chip mix" type="button" data-lang="'+v+'" aria-pressed="'+(m.lang===v)+'">'+t+'</button>').join("")
       + '</div></div>'
       + '<div class="field"><label>Which phase</label><div class="chips">'
-      + [["all","Both phases"],["1","Phase 1 only"],["2","Phase 2 only"]].map(([v,t])=>
+      + [["all","All phases"],["1","Phase 1 only"],["2","Phase 2 only"],["3","Phase 3 only"]].map(([v,t])=>
           '<button class="chip mix" type="button" data-tier="'+v+'" aria-pressed="'+(m.tier===v)+'">'+t+'</button>').join("")
       + '</div></div>'
       + '<div class="field"><label>How many questions</label><div class="chips">'
-      + [10,20,50,100].map(v=>'<button class="chip mix" type="button" data-len="'+v+'" aria-pressed="'+(m.len===v)+'">'
+      + [10,20,50,100,150].map(v=>'<button class="chip mix" type="button" data-len="'+v+'" aria-pressed="'+(m.len===v)+'">'
           + (v>=pool.length ? "All "+pool.length : v)+'</button>').join("")
       + '</div></div>'
       + '<button class="play" id="mixGo" type="button">Start the quiz</button></div>';
