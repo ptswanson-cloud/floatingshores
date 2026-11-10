@@ -801,7 +801,7 @@ function toggle(r){
 
 /* ---------- view state ---------- */
 const state = { view:"home", batch:0, tab:"cards", idx:0, flipped:false, showLearned:false, quiz:null,
-  mixed:{ phase:"setup", lang:"all", tier:"all", len:20, qs:[], at:0, picked:null, score:0, missed:[] } };
+  mixed:{ phase:"setup", lang:"all", tiers:[1,2,3], len:20, qs:[], at:0, picked:null, score:0, missed:[] } };
 const app = document.getElementById("app");
 
 /* ---------- helpers ---------- */
@@ -1030,12 +1030,24 @@ function renderQuiz(){
   }
 }
 
-/* ---------- mixed quiz: draws from every set ---------- */
+/* ---------- mixed quiz: draws from the phases and language picked ---------- */
+/* Phases are a non-empty set. "All phases" turns every phase on;
+   each phase chip toggles itself, and the last one selected stays on. */
+function selectedTiers(){
+  return state.mixed.tiers;
+}
+function mixedPhaseNote(){
+  const t = selectedTiers();
+  if(t.length >= 3) return "";
+  if(t.length === 1) return " · Phase " + t[0];
+  return " · Phases " + t[0] + " and " + t[1];
+}
 function mixedPool(){
   const m = state.mixed;
+  const tiers = new Set(selectedTiers());
   return ALL.filter(r =>
     (m.lang==="all" || r.lang===m.lang) &&
-    (m.tier==="all" || r.tier===+m.tier));
+    tiers.has(r.tier));
 }
 /* A distractor whose own spelling appears in the word would be a second
    right answer. Only roots absent from the word can stand as wrong options. */
@@ -1072,18 +1084,18 @@ function buildMixed(){
 }
 function renderMixed(){
   const m = state.mixed;
+  const pool = mixedPool();
   let inner;
   if(m.phase === "setup"){
-    const pool = mixedPool();
     inner = '<div class="setup"><h3>Mixed Quiz</h3>'
       + '<p>Roots pulled at random from the sets you pick, alternating between spotting a root inside a word and recalling what it means.</p>'
       + '<div class="field"><label>Which roots</label><div class="chips">'
       + [["all","Latin and Greek"],["latin","Latin only"],["greek","Greek only"]].map(([v,t])=>
           '<button class="chip mix" type="button" data-lang="'+v+'" aria-pressed="'+(m.lang===v)+'">'+t+'</button>').join("")
       + '</div></div>'
-      + '<div class="field"><label>Which phase</label><div class="chips">'
-      + [["all","All phases"],["1","Phase 1 only"],["2","Phase 2 only"],["3","Phase 3 only"]].map(([v,t])=>
-          '<button class="chip mix" type="button" data-tier="'+v+'" aria-pressed="'+(m.tier===v)+'">'+t+'</button>').join("")
+      + '<div class="field"><label>Which phases</label><div class="chips">'
+      + '<button class="chip mix" type="button" data-tier="all" aria-pressed="'+(selectedTiers().length>=3)+'">All phases</button>'
+      + [1,2,3].map(v=>'<button class="chip mix" type="button" data-tier="'+v+'" aria-pressed="'+(selectedTiers().includes(v))+'">Phase '+v+'</button>').join("")
       + '</div></div>'
       + '<div class="field"><label>How many questions</label><div class="chips">'
       + [10,20,50,100,150].map(v=>'<button class="chip mix" type="button" data-len="'+v+'" aria-pressed="'+(m.len===v)+'">'
@@ -1143,9 +1155,9 @@ function renderMixed(){
   app.innerHTML = '<div class="bar" style="--hue:var(--mix)">'
     + '<button class="back" id="backBtn" type="button">&larr; All sets</button>'
     + '<span class="bar-title"><em>Mixed</em>'
-    + (m.phase==="setup" ? "All "+TOTAL+" roots"
+    + (m.phase==="setup" ? "All "+pool.length+" roots"
        : ((m.lang==="all" ? "Latin and Greek" : m.lang==="latin" ? "Latin only" : "Greek only")
-          + (m.tier==="all" ? "" : " · Phase "+m.tier)))+'</span></div>'
+          + mixedPhaseNote()))+'</span></div>'
     + '<div class="stage" style="--hue:var(--mix)">'+inner+'</div>';
 
   document.getElementById("backBtn").onclick = ()=>{
@@ -1154,7 +1166,15 @@ function renderMixed(){
   if(m.phase === "setup"){
     app.querySelectorAll(".chip.mix").forEach(c=>c.onclick = ()=>{
       if(c.dataset.lang) m.lang=c.dataset.lang;
-      else if(c.dataset.tier) m.tier=c.dataset.tier;
+      else if(c.dataset.tier){
+        if(c.dataset.tier==="all") m.tiers=[1,2,3];
+        else {
+          const n = +c.dataset.tier;
+          if(m.tiers.includes(n)){
+            if(m.tiers.length > 1) m.tiers = m.tiers.filter(x=>x!==n);
+          } else m.tiers = m.tiers.concat(n).sort((a,b)=>a-b);
+        }
+      }
       else m.len=+c.dataset.len;
       renderMixed();
     });
